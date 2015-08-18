@@ -1,7 +1,6 @@
 package net.rokefeler.sigac.repositorio;
 
 import net.rokefeler.sigac.modelo.Login;
-import net.rokefeler.sigac.modelo.tipos.TipoEstado;
 import net.rokefeler.sigac.repositorio.filtros.LoginFiltros;
 import net.rokefeler.sigac.service.NegocioExcepciones;
 import net.rokefeler.sigac.util.jpa.Transaccion;
@@ -11,13 +10,11 @@ import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.web.util.Log4jConfigListener;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
-import java.io.Console;
 import java.io.Serializable;
 import java.util.List;
 
@@ -29,15 +26,12 @@ public class LoginRepositorio implements Serializable{
 	private EntityManager entityManager;
 
 	public Login buscarLoginporId(String idLogin) {
-
 		return this.entityManager.find(Login.class, idLogin);
 	}
-
-	/*
 	public List<Login> listarVendedores() {
-		return this.entityManager.createQuery("from Usuario", Login.class)
+		return this.entityManager.createQuery("from tsecuritylogin ", Login.class)
 				.getResultList();
-	}*/
+	}
 	
 	public Login buscarLoginporEmail(String email) {
 		email = email.toLowerCase();

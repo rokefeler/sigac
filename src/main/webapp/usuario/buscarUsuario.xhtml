@@ -16,7 +16,7 @@
 			<p:toolbar style="margin-top:20px">
 				<f:facet name="left">
 					<p:commandButton value="Buscar Usuario"
-						action="#{usuarioBean.buscarUsuarioFiltros}" update="@form" />
+						action="#{usuarioBean.buscarUsuarioFiltros()}" update="@form" />
                 </f:facet>
 				<f:facet name="right">
 					<p:button value="Nuevo Usuario" outcome="/usuario/registrarUsuario" />
