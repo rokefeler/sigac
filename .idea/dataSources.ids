@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="sigac@localhost" uuid="db129e10-3f75-4a9c-841a-50a9f56ab213">
+    <database-info product="MySQL" version="5.6.24" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <schema name="" catalog="sigac"/>
+  </data-source>
+  <data-source name="sigac2 @localhost" uuid="31dc2e7c-f797-44f2-8f4a-5fd3f7e6d96c">
+    <database-info product="MySQL" version="5.6.24" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <schema name="" catalog="sigac2"/>
+    <table name="tcodigo" schema="" catalog="sigac2" type="TABLE">
+      <column name="id_Codigo" sqlType="VARCHAR" precision="15" scale="0" nullable="false" jdbcType="12"/>
+      <column name="descrip_Codigo" sqlType="VARCHAR" precision="120" scale="0" nullable="true" jdbcType="12"/>
+      <column name="estado_Codigo" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="fecha_Codigo" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="nombre_Codigo" sqlType="VARCHAR" precision="120" scale="0" nullable="false" jdbcType="12"/>
+      <column name="num_Codigo" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="referencia_Codigo" sqlType="VARCHAR" precision="120" scale="0" nullable="true" jdbcType="12"/>
+      <column name="idCodigoNumero_Codigo" sqlType="VARCHAR" precision="6" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id_Codigo"/>
+      <foreign-key name="FK_tecd3221sh58hdqtcya1uw3u8" columns="idCodigoNumero_Codigo" ref-table="tcodigonumero" ref-schema="" ref-catalog="sigac2" ref-columns="id_Numero" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_qow6ud16lr9uqp0q2p1m7mmft" table="tpersona" schema="" catalog="sigac2" columns="idcIden_Persona"/>
+      <index name="FK_tecd3221sh58hdqtcya1uw3u8" unique="false" columns="idCodigoNumero_Codigo"/>
+    </table>
+    <table name="tcodigonumero" schema="" catalog="sigac2" type="TABLE">
+      <column name="id_Numero" sqlType="VARCHAR" precision="6" scale="0" nullable="false" jdbcType="12"/>
+      <column name="descripcion_Numero" sqlType="VARCHAR" precision="80" scale="0" nullable="false" jdbcType="12"/>
+      <column name="numero_Numero" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id_Numero"/>
+      <exported-key name="FK_tecd3221sh58hdqtcya1uw3u8" table="tcodigo" schema="" catalog="sigac2" columns="idCodigoNumero_Codigo"/>
+    </table>
+    <table name="tpaisiso" schema="" catalog="sigac2" type="TABLE">
+      <column name="id_PaisIso" sqlType="VARCHAR" precision="3" scale="0" nullable="false" jdbcType="12"/>
+      <column name="capital_PaisIso" sqlType="VARCHAR" precision="44" scale="0" nullable="true" jdbcType="12"/>
+      <column name="continent_PaisIso" sqlType="VARCHAR" precision="2" scale="0" nullable="true" jdbcType="12"/>
+      <column name="countryISO_A2_PaisIso" sqlType="VARCHAR" precision="2" scale="0" nullable="false" jdbcType="12"/>
+      <column name="countryISO_N3_PaisIso" sqlType="VARCHAR" precision="3" scale="0" nullable="false" jdbcType="12"/>
+      <column name="countryNameEN_PaisIso" sqlType="VARCHAR" precision="85" scale="0" nullable="true" jdbcType="12"/>
+      <column name="countryNameES_PaisIso" sqlType="VARCHAR" precision="85" scale="0" nullable="false" jdbcType="12"/>
+      <column name="currency_PaisIso" sqlType="VARCHAR" precision="3" scale="0" nullable="true" jdbcType="12"/>
+      <column name="languageCode_PaisIso" sqlType="VARCHAR" precision="2" scale="0" nullable="true" jdbcType="12"/>
+      <column name="latitude_PaisIso" sqlType="DECIMAL" precision="6" scale="0" nullable="true" jdbcType="3"/>
+      <column name="locales_PaisIso" sqlType="VARCHAR" precision="75" scale="0" nullable="true" jdbcType="12"/>
+      <column name="longitude_PaisIso" sqlType="DECIMAL" precision="6" scale="0" nullable="true" jdbcType="3"/>
+      <column name="phoneCode_PaisIso" sqlType="VARCHAR" precision="8" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id_PaisIso"/>
+      <exported-key name="FK_l8vxri7f2ctps56j041ag9qnc" table="tpersona" schema="" catalog="sigac2" columns="idPaisIso_Persona"/>
+    </table>
+    <table name="tpersona" schema="" catalog="sigac2" type="TABLE">
+      <column name="id_Persona" sqlType="VARCHAR" precision="15" scale="0" nullable="false" jdbcType="12"/>
+      <column name="apellidos_Persona" sqlType="VARCHAR" precision="75" scale="0" nullable="false" jdbcType="12"/>
+      <column name="codanterior_Persona" sqlType="VARCHAR" precision="15" scale="0" nullable="true" jdbcType="12"/>
+      <column name="direccion_Persona" sqlType="VARCHAR" precision="160" scale="0" nullable="false" jdbcType="12"/>
+      <column name="email_Persona" sqlType="VARCHAR" precision="120" scale="0" nullable="true" jdbcType="12"/>
+      <column name="esAlumno_Persona" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <column name="esDocente_Persona" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <column name="esEmpleado_Persona" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <column name="estado_Persona" sqlType="VARCHAR" precision="25" scale="0" nullable="false" jdbcType="12"/>
+      <column name="fecha_Persona" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="fijo_Persona" sqlType="VARCHAR" precision="15" scale="0" nullable="true" jdbcType="12"/>
+      <column name="fnac_Persona" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="foto_Persona" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
+      <column name="idLogin_Persona" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="movil_Persona" sqlType="VARCHAR" precision="15" scale="0" nullable="true" jdbcType="12"/>
+      <column name="nombres_Persona" sqlType="VARCHAR" precision="120" scale="0" nullable="false" jdbcType="12"/>
+      <column name="nrodoc_Persona" sqlType="VARCHAR" precision="25" scale="0" nullable="true" jdbcType="12"/>
+      <column name="referencia_Persona" sqlType="VARCHAR" precision="120" scale="0" nullable="true" jdbcType="12"/>
+      <column name="sexo_Persona" sqlType="VARCHAR" precision="10" scale="0" nullable="false" jdbcType="12"/>
+      <column name="urbanizacion_Persona" sqlType="VARCHAR" precision="70" scale="0" nullable="true" jdbcType="12"/>
+      <column name="idDistrito_Persona" sqlType="VARCHAR" precision="6" scale="0" nullable="false" jdbcType="12"/>
+      <column name="idcIden_Persona" sqlType="VARCHAR" precision="15" scale="0" nullable="true" jdbcType="12"/>
+      <column name="idPaisIso_Persona" sqlType="VARCHAR" precision="3" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id_Persona"/>
+      <foreign-key name="FK_l8vxri7f2ctps56j041ag9qnc" columns="idPaisIso_Persona" ref-table="tpaisiso" ref-schema="" ref-catalog="sigac2" ref-columns="id_PaisIso" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_qow6ud16lr9uqp0q2p1m7mmft" columns="idcIden_Persona" ref-table="tcodigo" ref-schema="" ref-catalog="sigac2" ref-columns="id_Codigo" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_t5i7q1bg46msvfgfsxvdtrjqa" columns="idDistrito_Persona" ref-table="tubigeodistrito" ref-schema="" ref-catalog="sigac2" ref-columns="id_Distrito" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_g18uxgvxig5hj57j97hrpr4yt" table="tsecuritylogin" schema="" catalog="sigac2" columns="idPersona_Login"/>
+      <index name="FK_l8vxri7f2ctps56j041ag9qnc" unique="false" columns="idPaisIso_Persona"/>
+      <index name="FK_qow6ud16lr9uqp0q2p1m7mmft" unique="false" columns="idcIden_Persona"/>
+      <index name="FK_t5i7q1bg46msvfgfsxvdtrjqa" unique="false" columns="idDistrito_Persona"/>
+    </table>
+    <table name="tsecurityentidad" schema="" catalog="sigac2" type="TABLE">
+      <column name="id_Entidad" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nombre_Entidad" sqlType="VARCHAR" precision="35" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id_Entidad"/>
+      <exported-key name="FK_54hgm69b2xvbllija73ss80rq" table="tsecurityrolloginpermiso" schema="" catalog="sigac2" columns="IdEntidad_RolLoginPermiso"/>
+    </table>
+    <table name="tsecuritylogin" schema="" catalog="sigac2" type="TABLE">
+      <column name="id_Login" sqlType="VARCHAR" precision="15" scale="0" nullable="false" jdbcType="12"/>
+      <column name="avatar_Login" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
+      <column name="esSuperuser_Login" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="estado_Login" sqlType="VARCHAR" precision="25" scale="0" nullable="false" jdbcType="12"/>
+      <column name="fecha_Login" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <column name="pwd_Login" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
+      <column name="idPersona_Login" sqlType="VARCHAR" precision="15" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id_Login"/>
+      <foreign-key name="FK_g18uxgvxig5hj57j97hrpr4yt" columns="idPersona_Login" ref-table="tpersona" ref-schema="" ref-catalog="sigac2" ref-columns="id_Persona" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_28apltofnrh089269co8muwr6" table="tsecuritylogin_roles" schema="" catalog="sigac2" columns="id_Login"/>
+      <index name="FK_g18uxgvxig5hj57j97hrpr4yt" unique="false" columns="idPersona_Login"/>
+    </table>
+    <table name="tsecuritylogin_roles" schema="" catalog="sigac2" type="TABLE">
+      <column name="id_Login" sqlType="VARCHAR" precision="15" scale="0" nullable="false" jdbcType="12"/>
+      <column name="id_RolLogin" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <foreign-key name="FK_28apltofnrh089269co8muwr6" columns="id_Login" ref-table="tsecuritylogin" ref-schema="" ref-catalog="sigac2" ref-columns="id_Login" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_plttwscxxlep8fii2l6q94wqk" columns="id_RolLogin" ref-table="tsecurityrollogin" ref-schema="" ref-catalog="sigac2" ref-columns="id_RolLogin" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_28apltofnrh089269co8muwr6" unique="false" columns="id_Login"/>
+      <index name="FK_plttwscxxlep8fii2l6q94wqk" unique="false" columns="id_RolLogin"/>
+    </table>
+    <table name="tsecurityrollogin" schema="" catalog="sigac2" type="TABLE">
+      <column name="id_RolLogin" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nombre_RolLogin" sqlType="VARCHAR" precision="60" scale="0" nullable="false" jdbcType="12"/>
+      <column name="estado_RolLogin" sqlType="VARCHAR" precision="15" scale="0" nullable="false" jdbcType="12"/>
+      <column name="fecha_RolLogin" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id_RolLogin"/>
+      <exported-key name="FK_plttwscxxlep8fii2l6q94wqk" table="tsecuritylogin_roles" schema="" catalog="sigac2" columns="id_RolLogin"/>
+      <exported-key name="FK_9oowtnm7n3rpdejkdwwf78yvl" table="tsecurityrolloginpermiso" schema="" catalog="sigac2" columns="idRolLogin_RolLoginPermiso"/>
+    </table>
+    <table name="tsecurityrolloginpermiso" schema="" catalog="sigac2" type="TABLE">
+      <column name="id_RolLoginPermiso" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="derecho_RolLoginPermiso" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="IdEntidad_RolLoginPermiso" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="idRolLogin_RolLoginPermiso" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id_RolLoginPermiso"/>
+      <foreign-key name="FK_54hgm69b2xvbllija73ss80rq" columns="IdEntidad_RolLoginPermiso" ref-table="tsecurityentidad" ref-schema="" ref-catalog="sigac2" ref-columns="id_Entidad" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_9oowtnm7n3rpdejkdwwf78yvl" columns="idRolLogin_RolLoginPermiso" ref-table="tsecurityrollogin" ref-schema="" ref-catalog="sigac2" ref-columns="id_RolLogin" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_54hgm69b2xvbllija73ss80rq" unique="false" columns="IdEntidad_RolLoginPermiso"/>
+      <index name="FK_9oowtnm7n3rpdejkdwwf78yvl" unique="false" columns="idRolLogin_RolLoginPermiso"/>
+    </table>
+    <table name="tubigeodepartamento" schema="" catalog="sigac2" type="TABLE">
+      <column name="id_Departamento" sqlType="VARCHAR" precision="2" scale="0" nullable="false" jdbcType="12"/>
+      <column name="nombre_Departamento" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id_Departamento"/>
+      <exported-key name="FK_ny2pf03giib96kwfkxq5yrjgw" table="tubigeoprovincia" schema="" catalog="sigac2" columns="idDepartamento_Provincia"/>
+    </table>
+    <table name="tubigeodistrito" schema="" catalog="sigac2" type="TABLE">
+      <column name="id_Distrito" sqlType="VARCHAR" precision="6" scale="0" nullable="false" jdbcType="12"/>
+      <column name="nombre_Distrito" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="idProvincia_Distrito" sqlType="VARCHAR" precision="4" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id_Distrito"/>
+      <foreign-key name="FK_2vpski6jsgfr3japgcsvwbk86" columns="idProvincia_Distrito" ref-table="tubigeoprovincia" ref-schema="" ref-catalog="sigac2" ref-columns="id_Provincia" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_t5i7q1bg46msvfgfsxvdtrjqa" table="tpersona" schema="" catalog="sigac2" columns="idDistrito_Persona"/>
+      <index name="FK_2vpski6jsgfr3japgcsvwbk86" unique="false" columns="idProvincia_Distrito"/>
+    </table>
+    <table name="tubigeoprovincia" schema="" catalog="sigac2" type="TABLE">
+      <column name="id_Provincia" sqlType="VARCHAR" precision="4" scale="0" nullable="false" jdbcType="12"/>
+      <column name="nombre_Provincia" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="idDepartamento_Provincia" sqlType="VARCHAR" precision="2" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id_Provincia"/>
+      <foreign-key name="FK_ny2pf03giib96kwfkxq5yrjgw" columns="idDepartamento_Provincia" ref-table="tubigeodepartamento" ref-schema="" ref-catalog="sigac2" ref-columns="id_Departamento" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_2vpski6jsgfr3japgcsvwbk86" table="tubigeodistrito" schema="" catalog="sigac2" columns="idProvincia_Distrito"/>
+      <index name="FK_ny2pf03giib96kwfkxq5yrjgw" unique="false" columns="idDepartamento_Provincia"/>
+    </table>
+  </data-source>
+</component>
