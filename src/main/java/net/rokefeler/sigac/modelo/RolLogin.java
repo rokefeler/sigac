@@ -72,7 +72,11 @@ public class RolLogin implements Serializable {
         RolLogin rolLogin = (RolLogin) o;
 
         return Id == rolLogin.Id;
+    }
 
+    @Override
+    public String toString() {
+        return "RolLogin [Id=" + Id + ", nombreRol=" + nombre + "]";
     }
 
     @Override

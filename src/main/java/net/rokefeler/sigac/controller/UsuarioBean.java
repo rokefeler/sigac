@@ -20,10 +20,10 @@ public class UsuarioBean implements Serializable{
 	@Inject
 	private LoginRepositorio loginRepositorio;
 	
-	private List<Login> usuariosFiltrados;
+	private List<Login> loginFiltrados;
 	private LoginFiltros filtros;
 	
-	private Login usuarioSeleccionado;
+	private Login loginSeleccionado;
 	
 	
 
@@ -32,26 +32,26 @@ public class UsuarioBean implements Serializable{
 	}
 	
 	public void buscarUsuarioFiltros(){
-		usuariosFiltrados = loginRepositorio.listarLoginsFiltrados(filtros);
+		loginFiltrados = loginRepositorio.listarLoginsFiltrados(filtros);
 
 	}
 
 	public void eliminarUsuario(){
-		/*
-		LoginRepositorio.removerUsuario(usuarioSeleccionado);
-		usuariosFiltrados.remove(usuarioSeleccionado);
-		*/
-		FacesUtil.adicionarMensajeInfo("Usuario "+ usuarioSeleccionado.getRazon() +" no puede ser eliminado.");
+
+		loginRepositorio.removerLogin(loginSeleccionado);
+		loginFiltrados.remove(loginSeleccionado);
+		FacesUtil.adicionarMensajeInfo("Usuario "+ loginSeleccionado.getRazon() +" no puede ser eliminado.");
 	}	
 
 	
 	
 	public Login getUsuarioSeleccionado() {
-		return usuarioSeleccionado;
+
+		return loginSeleccionado;
 	}
 
-	public void setUsuarioSeleccionado(Login usuarioSeleccionado) {
-		this.usuarioSeleccionado = usuarioSeleccionado;
+	public void setUsuarioSeleccionado(Login loginSeleccionado){
+		this.loginSeleccionado = loginSeleccionado;
 	}
 	
 	public LoginFiltros getFiltros() {
@@ -59,6 +59,7 @@ public class UsuarioBean implements Serializable{
 	}
 	
 	public List<Login> getUsuariosFiltrados() {
-		return usuariosFiltrados;
+
+		return loginFiltrados;
 	}
 }

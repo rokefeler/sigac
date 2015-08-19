@@ -26,8 +26,10 @@ public class LoginRepositorio implements Serializable{
 	private EntityManager entityManager;
 
 	public Login buscarLoginporId(String idLogin) {
+
 		return this.entityManager.find(Login.class, idLogin);
 	}
+
 	public List<Login> listarVendedores() {
 		return this.entityManager.createQuery("from tsecuritylogin ", Login.class)
 				.getResultList();
@@ -62,16 +64,18 @@ public class LoginRepositorio implements Serializable{
 		
 		Session session = entityManager.unwrap(Session.class);
 		Criteria criteria =  session.createCriteria(Login.class);
+
 		if(StringUtils.isNotBlank(loginFiltros.getEmail())){
 			criteria.add(Restrictions.eq("email", loginFiltros.getEmail()));
 		}
 
-		if(StringUtils.isNotBlank(loginFiltros.getNombre())){
-			criteria.add(Restrictions.ilike("nombreUsuario", loginFiltros.getNombre(),
-							MatchMode.ANYWHERE));
+		if(StringUtils.isNotBlank(loginFiltros.getRazon())){
+			criteria.createAlias("idPersona","ip")
+					.add(Restrictions.ilike("razon", loginFiltros.getRazon(), MatchMode.ANYWHERE))
+			.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
 		}
 		
-		return criteria.addOrder(Order.asc("nombreUsuario")).list();
+		return criteria.addOrder(Order.asc("razon")).list();
 		
 	}	
 	
@@ -85,7 +89,6 @@ public class LoginRepositorio implements Serializable{
 		}catch(PersistenceException e){
 			throw new NegocioExcepciones("El usuario no puede ser eliminado.");
 		}
-		
 	}
 	
 	public Login obtenerLogin(String idLogin){

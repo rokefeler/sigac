@@ -16,7 +16,7 @@
 			<p:toolbar style="margin-top:20px">
 				<f:facet name="left">
 					<p:commandButton value="Buscar Usuario"
-						action="#{usuarioBean.buscarUsuarioFiltros()}" update="@form" />
+						action="#{usuarioBean.buscarUsuarioFiltros}" update="@form" />
                 </f:facet>
 				<f:facet name="right">
 					<p:button value="Nuevo Usuario" outcome="/usuario/registrarUsuario" />
@@ -31,8 +31,8 @@
 					value="#{usuarioBean.filtros.email}" />
 
 				<p:outputLabel value="Nombre" for="nombre" />
-				<p:inputText id="nombre" size="60"
-					value="#{usuarioBean.filtros.nombre}" />
+				<p:inputText id="razon" size="60"
+					value="#{usuarioBean.filtros.razon}" />
 
 			</p:panelGrid>
 
@@ -53,11 +53,11 @@
 				</p:column>
 
 				<p:column headerText="Email">
-					<h:outputLabel value="#{usuario.email}" />
+					<h:outputLabel value="#{usuario.idPersona.email}" />
 				</p:column>
 
                 <p:column headerText="Activo">
-                    <h:outputLabel value="#{usuario.estado}"/>
+                    <h:outputLabel value="#{usuario.estado.toString}"/>
                 </p:column>
 
 				<p:column style="text-align:center;width:100px">
