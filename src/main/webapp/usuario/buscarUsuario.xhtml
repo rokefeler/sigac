@@ -30,50 +30,58 @@
 				<p:inputText id="email" size="30"
 					value="#{usuarioBean.filtros.email}" />
 
-				<p:outputLabel value="Nombre" for="nombre" />
-				<p:inputText id="razon" size="60"
-					value="#{usuarioBean.filtros.razon}" />
+				<p:outputLabel value="Apellidos" for="apellidos" />
+				<p:inputText id="apellidos" size="60"
+					value="#{usuarioBean.filtros.apellidos}" />
+
+				<p:outputLabel value="Nombres" for="nombres" />
+				<p:inputText id="nombres" size="60"
+							 value="#{usuarioBean.filtros.nombres}" />
 
 			</p:panelGrid>
 
 
 			<p:dataTable id="usuariosTable"
-				value="#{usuarioBean.usuariosFiltrados}" var="usuario"
+				value="#{usuarioBean.usuariosFiltrados}" var="login"
 				style="margin-top:20px"
 				emptyMessage="No se encontraron Usuarios para su busqueda" rows="20"
 				paginator="true" paginatorAlwaysVisible="false"
 				paginatorPosition="bottom">
 
 				<p:column headerText="Id" style="text-align:center;width:100px">
-					<h:outputLabel value="#{usuario.idLogin}" />
+					<h:outputLabel value="#{login.idLogin}" />
 				</p:column>
 
-				<p:column headerText="Nombre">
-					<h:outputLabel value="#{usuario.razon}" />
+				<p:column headerText="Apellidos">
+					<h:outputLabel value="#{login.idPersona.apellidos}" />
 				</p:column>
+
+                <p:column headerText="Nombres">
+                    <h:outputLabel value="#{login.idPersona.nombres}" />
+                </p:column>
 
 				<p:column headerText="Email">
-					<h:outputLabel value="#{usuario.idPersona.email}" />
+					<h:outputLabel value="#{login.idPersona.email}" />
 				</p:column>
 
                 <p:column headerText="Activo">
-                    <h:outputLabel value="#{usuario.estado.toString}"/>
+                    <h:outputLabel value="#{login.estado}"/>
                 </p:column>
 
 				<p:column style="text-align:center;width:100px">
 					<p:button title="Editar" icon="ui-icon-pencil"
 						outcome="/usuario/registrarUsuario">
-						<f:param name="usuario" value="#{usuario.idLogin}" />
+						<f:param name="login" value="#{login.idLogin}" />
 					</p:button>
 
 
 					<p:commandButton icon="ui-icon-trash" actionListener="#{usuarioBean.eliminarUsuario}" update="usuariosTable">
                         <p:confirm header="Eliminar Usuario"
-                                   message="Esta seguro de eliminar el usuario"
+                                   message="Esta seguro de eliminar el login"
                                 icon="ui-icon-alert"/>
 
 						<f:setPropertyActionListener
-							target="#{usuarioBean.usuarioSeleccionado}" value="#{usuario}" />
+							target="#{usuarioBean.usuarioSeleccionado}" value="#{login}" />
 					</p:commandButton>
 
 				</p:column>

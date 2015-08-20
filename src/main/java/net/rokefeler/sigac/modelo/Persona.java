@@ -27,7 +27,7 @@ public class Persona implements Serializable {
     private String referencia;
     private String fijo;
     private String movil;
-    private String Email;
+    private String email;
     private PaisIso paisIso;
     private UbigeoDistrito idDistrito;
     private String foto;
@@ -147,11 +147,11 @@ public class Persona implements Serializable {
 
     @Column(name="email_Persona", nullable = true, length= 120)
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     @ManyToOne

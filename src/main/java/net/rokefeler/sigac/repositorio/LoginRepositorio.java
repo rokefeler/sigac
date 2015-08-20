@@ -64,20 +64,27 @@ public class LoginRepositorio implements Serializable{
 		
 		Session session = entityManager.unwrap(Session.class);
 		Criteria criteria =  session.createCriteria(Login.class);
+        criteria.createCriteria("idPersona","ip");
 
-		if(StringUtils.isNotBlank(loginFiltros.getEmail())){
-			criteria.add(Restrictions.eq("email", loginFiltros.getEmail()));
+		if(StringUtils.isNotBlank(loginFiltros.getEmail())) {
+            criteria.add(Restrictions.eq("ip.email", loginFiltros.getEmail()));
 		}
 
-		if(StringUtils.isNotBlank(loginFiltros.getRazon())){
-			criteria.createAlias("idPersona","ip")
-					.add(Restrictions.ilike("razon", loginFiltros.getRazon(), MatchMode.ANYWHERE))
-			.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+		if(StringUtils.isNotBlank(loginFiltros.getApellidos())){
+			criteria.add(Restrictions.ilike("ip.apellidos", loginFiltros.getApellidos(), MatchMode.ANYWHERE));
+        }
+        if(StringUtils.isNotBlank(loginFiltros.getNombres())){
+            criteria.add(Restrictions.ilike("ip.nombres", loginFiltros.getNombres(), MatchMode.ANYWHERE));
 		}
-		
-		return criteria.addOrder(Order.asc("razon")).list();
-		
-	}	
+
+		//criteria.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+        if(StringUtils.isNotBlank(loginFiltros.getNombres()) ||
+                StringUtils.isNotBlank(loginFiltros.getApellidos()) )
+            criteria.addOrder(Order.asc("ip.apellidos"))
+                .addOrder(Order.asc("ip.nombres")).list();
+
+        return criteria.list();
+	}
 	
 	@Transaccion
 	public void removerLogin(Login login) {

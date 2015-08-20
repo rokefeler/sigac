@@ -5,16 +5,16 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
 
-	<ui:define name="titulo">#{registroUsuarioBean.editando ? 'Editando Usuario' : 'Registrar Nuevo Usuario'}</ui:define>
+	<ui:define name="titulo">#{registroLoginBean.editando ? 'Editando Usuario' : 'Registrar Nuevo Usuario'}</ui:define>
 
 	<ui:define name="cuerpo">
-		<h1>#{registroUsuarioBean.editando ? 'Editando Usuario' :
+		<h1>#{registroLoginBean.editando ? 'Editando Usuario' :
 			'Registrar Nuevo Usuario'}</h1>
 
 
 		<f:metadata>
-			<o:viewParam name="usuario" value="#{registroUsuarioBean.usuario}" />
-			<f:event listener="#{registroUsuarioBean.inicializar}"
+			<o:viewParam name="login" value="#{registroLoginBean.login}" />
+			<f:event listener="#{registroLoginBean.inicializar}"
 				type="preRenderView" />
 		</f:metadata>
 
@@ -26,7 +26,7 @@
 				<f:facet name="left">
 					<p:button value="Nuevo Usuario" outcome="/usuario/registrarUsuario" />
 					<p:commandButton value="Grabar Usuario" id="btnGrabar"
-						action="#{registroUsuarioBean.registrarUsuario}" update="@form" />
+						action="#{registroLoginBean.registrarUsuario}" update="@form" />
 				</f:facet>
 				<f:facet name="right">
 					<p:button value="Buscar Usuario" id="btnBuscar"
@@ -37,67 +37,64 @@
 			<p:panelGrid columns="2" id="panelFormUsuario"
 				style="width:100%;margin-top:15px" columnClasses="lblIzq">
 
-				<p:outputLabel value="Nombre" for="nombre" />
-				<p:inputText id="nombre" size="60" maxlength="255"
-					value="#{registroUsuarioBean.usuario.nombreUsuario}" />
+				<p:outputLabel value="IdLogin" for="idLogin" />
+				<p:inputText id="idLogin" size="60" maxlength="255"
+					value="#{registroLoginBean.login.idLogin}" />
 
-				<p:outputLabel value="Dni" for="dni" />
-				<p:inputText id="dni" size="60" maxlength="10"
-					value="#{registroUsuarioBean.usuario.dni}" />
+				<p:outputLabel value="Avatar" for="avatar" />
+				<p:inputText id="avatar" size="60" maxlength="256"
+					value="#{registroLoginBean.login.avatar}" />
 
 
-				<p:outputLabel value="E-mail" for="email" />
-				<p:inputText id="email" size="30" maxlength="100"
-					value="#{registroUsuarioBean.usuario.email}"
-					readonly="#{registroUsuarioBean.editando}" />
+				<p:outputLabel value="Super?: " />
+				<p:selectBooleanCheckbox
+						value="#{registroLoginBean.login.esSuperUser}">
+					<p:ajax listener="#{registroLoginBean.addMessage}" update="msg" />
+				</p:selectBooleanCheckbox>
 
 				<p:outputLabel value="Password" for="pwd" />
 				<p:password id="pwd" size="30" maxlength="40"
-					value="#{registroUsuarioBean.usuario.password}" redisplay="true" />
+					value="#{registroLoginBean.login.pwd}" redisplay="true" />
 
-				<p:outputLabel value="Sexo" for="sexo" />
-				<p:selectOneRadio id="sexo"
-						value="#{registroUsuarioBean.usuario.sexo}">
-					<f:selectItem itemLabel="MASCULINO" itemValue="MASCULINO" />
-					<f:selectItem itemLabel="FEMENINO" itemValue="FEMENINO" />
-
+				<p:outputLabel value="Estado" for="estado" />
+				<p:selectOneRadio id="estado"
+						value="#{registroLoginBean.login.estado}">
+					<f:selectItem itemLabel="ANULADO" itemValue="ANULADO" />
+					<f:selectItem itemLabel="VIGENTE" itemValue="VIGENTE" />
+					<f:selectItem itemLabel="SUSPENDIDO" itemValue="SUSPENDIDO" />
 				</p:selectOneRadio>
 
-				<p:outputLabel value="Activo?: " />
-				<p:selectBooleanCheckbox
-					value="#{registroUsuarioBean.usuario.activo}">
-					<p:ajax listener="#{registroUsuarioBean.addMessage}" update="msg" />
-				</p:selectBooleanCheckbox>
 
-				<p:selectOneMenu id="grupo" value="#{registroUsuarioBean.grupo}"
+
+				<p:selectOneMenu id="rol" value="#{registroLoginBean.rol}"
 					style="text-align:center;width:200px">
-					<f:selectItems value="#{registroUsuarioBean.grupos}" var="grupo"
-						itemValue="#{grupo}" itemLabel="#{grupo.nombreGrupo}" />
+					<f:selectItems value="#{registroLoginBean.roles}" var="rol"
+						itemValue="#{rol}" itemLabel="#{rol.nombre}" />
 				</p:selectOneMenu>
-				<p:commandButton value="Agregar Grupo" id="btnAgregarGrupo"
-					action="#{registroUsuarioBean.agregarGrupo}" update="@form" />
+				<p:commandButton value="Agregar Rol" id="btnAgregarRol"
+					action="#{registroLoginBean.agregarRol}" update="@form" />
 
 			</p:panelGrid>
 
 
 			<p:dataTable id="grupoTable"
-				value="#{registroUsuarioBean.usuario.grupos}" var="grupo"
+				value="#{registroLoginBean.login.roles}" var="rol"
 				style="margin-top:20px"
-				emptyMessage="No se encontraron Grupos asignados" rows="20"
+				emptyMessage="No se encontraron Roles asignados" rows="20"
 				paginator="true" paginatorAlwaysVisible="false"
 				paginatorPosition="bottom">
 
 				<p:column headerText="Id" style="text-align:center;width:100px">
-					<h:outputLabel value="#{grupo.ideGrupo}" />
+					<h:outputLabel value="#{rol.id}" />
 				</p:column>
 
 				<p:column headerText="Nombre">
-					<h:outputLabel value="#{grupo.nombreGrupo}" />
+					<h:outputLabel value="#{rol.nombre}" />
 				</p:column>
 
 				<p:column style="text-align:center;width:100px">
 					<p:commandButton title="Eliminar" icon="ui-icon-trash"
-						action="#{registroUsuarioBean.eliminarGrupo}" update="@form" />
+						action="#{registroLoginBean.eliminarRol}" update="@form" />
 				</p:column>
 			</p:dataTable>
 
