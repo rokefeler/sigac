@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Jose Roque el 09/08/2015.
@@ -276,5 +277,9 @@ public class Persona implements Serializable {
     }
 
     /****************************************/
-
+    public List<Persona> SeleccionarPorNombre(String nome) {
+        return manager.createQuery("from Cliente where nome like :nome", Cliente.class)
+                .setParameter("nome", "%" + nome + "%")
+                .getResultList();
+    }
 }
