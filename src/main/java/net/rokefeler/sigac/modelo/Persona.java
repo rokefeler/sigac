@@ -2,6 +2,7 @@ package net.rokefeler.sigac.modelo;
 
 import net.rokefeler.sigac.modelo.tipos.TipoEstado;
 import net.rokefeler.sigac.modelo.tipos.TipoSexo;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.*;
@@ -261,6 +262,7 @@ public class Persona implements Serializable {
     }
 
     @Transient
+    @NotBlank
     public String getRazon() {
         return razon;
     }
@@ -275,11 +277,36 @@ public class Persona implements Serializable {
         }
 
     }
-
     /****************************************/
-    public List<Persona> SeleccionarPorNombre(String nome) {
-        return manager.createQuery("from Cliente where nome like :nome", Cliente.class)
-                .setParameter("nome", "%" + nome + "%")
-                .getResultList();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Persona persona = (Persona) o;
+
+        if (esAlumno != persona.esAlumno) return false;
+        if (esDocente != persona.esDocente) return false;
+        if (esEmpleado != persona.esEmpleado) return false;
+        if (!id.equals(persona.id)) return false;
+        if (fnac != null ? !fnac.equals(persona.fnac) : persona.fnac != null) return false;
+        if (sexo != persona.sexo) return false;
+        if (direccion != null ? !direccion.equals(persona.direccion) : persona.direccion != null) return false;
+        if (urbanizacion != null ? !urbanizacion.equals(persona.urbanizacion) : persona.urbanizacion != null)
+            return false;
+        if (referencia != null ? !referencia.equals(persona.referencia) : persona.referencia != null) return false;
+        if (fijo != null ? !fijo.equals(persona.fijo) : persona.fijo != null) return false;
+        if (movil != null ? !movil.equals(persona.movil) : persona.movil != null) return false;
+        if (email != null ? !email.equals(persona.email) : persona.email != null) return false;
+        if (idDistrito != null ? !idDistrito.equals(persona.idDistrito) : persona.idDistrito != null) return false;
+        if (idcIden != null ? !idcIden.equals(persona.idcIden) : persona.idcIden != null) return false;
+        if (nrodoc != null ? !nrodoc.equals(persona.nrodoc) : persona.nrodoc != null) return false;
+        return razon.equals(persona.razon);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }
