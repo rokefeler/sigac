@@ -2,7 +2,6 @@ package net.rokefeler.sigac.modelo;
 
 import net.rokefeler.sigac.modelo.tipos.TipoEstado;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -25,7 +24,7 @@ public class Login implements Serializable {
     private List<RolLogin> roles = new ArrayList<RolLogin>();
     private String pwd;
     private Date fecha;
-    private String razon;
+    //private String razon;
 
 
     @Id
@@ -38,7 +37,6 @@ public class Login implements Serializable {
         this.idLogin = idLogin;
     }
 
-
     //Lazy, se recupera cuando se consulte, Eager, se recupera siempre que se recupere una instancia
     @ManyToOne
     @JoinColumn(name="idPersona_Login", nullable = false)
@@ -46,10 +44,9 @@ public class Login implements Serializable {
         return idPersona;
     }
 
-    public void setIdPersona(Persona idPersona) {
-        this.idPersona = idPersona;
+    public void setIdPersona(Persona idpersona) {
+        this.idPersona = idpersona;
     }
-
 
     @Column(name="avatar_Login", nullable=true, length = 256)
     public String getAvatar() {
@@ -113,14 +110,17 @@ public class Login implements Serializable {
 
     @Transient
     public String getRazon() {
-        return razon;
+        return idPersona.getRazon();
     }
 
+    public void setRazon() {
+    }
 
+    /*
     @PostConstruct
     public void Login(){
-        this.razon = idPersona.getRazon();
-    }
+        this.razon = persona.getRazon();
+    }*/
 
     @Override
     public boolean equals(Object o) {

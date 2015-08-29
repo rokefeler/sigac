@@ -1,8 +1,6 @@
 package net.rokefeler.sigac.repositorio;
 
-import net.rokefeler.sigac.modelo.Login;
 import net.rokefeler.sigac.modelo.Persona;
-import net.rokefeler.sigac.repositorio.filtros.LoginFiltros;
 import net.rokefeler.sigac.repositorio.filtros.PersonaFiltros;
 import net.rokefeler.sigac.service.NegocioExcepciones;
 import net.rokefeler.sigac.util.jpa.Transaccion;
@@ -27,22 +25,18 @@ public class PersonaRepositorio implements Serializable{
 	@Inject
 	private EntityManager entityManager;
 
-	public Login buscarporId(String idLogin) {
+	public Persona buscarporId(String idPersona) {
 
-		return this.entityManager.find(Login.class, idLogin);
+		return this.entityManager.find(Persona.class, idPersona);
 	}
 
-	/*
-	public List<Persona> listarVendedores() {
-		return this.entityManager.createQuery("from tsecuritylogin ", Login.class)
-				.getResultList();
-	}*/
-	
-	public Persona buscarPorId(String id) {
+	public Persona buscarPorEmail(String email) {
 
         Persona per= null;
 		try{
-			per=this.entityManager.find(Persona.class, id);
+			per =  this.entityManager.createQuery("select p from tpersona  as p where lower(p.email) = :email",
+					Persona.class)
+					.setParameter("email",email).getSingleResult();
 		}catch(NoResultException e){
 			per=null;
 		}
@@ -76,13 +70,6 @@ public class PersonaRepositorio implements Serializable{
         return criteria.list();
 	}
 
-    /*
-    public List<Cliente> porNomeSemelhante(String nome) {
-        return manager.createQuery("from Cliente where nome like :nome", Cliente.class)
-                .setParameter("nome", "%" + nome + "%")
-                .getResultList();
-    }*/
-
 	@Transaccion
 	public void removerPersona(Persona persona) {
 		
@@ -100,7 +87,7 @@ public class PersonaRepositorio implements Serializable{
 		return entityManager.find(Persona.class, idPersona);
 	}	
 	
-	public Persona adicionarLogin(Persona persona) {
+	public Persona adicionarPersona(Persona persona) {
 		return entityManager.merge(persona);
 	}
 	

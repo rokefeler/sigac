@@ -14,7 +14,7 @@ import java.util.List;
 
 @Named
 @ViewScoped
-public class PersonaBean implements Serializable{
+public class PersonaBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

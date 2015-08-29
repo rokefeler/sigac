@@ -7,9 +7,10 @@ public class PersonaFiltros implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private String idPersona;
-	private String email;
 	private String apellidos;
 	private String nombres;
+	private String email;
+
 
 	public String getIdPersona() {
 		return idPersona;

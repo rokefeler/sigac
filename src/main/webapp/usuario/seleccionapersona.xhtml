@@ -13,25 +13,36 @@
 
 	<h:form>
 		<div style="margin-top: 5px; margin-bottom: 20px">
-			<p:inputText id="nome" size="40" value="#{selecaoClienteBean.nome}" placeholder="Nombre de cliente" />
+			<p:inputText id="nombres" size="40" value="#{seleccionaPersonaBean.personaFiltros.nombres}" placeholder="Nombres de Persona" />
 			<p:spacer width="10px"/>
 
-			<p:commandButton value="Buscar" action="#{selecaoClienteBean.pesquisar}" update="@form" />
+			<p:inputText id="apellidos" size="40" value="#{seleccionaPersonaBean.personaFiltros.apellidos}" placeholder="Apellidos de Persona" />
+			<p:spacer width="10px"/>
+
+			<p:inputText id="Email" size="40" value="#{seleccionaPersonaBean.personaFiltros.email}" placeholder="Email de Persona" />
+			<p:spacer width="10px"/>
+
+			<p:commandButton value="Buscar" action="#{seleccionaPersonaBean.buscar}" update="@form" />
 		</div>
 
-		<p:dataTable value="#{selecaoClienteBean.clientesFiltrados}" var="cliente"
-					 emptyMessage="Ningún cliente encontrado." rows="10"
+		<p:dataTable value="#{seleccionaPersonaBean.personasFiltradas}" var="persona"
+					 emptyMessage="Ningúna Persona encontrada." rows="10"
 					 paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
 
 			<p:column headerText="Código" style="text-align: center; width: 40px">
-				<h:outputText value="#{cliente.id}" />
+				<h:outputText value="#{persona.id}" />
 			</p:column>
-			<p:column headerText="Nombre">
-				<h:outputText value="#{cliente.nome}" />
+			<p:column headerText="Apellidos">
+				<h:outputText value="#{persona.apellidos}" />
+			<p:column headerText="Nombres">
+				<h:outputText value="#{persona.nombres}" />
+			</p:column>
+			<p:column headerText="Email">
+				<h:outputText value="#{persona.email}" />
 			</p:column>
 			<p:column style="width: 30px; text-align: center">
 				<p:commandButton icon="ui-icon-check" title="Selecionar"
-								 action="#{selecaoClienteBean.selecionar(cliente)}"
+								 action="#{seleccionaPersonaBean.selecionar(persona)}"
 								 process="@this" />
 			</p:column>
 

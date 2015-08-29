@@ -1,10 +1,13 @@
 package net.rokefeler.sigac.controller;
 
+import net.rokefeler.sigac.modelo.Persona;
 import net.rokefeler.sigac.modelo.RolLogin;
 import net.rokefeler.sigac.modelo.Login;
 import net.rokefeler.sigac.repositorio.RolLoginRepositorio;
 import net.rokefeler.sigac.service.RegistroLoginService;
 import net.rokefeler.sigac.util.FacesUtil;
+import org.hibernate.validator.constraints.NotBlank;
+import org.primefaces.event.SelectEvent;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
@@ -67,6 +70,7 @@ public class RegistroLoginBean implements Serializable {
 
 	}
 
+
 	public boolean isEditando() {
 		return this.login.getIdLogin() != null;
 	}
@@ -112,11 +116,30 @@ public class RegistroLoginBean implements Serializable {
 
 	}
 
-
-
     public void addMessage() {
         String summary = "El Estado actual del Usuario es " + this.login.getEstado();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
     }
 
+    /********* Codigo que sirve para Interactuar con Dialogo de Busqueda ********* */
+    //Viene de Dialog de Búsqueda de Personas
+    public void personaSelecionada(SelectEvent event) {
+        Persona persona= (Persona) event.getObject();
+        login.setIdPersona(persona); //pasar la persona
+    }
+
+	@NotBlank
+    public String getNombrePersona() {
+        String ret=null;
+        try {
+            ret = login.getIdPersona().getRazon();
+        }catch(Exception ex){
+            ret=null;
+        }
+		return ret;
+    }
+
+    public void setNombrePersona(String razon) {
+    }
+    /* ******************************************************************************* */
 }

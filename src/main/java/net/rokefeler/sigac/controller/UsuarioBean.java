@@ -51,6 +51,7 @@ public class UsuarioBean implements Serializable{
 	}
 
 	public void setUsuarioSeleccionado(Login loginSeleccionado){
+
 		this.loginSeleccionado = loginSeleccionado;
 	}
 	

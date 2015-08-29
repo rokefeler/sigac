@@ -19,7 +19,7 @@ public class LoginBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	@Inject private FacesContext facesContext;
+    @Inject private FacesContext facesContext;
 	@Inject private HttpServletRequest request;
 	@Inject private HttpServletResponse response;
 	

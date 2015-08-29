@@ -25,8 +25,8 @@
         <module name="sigac" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="sigac" target="1.7" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="sigac" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

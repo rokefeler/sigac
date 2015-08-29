@@ -38,10 +38,10 @@ public class Persona implements Serializable {
     private boolean esAlumno;
     private boolean esDocente;
     private boolean esEmpleado;
-    private java.util.Calendar fecha;
+    private java.util.Date fecha;
     private String idLogin;
     private TipoEstado estado;
-    private String razon;
+
 
     @Id
     @Column(name="id_Persona", nullable = false, length= 15)
@@ -102,7 +102,7 @@ public class Persona implements Serializable {
         this.sexo = sexo;
     }
 
-    @Column(name="direccion_Persona", nullable = false, length= 160)
+    @Column(name="direccion_Persona", nullable = true, length= 160)
     public String getDireccion() {
         return direccion;
     }
@@ -157,7 +157,7 @@ public class Persona implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name="idPaisIso_Persona", nullable = false)
+    @JoinColumn(name="idPaisIso_Persona", nullable = true)
     public PaisIso getPaisIso() {
         return paisIso;
     }
@@ -166,7 +166,7 @@ public class Persona implements Serializable {
         this.paisIso = paisIso;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY,optional=false)
+    @ManyToOne(fetch=FetchType.EAGER,optional=false)
     @JoinColumn(name="idDistrito_Persona", nullable = true)
     public UbigeoDistrito getIdDistrito() {
         return idDistrito;
@@ -232,12 +232,12 @@ public class Persona implements Serializable {
     }
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "fecha_Persona", nullable = false)
-    public Calendar getFecha() {
+    @Column(name = "fecha_Persona", nullable = true)
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(Calendar fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
@@ -261,22 +261,27 @@ public class Persona implements Serializable {
         this.estado = estado;
     }
 
-    @Transient
-    @NotBlank
+    @Transient @NotBlank
     public String getRazon() {
+        String razon;
+        try {
+            razon = apellidos.concat(", ").concat(nombres);
+        } catch (Exception e) {
+            razon=null;
+        }
         return razon;
     }
-
+    public void setRazon() {
+    }
+    /*
     @PostConstruct
     public void Persona(){
-
-        try {
+try {
             this.razon = apellidos.concat(", ").concat(nombres);
         } catch (Exception e) {
             this.razon="";
         }
-
-    }
+    }*/
     /****************************************/
     @Override
     public boolean equals(Object o) {
@@ -301,7 +306,7 @@ public class Persona implements Serializable {
         if (idDistrito != null ? !idDistrito.equals(persona.idDistrito) : persona.idDistrito != null) return false;
         if (idcIden != null ? !idcIden.equals(persona.idcIden) : persona.idcIden != null) return false;
         if (nrodoc != null ? !nrodoc.equals(persona.nrodoc) : persona.nrodoc != null) return false;
-        return razon.equals(persona.razon);
+        return getRazon().equals(persona.getRazon());
 
     }
 

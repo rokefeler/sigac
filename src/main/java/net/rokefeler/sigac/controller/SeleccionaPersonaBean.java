@@ -1,9 +1,11 @@
 package net.rokefeler.sigac.controller;
 
 import net.rokefeler.sigac.modelo.Persona;
+import net.rokefeler.sigac.repositorio.PersonaRepositorio;
+import net.rokefeler.sigac.repositorio.filtros.PersonaFiltros;
 import org.primefaces.context.RequestContext;
 
-import javax.faces.view.ViewScoped;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -18,40 +20,43 @@ public class SeleccionaPersonaBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private Persona personas;
+	private PersonaRepositorio personaRepositorio;
 	
-	private String nombre;
-	
-	private List<Persona> personasFiltradas;
+	@Inject
+    private PersonaFiltros personaFiltros;
 
-	public void pesquisar() {
+    private List<Persona> personasFiltradas;
 
-		personasFiltradas = personas.  clientes.porNomeSemelhante(nome);
+	public void buscar() {
+
+		personasFiltradas = personaRepositorio.listarPersonasFiltrados(personaFiltros);
 	}
 	
 	public void abrirDialogo() {
-		Map<String, Object> opcoes = new HashMap<>();
-		opcoes.put("modal", true);
-		opcoes.put("resizable", false);
-		opcoes.put("contentHeight", 450);
+		Map<String, Object> opciones = new HashMap<>();
+		opciones.put("modal", true);
+		opciones.put("resizable", false);
+		opciones.put("contentHeight", 450);
 		
-		RequestContext.getCurrentInstance().openDialog("SelecaoCliente", opcoes, null);
+		RequestContext.getCurrentInstance().openDialog("seleccionapersona", opciones, null);
 	}
 	
-	public void selecionar(Cliente cliente) {
-		RequestContext.getCurrentInstance().closeDialog(cliente);
-	}
-	
-	public String getNome() {
-		return nome;
+	public void selecionar(Persona persona) {
+
+        RequestContext.getCurrentInstance().closeDialog(persona);
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public PersonaFiltros getPersonaFiltros() {
+        return personaFiltros;
+    }
 
-	public List<Cliente> getClientesFiltrados() {
-		return clientesFiltrados;
-	}
+    public void setPersonaFiltros(PersonaFiltros personaFiltros) {
+        this.personaFiltros = personaFiltros;
+    }
+
+    public List<Persona> getPersonasFiltradas() {
+        return personasFiltradas;
+    }
+
 
 }
