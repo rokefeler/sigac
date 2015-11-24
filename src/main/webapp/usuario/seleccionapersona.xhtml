@@ -5,7 +5,7 @@
 	  xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<meta charset="UTF-8"/>
-	<title>Selección de Persona</title>
+	<title>Búsqueda de Persona</title>
 
 	<h:outputStylesheet library="css" name="sistema.css" />
 </h:head>
@@ -13,34 +13,47 @@
 
 	<h:form>
 		<div style="margin-top: 5px; margin-bottom: 20px">
-			<p:inputText id="nombres" size="40" value="#{seleccionaPersonaBean.personaFiltros.nombres}" placeholder="Nombres de Persona" />
+			<p:inputText id="nombres" size="40"
+						 value="#{seleccionaPersonaBean.personaFiltros.nombres}"
+						 placeholder="Nombres de Persona" />
 			<p:spacer width="10px"/>
 
-			<p:inputText id="apellidos" size="40" value="#{seleccionaPersonaBean.personaFiltros.apellidos}" placeholder="Apellidos de Persona" />
+			<p:inputText id="apellidos" size="40"
+						 value="#{seleccionaPersonaBean.personaFiltros.apellidos}"
+						 placeholder="Apellidos de Persona" />
 			<p:spacer width="10px"/>
 
-			<p:inputText id="Email" size="40" value="#{seleccionaPersonaBean.personaFiltros.email}" placeholder="Email de Persona" />
+			<p:inputText id="Email" size="40"
+						 value="#{seleccionaPersonaBean.personaFiltros.email}"
+						 placeholder="Email de Persona" />
 			<p:spacer width="10px"/>
 
-			<p:commandButton value="Buscar" action="#{seleccionaPersonaBean.buscar}" update="@form" />
+			<p:commandButton value="Buscar"
+							 action="#{seleccionaPersonaBean.buscar}"
+							 update="@form" />
 		</div>
 
 		<p:dataTable value="#{seleccionaPersonaBean.personasFiltradas}" var="persona"
-					 emptyMessage="Ningúna Persona encontrada." rows="10"
+					 emptyMessage="Ningúna Persona Encontrada" rows="10"
 					 paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
 
 			<p:column headerText="Código" style="text-align: center; width: 40px">
 				<h:outputText value="#{persona.id}" />
 			</p:column>
+
 			<p:column headerText="Apellidos">
 				<h:outputText value="#{persona.apellidos}" />
-			<p:column headerText="Nombres">
+			</p:column>
+
+            <p:column headerText="Nombres">
 				<h:outputText value="#{persona.nombres}" />
 			</p:column>
+
 			<p:column headerText="Email">
 				<h:outputText value="#{persona.email}" />
 			</p:column>
-			<p:column style="width: 30px; text-align: center">
+
+            <p:column style="width: 30px; text-align: center">
 				<p:commandButton icon="ui-icon-check" title="Selecionar"
 								 action="#{seleccionaPersonaBean.selecionar(persona)}"
 								 process="@this" />

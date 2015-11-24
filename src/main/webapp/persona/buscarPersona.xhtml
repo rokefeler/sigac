@@ -5,21 +5,21 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="titulo">Buscar Usuario</ui:define>
+	<ui:define name="titulo">Buscar Persona</ui:define>
 
 	<ui:define name="cuerpo">
 		<h:form id="formBusqueda">
-			<h1>Buscar Usuario</h1>
+			<h1>Buscar Persona</h1>
 
 			<p:messages autoUpdate="true" closable="true" />
 
 			<p:toolbar style="margin-top:20px">
 				<f:facet name="left">
-					<p:commandButton value="Buscar Usuario"
-						action="#{usuarioBean.buscarUsuarioFiltros}" update="@form" />
+					<p:commandButton value="Buscar Persona"
+						action="#{personaBean.buscarPersonaFiltros}" update="@form" />
                 </f:facet>
 				<f:facet name="right">
-					<p:button value="Nuevo Usuario" outcome="/usuario/registrarUsuario" />
+					<p:button value="Nueva Persona" />
                 </f:facet>
 			</p:toolbar>
 
@@ -27,57 +27,59 @@
 				style="width:100%;margin-top:15px" columnClasses="lblIzq">
 
 				<p:outputLabel value="E-mail" for="email" />
-				<p:inputText id="email" size="30" style="text-transform: lowercase"
-					value="#{usuarioBean.filtros.email}" />
+				<p:inputText id="email" size="30" maxlength="120"
+					style="text-transform: lowercase"
+					value="#{personaBean.filtros.email}" />
 
 				<p:outputLabel value="Apellidos" for="apellidos" />
 				<p:inputText id="apellidos" size="60" style="text-transform: uppercase"
-					value="#{usuarioBean.filtros.apellidos}" />
+					value="#{personaBean.filtros.apellidos}" />
 
 				<p:outputLabel value="Nombres" for="nombres" />
 				<p:inputText id="nombres" size="60" style="text-transform: uppercase"
-							 value="#{usuarioBean.filtros.nombres}" />
-
+							 value="#{personaBean.filtros.nombres}" />
 			</p:panelGrid>
 
 
-			<p:dataTable id="usuariosTable"
-				value="#{usuarioBean.usuariosFiltrados}" var="login"
+			<p:dataTable id="personasTable"
+				value="#{personaBean.personaFiltrados}" var="persona"
 				style="margin-top:20px"
-				emptyMessage="No se encontraron Usuarios para su busqueda" rows="20"
+				emptyMessage="No se encontraron Personas para su busqueda" rows="20"
 				paginator="true" paginatorAlwaysVisible="false"
 				paginatorPosition="bottom">
 
-				<p:column headerText="Login" style="text-align:center;width:100px">
-					<h:outputLabel value="#{login.idLogin}" />
+				<p:column headerText="Id" style="text-align:center;width:100px">
+					<h:outputLabel value="#{persona.id}" />
 				</p:column>
 
-				<p:column headerText="Alumno">
-					<h:outputLabel value="#{login.idPersona.razon}" />
+				<p:column headerText="Razon">
+					<h:outputLabel value="#{persona.razon}" />
 				</p:column>
 
 				<p:column headerText="Email">
-					<h:outputLabel value="#{login.idPersona.email}" />
+					<h:outputLabel value="#{persona.email}" />
 				</p:column>
 
                 <p:column headerText="Activo">
-                    <h:outputLabel value="#{login.estado}"/>
+                    <h:outputLabel value="#{persona.estado}"/>
                 </p:column>
 
 				<p:column style="text-align:center;width:100px">
 					<p:button title="Editar" icon="ui-icon-pencil"
-						outcome="/usuario/registrarUsuario">
-						<f:param name="login" value="#{login.idLogin}" />
+							outcome="/persona/registrarPersona">
+						<f:param name="persona" value="#{persona.id}" />
 					</p:button>
 
 
-					<p:commandButton icon="ui-icon-trash" actionListener="#{usuarioBean.eliminarUsuario}" update="usuariosTable">
-                        <p:confirm header="Eliminar Login"
-                                   message="Esta seguro de eliminar este Login"
+					<p:commandButton icon="ui-icon-trash"
+                                     actionListener="#{personaBean.eliminarPersona}"
+                                     update="personasTable">
+                        <p:confirm header="Eliminar Persona"
+                                   message="Esta seguro de eliminar la Persona"
                                 icon="ui-icon-alert"/>
 
 						<f:setPropertyActionListener
-							target="#{usuarioBean.usuarioSeleccionado}" value="#{login}" />
+							target="#{personaBean.personaSeleccionado}" value="#{persona}" />
 					</p:commandButton>
 
 				</p:column>
@@ -88,6 +90,7 @@
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
             </p:confirmDialog>
+
 		</h:form>
 	</ui:define>
 

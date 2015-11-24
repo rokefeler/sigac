@@ -1,9 +1,15 @@
 package net.rokefeler.sigac.modelo;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jose Roque el 09/08/2015.
@@ -13,6 +19,8 @@ import java.io.Serializable;
 public class UbigeoDepartamento implements Serializable {
     private String id;
     private String nombre;
+
+    //private List<UbigeoProvincia> provincias=new ArrayList<>();
 
     @Id
     @Column(name="id_Departamento", nullable = false, length = 2)
@@ -26,6 +34,7 @@ public class UbigeoDepartamento implements Serializable {
         this.id = id;
     }
 
+    @NotNull @NotBlank
     @Column(name="nombre_Departamento", nullable = false, length = 30)
     public String getNombre()
     {
@@ -36,6 +45,16 @@ public class UbigeoDepartamento implements Serializable {
     {
         this.nombre = nombre;
     }
+
+  /*
+    @OneToMany(mappedBy = "ubigeoDepartamento")
+    public List<UbigeoProvincia> getProvincias() {
+        return provincias;
+    }
+
+    public void setProvincias(List<UbigeoProvincia> provincias) {
+        this.provincias = provincias;
+    }*/
 
     @Override
     public boolean equals(Object o) {

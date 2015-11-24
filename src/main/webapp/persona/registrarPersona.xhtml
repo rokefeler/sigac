@@ -1,0 +1,168 @@
+<ui:composition template="/WEB-INF/template/layoutPadre.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">#{registroLoginBean.editando ? 'Editando Persona' : 'Registrar Nueva Persona'}</ui:define>
+
+    <ui:define name="cuerpo">
+        <h1>#{registroLoginBean.editando ? 'Editando Persona' : 'Registrar Nueva Persona'}</h1>
+
+        <f:metadata>
+            <o:viewParam name="persona" value="#{registroPersonaBean.persona}"/>
+            <f:event listener="#{registroPersonaBean.inicializar}"
+                     type="preRenderView"/>
+        </f:metadata>
+
+
+        <h:form>
+            <p:growl id="msg"/>
+            <p:messages autoUpdate="true"/>
+            <p:toolbar style="margin-top:20px">
+                <f:facet name="left">
+                    <p:button value="Nueva Persona" outcome="/persona/registrarPersona"/>
+                    <p:commandButton value="Grabar Persona" id="btnGrabar"
+                                     action="#{registroPersonaBean.registrarPersona}" update="@form"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:button value="Buscar Persona" id="btnBuscar"
+                              outcome="/persona/buscarPersona"/>
+                </f:facet>
+            </p:toolbar>
+
+            <p:panelGrid columns="4" id="panelFormPersona"
+                         style="width:100%;margin-top:15px" columnClasses="lblIzq">
+
+                <p:outputLabel value="Id" for="idPersona"/>
+                <h:panelGroup>
+                    <p:inputText id="idPersona" size="15" maxlength="15" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.id}" placeholder="Id único de Persona" required="true"/>
+                    <p:inputText id="codanterior" size="15" maxlength="15" placeholder="Cód. Anterior"
+                                 value="#{registroPersonaBean.persona.codanterior}"/>
+                </h:panelGroup>
+
+
+                <p:outputLabel value="Razon Social" for="apellidos"/>
+                <h:panelGroup>
+                    <p:inputText id="apellidos" size="20" maxlength="75" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.apellidos}"
+                                 placeholder="Apellidos"  required="true"/>
+                    <p:inputText id="nombres" size="20" maxlength="75" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.nombres}"
+                                 placeholder="Nombres" required="true" />
+                </h:panelGroup>
+
+                <p:outputLabel value="Fecha Nac." for="fnac"/>
+                <p:calendar id="fnac" size="12" pattern="dd/MM/yyyy" mask="true" showOn="button" locale="es"
+                            navigator="true"
+                            value="#{registroPersonaBean.persona.fnac}"/>
+
+                <p:outputLabel value="Sexo" for="sexo"/>
+                <p:selectOneMenu id="sexo" value="#{registroPersonaBean.persona.sexo}" required="true">
+                    <f:selectItem itemLabel=" Seleccione" itemValue=""/>
+                    <f:selectItems value="#{registroPersonaBean.tipoSexo}" var="tsexo"
+                                   itemValue="#{tsexo}" itemLabel="#{tsexo.descripcion}"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel value="Dirección" for="direccion" />
+                <h:panelGroup>
+                    <p:inputText id="direccion" size="40" maxlength="160" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.direccion}"
+                                 placeholder="Dirección" title="Dirección" />
+                    <br/>
+                    <p:inputText id="urbanizacion" size="40" maxlength="70" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.urbanizacion}"
+                                 placeholder="Urbanización"  title="Urbanización"/>
+                    <br/>
+                    <p:inputText id="referencia" size="40" maxlength="120" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.referencia}"
+                                 placeholder="Referencia" title="Referencia" />
+                </h:panelGroup>
+
+                <p:outputLabel value="Teléfonos y Email" for="fono" />
+                <h:panelGroup>
+                    <p:inputText id="fono" size="12" maxlength="15" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.fijo}"
+                                 placeholder="Tel.Fijo" title="Teléfono Fijo" /> -
+                    <p:inputText id="movil" size="12" maxlength="15" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.movil}"
+                                 placeholder="Tel.Móvil"  title="Teléfono Móvil"/>
+                    <br/>
+                    <p:inputText id="email" size="40" maxlength="120" style="text-transform: lowercase"
+                                 value="#{registroPersonaBean.persona.email}"
+                                 placeholder="@Email"  title="Correo electrónico"/>
+                </h:panelGroup>
+
+                <p:outputLabel value="Pais" for="paisautocomplete"/>
+                <p:autoComplete id="paisautocomplete"
+                                value="#{registroPersonaBean.persona.pais}"
+                                completeMethod="#{registroPersonaBean.sugerirPaises}"
+                                var="p" itemLabel="#{p.countryNameES}" itemValue="#{p}" converter="paisConverter" forceSelection="true"
+                                minQueryLength="2" dropdown="true" maxResults="7" />
+
+                <p:outputLabel value="Ubigeo" for="departamento"/>
+                <h:panelGroup>
+                    <p:selectOneMenu id="departamento"
+                                        value="#{registroPersonaBean.departamento}"
+                                        converter="departamentoConverter" filter="true" filterMatchMode="startsWith"
+                                        title="Departamento" required="true">
+                        <f:selectItem itemLabel="Selecione..." itemValue="00" noSelectionOption="true" />
+                        <f:selectItems value="#{registroPersonaBean.departamentos}" var="dep"
+                                       itemLabel="#{dep.nombre}" itemValue="#{dep}" />
+                        <p:ajax event="change" listener="#{registroPersonaBean.cargarProvincias}" update="provincia, distrito"/>
+                    </p:selectOneMenu>
+                    <br/>
+                    <p:selectOneMenu id="provincia"
+                                     value="#{registroPersonaBean.provincia}"
+                                     converter="provinciaConverter" filter="true" filterMatchMode="startsWith"
+                                     title="Provincia" required="true">
+                        <f:selectItem itemLabel="Selecione..." itemValue="0000" noSelectionOption="true" />
+                        <f:selectItems value="#{registroPersonaBean.provincias}" var="prov"
+                                       itemLabel="#{prov.nombre}" itemValue="#{prov}" />
+                        <p:ajax event="change" listener="#{registroPersonaBean.cargarDistritos}" update="distrito"/>
+                    </p:selectOneMenu>
+                    <br/>
+                    <p:selectOneMenu id="distrito"
+                                     value="#{registroPersonaBean.persona.idDistrito}"
+                                     converter="distritoConverter" filter="true" filterMatchMode="startsWith"
+                                     label="Distrito" required="true">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{registroPersonaBean.distritos}" var="dis"
+                                       itemLabel="#{dis.nombre}" itemValue="#{dis}" />
+                    </p:selectOneMenu>
+                </h:panelGroup>
+
+
+
+                <p:outputLabel value="Nombres" for="nombres"/>
+                <h:panelGroup>
+                    <p:inputText id="persona" value="#{ registroLoginBean.login.idPersona.id}"
+                                 readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"/>
+
+                    <p:commandButton icon="ui-icon-search" title="Buscar"
+                                     action="#{seleccionaPersonaBean.abrirDialogo}"
+                                     process="@this" update="@none">
+                        <p:ajax event="dialogReturn" listener="#{registroLoginBean.personaSelecionada}"
+                                process="@this" update="persona"/>
+                        <p:resetInput target="persona"/>
+                    </p:commandButton>
+                </h:panelGroup>
+
+
+                <p:outputLabel value="Estado" for="estado"/>
+                <p:selectOneRadio id="estado"
+                                  value="#{registroLoginBean.login.estado}">
+                    <f:selectItem itemLabel="ANULADO" itemValue="ANULADO"/>
+                    <f:selectItem itemLabel="VIGENTE" itemValue="VIGENTE"/>
+                    <f:selectItem itemLabel="SUSPENDIDO" itemValue="SUSPENDIDO"/>
+                </p:selectOneRadio>
+
+            </p:panelGrid>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

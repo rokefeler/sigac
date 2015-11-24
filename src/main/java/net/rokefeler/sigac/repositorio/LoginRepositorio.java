@@ -29,19 +29,21 @@ public class LoginRepositorio implements Serializable{
 
 		return this.entityManager.find(Login.class, idLogin);
 	}
-
+/*
 	public List<Login> listarVendedores() {
 		return this.entityManager.createQuery("from tsecuritylogin ", Login.class)
 				.getResultList();
-	}
+	}*/
 	
 	public Login buscarLoginporEmail(String email) {
 		email = email.toLowerCase();
         Login login = null;
 		try{
-			login =  this.entityManager.createQuery("select l from tsecuritylogin as l join l.idPersona as p where lower(p.email) = :email and l.estado = net.rokefeler.sigac.modelo.tipos.TipoEstado.VIGENTE",
-                    Login.class)
-					.setParameter("email",email).getSingleResult();
+			login =  this.entityManager
+					.createQuery("SELECT l from tsecuritylogin as l join l.idPersona as p " +
+							"where lower(p.email) = :email and " +
+							"l.estado = net.rokefeler.sigac.modelo.tipos.TipoEstado.VIGENTE", Login.class)
+					.setParameter("email", StringUtils.lowerCase(email)).getSingleResult();
 /*
             login =  this.entityManager.createQuery("from tsecuritylogin as l join l.idPersona as p where lower(p.email) = :email and l.estado = net.rokefeler.sigac.modelo.tipos.TipoEstado.VIGENTE",
                     Login.class)
@@ -67,7 +69,7 @@ public class LoginRepositorio implements Serializable{
         criteria.createCriteria("idPersona","ip");
 
 		if(StringUtils.isNotBlank(loginFiltros.getEmail())) {
-            criteria.add(Restrictions.eq("ip.email", loginFiltros.getEmail()));
+            criteria.add(Restrictions.ilike("ip.email", loginFiltros.getEmail(), MatchMode.ANYWHERE));
 		}
 
 		if(StringUtils.isNotBlank(loginFiltros.getApellidos())){

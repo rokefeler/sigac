@@ -1,6 +1,8 @@
 package net.rokefeler.sigac.modelo;
 
 import net.rokefeler.sigac.modelo.tipos.TipoEstado;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Check;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -34,11 +36,11 @@ public class Login implements Serializable {
     }
 
     public void setIdLogin(String idLogin) {
-        this.idLogin = idLogin;
+        this.idLogin = StringUtils.upperCase(idLogin);
     }
 
     //Lazy, se recupera cuando se consulte, Eager, se recupera siempre que se recupere una instancia
-    @ManyToOne
+    @ManyToOne //
     @JoinColumn(name="idPersona_Login", nullable = false)
     public Persona getIdPersona() {
         return idPersona;
@@ -113,9 +115,6 @@ public class Login implements Serializable {
         return idPersona.getRazon();
     }
 
-    public void setRazon() {
-    }
-
     /*
     @PostConstruct
     public void Login(){
@@ -128,9 +127,7 @@ public class Login implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
 
         Login that = (Login) o;
-
         return !(idLogin != null ? !idLogin.equals(that.idLogin) : that.idLogin != null);
-
     }
 
     @Override

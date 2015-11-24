@@ -21,42 +21,38 @@ public class SeleccionaPersonaBean implements Serializable {
 
 	@Inject
 	private PersonaRepositorio personaRepositorio;
-	
-	@Inject
-    private PersonaFiltros personaFiltros;
 
-    private List<Persona> personasFiltradas;
+	@Inject
+	private PersonaFiltros personaFiltros;
+
+	private List<Persona> personasFiltradas;
 
 	public void buscar() {
-
 		personasFiltradas = personaRepositorio.listarPersonasFiltrados(personaFiltros);
 	}
-	
+
 	public void abrirDialogo() {
 		Map<String, Object> opciones = new HashMap<>();
 		opciones.put("modal", true);
 		opciones.put("resizable", false);
 		opciones.put("contentHeight", 450);
-		
+
 		RequestContext.getCurrentInstance().openDialog("seleccionapersona", opciones, null);
 	}
-	
-	public void selecionar(Persona persona) {
 
-        RequestContext.getCurrentInstance().closeDialog(persona);
+	public void selecionar(Persona persona) {
+		RequestContext.getCurrentInstance().closeDialog(persona);
 	}
 
-    public PersonaFiltros getPersonaFiltros() {
-        return personaFiltros;
-    }
+	public PersonaFiltros getPersonaFiltros() {
+		return personaFiltros;
+	}
 
-    public void setPersonaFiltros(PersonaFiltros personaFiltros) {
-        this.personaFiltros = personaFiltros;
-    }
+	public void setPersonaFiltros(PersonaFiltros personaFiltros) {
+		this.personaFiltros = personaFiltros;
+	}
 
-    public List<Persona> getPersonasFiltradas() {
-        return personasFiltradas;
-    }
-
-
+	public List<Persona> getPersonasFiltradas() {
+		return personasFiltradas;
+	}
 }

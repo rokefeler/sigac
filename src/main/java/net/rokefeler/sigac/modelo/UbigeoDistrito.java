@@ -1,6 +1,9 @@
 package net.rokefeler.sigac.modelo;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -23,6 +26,7 @@ public class UbigeoDistrito implements Serializable {
         this.id = id;
     }
 
+    @NotNull @NotBlank
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="idProvincia_Distrito", nullable = false)
     public UbigeoProvincia getUbigeoProvincia() {
@@ -33,6 +37,7 @@ public class UbigeoDistrito implements Serializable {
         this.ubigeoProvincia = ubigeoProvincia;
     }
 
+    @NotBlank
     @Column(name="nombre_Distrito", nullable = false, length = 50)
     public String getNombre() {
         return nombre;

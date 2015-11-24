@@ -5,13 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * Created by Jose Roque el 09/08/2015.
  * Email: rokefeler@gmail.com
  */
 @Entity(name="tpaisiso")
-public class PaisIso implements Serializable{
+public class Pais implements Serializable{
     private String id;
     private String countryISOA2;
     private String countryISON3;
@@ -147,28 +148,13 @@ public class PaisIso implements Serializable{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PaisIso paisIso = (PaisIso) o;
-
-        if (!id.equals(paisIso.id)) return false;
-        if (!countryISOA2.equals(paisIso.countryISOA2)) return false;
-        if (!countryISON3.equals(paisIso.countryISON3)) return false;
-        if (!countryNameES.equals(paisIso.countryNameES)) return false;
-        if (!countryNameEN.equals(paisIso.countryNameEN)) return false;
-        if (!continent.equals(paisIso.continent)) return false;
-        if (!phoneCode.equals(paisIso.phoneCode)) return false;
-        if (!languageCode.equals(paisIso.languageCode)) return false;
-        if (!locales.equals(paisIso.locales)) return false;
-        if (!currency.equals(paisIso.currency)) return false;
-        if (!capital.equals(paisIso.capital)) return false;
-        if (latitude != null ? !latitude.equals(paisIso.latitude) : paisIso.latitude != null) return false;
-        return !(longitude != null ? !longitude.equals(paisIso.longitude) : paisIso.longitude != null);
-
+        if (!(o instanceof Pais)) return false;
+        Pais pais = (Pais) o;
+        return Objects.equals(getId(), pais.getId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hash(getId());
     }
 }

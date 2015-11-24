@@ -3,7 +3,6 @@ package net.rokefeler.sigac.repositorio.filtros;
 import java.io.Serializable;
 
 public class PersonaFiltros implements Serializable{
-
 	private static final long serialVersionUID = 1L;
 
 	private String idPersona;

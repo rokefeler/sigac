@@ -6,7 +6,9 @@ package net.rokefeler.sigac.modelo.tipos;
  */
 public enum TipoSexo {
 
-    FEMENINO("Femenino"), MASCULINO("Masculino"), EMPRESA("Empresa");
+    FEMENINO("FEMENINO"),
+    MASCULINO("MASCULINO"),
+    EMPRESA("EMPRESA");
 
     private String descripcion;
 

@@ -39,14 +39,13 @@ public class PersonaBean implements Serializable {
 	}
 
 	public void eliminarPersona(){
-
 		personaRepositorio.removerPersona(personaSeleccionado);
 		personaFiltrados.remove(personaSeleccionado);
 		FacesUtil.adicionarMensajeInfo("Persona "+ personaSeleccionado.getRazon() +" no puede ser eliminado.");
 	}
 
 	public Persona getPersonaSeleccionado() {
-		return personaSeleccionado;
+        return personaSeleccionado;
 	}
 
 	public void setPersonaSeleccionado(Persona personaSeleccionado) {

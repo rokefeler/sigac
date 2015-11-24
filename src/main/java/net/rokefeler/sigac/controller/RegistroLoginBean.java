@@ -121,6 +121,15 @@ public class RegistroLoginBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
     }
 
+	public void mostrarAdvertenciaSuper() {
+        String msg = "";
+        if(this.login.isEsSuperUser())
+            msg = "El usuario " + this.getLogin().getIdPersona().getRazon() + " " + " SERA EL MAS MAS DEL SISTEMA (SUPERVISOR)";
+        else
+            msg = "El usuario " + this.getLogin().getIdPersona().getRazon() + " " + " YA NO ES SUPERVISOR";
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+	}
+
     /********* Codigo que sirve para Interactuar con Dialogo de Busqueda ********* */
     //Viene de Dialog de Búsqueda de Personas
     public void personaSelecionada(SelectEvent event) {

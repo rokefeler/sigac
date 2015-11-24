@@ -3,7 +3,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui">
 
 	<ui:define name="titulo">#{registroLoginBean.editando ? 'Editando Usuario' : 'Registrar Nuevo Usuario'}</ui:define>
 
@@ -37,8 +38,8 @@
 			<p:panelGrid columns="2" id="panelFormUsuario"
 				style="width:100%;margin-top:15px" columnClasses="lblIzq">
 
-				<p:outputLabel value="IdLogin" for="idLogin" />
-				<p:inputText id="idLogin" size="60" maxlength="255"
+				<p:outputLabel value="Login" for="idLogin" />
+				<p:inputText id="idLogin" size="15" maxlength="15" style="text-transform: uppercase"
 					value="#{registroLoginBean.login.idLogin}" />
 
 				<p:outputLabel value="Avatar" for="avatar" />
@@ -63,13 +64,21 @@
 				<p:outputLabel value="Super?: " />
 				<p:selectBooleanCheckbox
 						value="#{registroLoginBean.login.esSuperUser}">
-					<p:ajax listener="#{registroLoginBean.addMessage}" update="msg" />
+					<p:ajax listener="#{registroLoginBean.mostrarAdvertenciaSuper}" update="msg" />
 				</p:selectBooleanCheckbox>
 
 				<p:outputLabel value="Password" for="pwd" />
-				<p:password id="pwd" size="30" maxlength="40"
-					value="#{registroLoginBean.login.pwd}" redisplay="true" />
-
+				<p:columnGroup>
+				<p:password id="pwd" size="25" maxlength="40" required="true"
+					value="#{registroLoginBean.login.pwd}" redisplay="true" feedback="true"
+						weakLabel="Débil" goodLabel="Bueno" strongLabel="Fuerte" promptLabel="Digite su Password"
+							match="pwd2" validatorMessage="Las Constraseñas no coinciden"/>
+					  <p:password id="pwd2" size="25" maxlength="40" required="true"
+                                value="#{registroLoginBean.login.pwd}"
+                                redisplay="true" feedback="true" promptLabel="Reingrese Su Clave"
+                                weakLabel="Débil" goodLabel="Bueno" strongLabel="Fuerte"
+								/>
+				</p:columnGroup>
 				<p:outputLabel value="Estado" for="estado" />
 				<p:selectOneRadio id="estado"
 						value="#{registroLoginBean.login.estado}">

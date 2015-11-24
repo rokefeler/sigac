@@ -2,15 +2,15 @@ package net.rokefeler.sigac.modelo;
 
 import net.rokefeler.sigac.modelo.tipos.TipoEstado;
 import net.rokefeler.sigac.modelo.tipos.TipoSexo;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Jose Roque el 09/08/2015.
@@ -30,7 +30,7 @@ public class Persona implements Serializable {
     private String fijo;
     private String movil;
     private String email;
-    private PaisIso paisIso;
+    private Pais pais;
     private UbigeoDistrito idDistrito;
     private String foto;
     private Codigo idcIden;
@@ -62,22 +62,24 @@ public class Persona implements Serializable {
         this.codanterior = codanterior;
     }
 
+    @NotBlank
     @Column(name="nombres_Persona", nullable = false, length= 120)
     public String getNombres() {
         return nombres;
     }
 
     public void setNombres(String nombres) {
-        this.nombres = nombres;
+        this.nombres = StringUtils.upperCase( nombres );
     }
 
+    @NotBlank
     @Column(name="apellidos_Persona", nullable = false, length= 75)
     public String getApellidos() {
         return apellidos;
     }
 
     public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
+        this.apellidos = StringUtils.upperCase(apellidos);
     }
 
 
@@ -158,14 +160,15 @@ public class Persona implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="idPaisIso_Persona", nullable = true)
-    public PaisIso getPaisIso() {
-        return paisIso;
+    public Pais getPais() {
+        return pais;
     }
 
-    public void setPaisIso(PaisIso paisIso) {
-        this.paisIso = paisIso;
+    public void setPais(Pais pais) {
+        this.pais = pais;
     }
 
+    @Null
     @ManyToOne(fetch=FetchType.EAGER,optional=false)
     @JoinColumn(name="idDistrito_Persona", nullable = true)
     public UbigeoDistrito getIdDistrito() {
@@ -261,7 +264,7 @@ public class Persona implements Serializable {
         this.estado = estado;
     }
 
-    @Transient @NotBlank
+    @Transient
     public String getRazon() {
         String razon;
         try {
@@ -270,8 +273,6 @@ public class Persona implements Serializable {
             razon=null;
         }
         return razon;
-    }
-    public void setRazon() {
     }
     /*
     @PostConstruct
@@ -282,36 +283,21 @@ try {
             this.razon="";
         }
     }*/
-    /****************************************/
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof Persona)) return false;
         Persona persona = (Persona) o;
-
-        if (esAlumno != persona.esAlumno) return false;
-        if (esDocente != persona.esDocente) return false;
-        if (esEmpleado != persona.esEmpleado) return false;
-        if (!id.equals(persona.id)) return false;
-        if (fnac != null ? !fnac.equals(persona.fnac) : persona.fnac != null) return false;
-        if (sexo != persona.sexo) return false;
-        if (direccion != null ? !direccion.equals(persona.direccion) : persona.direccion != null) return false;
-        if (urbanizacion != null ? !urbanizacion.equals(persona.urbanizacion) : persona.urbanizacion != null)
-            return false;
-        if (referencia != null ? !referencia.equals(persona.referencia) : persona.referencia != null) return false;
-        if (fijo != null ? !fijo.equals(persona.fijo) : persona.fijo != null) return false;
-        if (movil != null ? !movil.equals(persona.movil) : persona.movil != null) return false;
-        if (email != null ? !email.equals(persona.email) : persona.email != null) return false;
-        if (idDistrito != null ? !idDistrito.equals(persona.idDistrito) : persona.idDistrito != null) return false;
-        if (idcIden != null ? !idcIden.equals(persona.idcIden) : persona.idcIden != null) return false;
-        if (nrodoc != null ? !nrodoc.equals(persona.nrodoc) : persona.nrodoc != null) return false;
-        return getRazon().equals(persona.getRazon());
-
+        return Objects.equals(getId(), persona.getId()) &&
+                Objects.equals(getEmail(), persona.getEmail());
     }
+
+    /****************************************/
+
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hash(getId());
     }
 }

@@ -10,7 +10,10 @@ public class FacesUtil implements Serializable {
 
 		return FacesContext.getCurrentInstance().isPostback();
 	}
-	
+
+	public static boolean isNotPostback() {
+		return !isPostback();
+	}
 	public static void adicionarMensajeError(String mensaje){
 		FacesContext.getCurrentInstance().addMessage(null, 
 				new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, mensaje));	

@@ -13,7 +13,6 @@ import javax.faces.convert.FacesConverter;
 @FacesConverter(forClass=Persona.class)
 public class PersonaConverter implements Converter{
 
-
 	private PersonaRepositorio personaRepositorio;
 
 	public PersonaConverter(){

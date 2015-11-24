@@ -7,7 +7,7 @@
           <element id="module-output" name="sigac" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: org.primefaces:primefaces:5.1" />
+          <element id="library" level="project" name="Maven: org.primefaces:primefaces:5.3" />
           <element id="library" level="project" name="Maven: org.jboss.weld.servlet:weld-servlet:1.1.10.Final" />
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-validator:5.1.3.Final" />
           <element id="library" level="project" name="Maven: javax.validation:validation-api:1.1.0.Final" />
