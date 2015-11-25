@@ -108,27 +108,27 @@
                     <p:selectOneMenu id="departamento"
                                         value="#{registroPersonaBean.departamento}"
                                         converter="departamentoConverter" filter="true" filterMatchMode="startsWith"
-                                        title="Departamento" required="true">
-                        <f:selectItem itemLabel="Selecione..." itemValue="00" noSelectionOption="true" />
+                                        title="Departamento" style="width: 210px">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true" />
                         <f:selectItems value="#{registroPersonaBean.departamentos}" var="dep"
                                        itemLabel="#{dep.nombre}" itemValue="#{dep}" />
-                        <p:ajax event="change" listener="#{registroPersonaBean.cargarProvincias}" update="provincia, distrito"/>
+                        <p:ajax listener="#{registroPersonaBean.cargarProvincias}" update="provincia, distrito"/>
                     </p:selectOneMenu>
                     <br/>
                     <p:selectOneMenu id="provincia"
                                      value="#{registroPersonaBean.provincia}"
                                      converter="provinciaConverter" filter="true" filterMatchMode="startsWith"
-                                     title="Provincia" required="true">
-                        <f:selectItem itemLabel="Selecione..." itemValue="0000" noSelectionOption="true" />
+                                     title="Provincia" style="width: 210px">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true" />
                         <f:selectItems value="#{registroPersonaBean.provincias}" var="prov"
                                        itemLabel="#{prov.nombre}" itemValue="#{prov}" />
-                        <p:ajax event="change" listener="#{registroPersonaBean.cargarDistritos}" update="distrito"/>
+                        <p:ajax listener="#{registroPersonaBean.cargarDistritos}" update="distrito"/>
                     </p:selectOneMenu>
                     <br/>
                     <p:selectOneMenu id="distrito"
                                      value="#{registroPersonaBean.persona.idDistrito}"
                                      converter="distritoConverter" filter="true" filterMatchMode="startsWith"
-                                     label="Distrito" required="true">
+                                     label="Distrito" required="true" style="width: 210px">
                         <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true" />
                         <f:selectItems value="#{registroPersonaBean.distritos}" var="dis"
                                        itemLabel="#{dis.nombre}" itemValue="#{dis}" />
@@ -136,28 +136,35 @@
                 </h:panelGroup>
 
 
-
-                <p:outputLabel value="Nombres" for="nombres"/>
+                <p:outputLabel value="Doc. Identidad" for="identidad"/>
                 <h:panelGroup>
-                    <p:inputText id="persona" value="#{ registroLoginBean.login.idPersona.id}"
-                                 readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"/>
-
-                    <p:commandButton icon="ui-icon-search" title="Buscar"
-                                     action="#{seleccionaPersonaBean.abrirDialogo}"
-                                     process="@this" update="@none">
-                        <p:ajax event="dialogReturn" listener="#{registroLoginBean.personaSelecionada}"
-                                process="@this" update="persona"/>
-                        <p:resetInput target="persona"/>
-                    </p:commandButton>
+                    <p:selectOneMenu id="identidad"
+                                     value="#{registroPersonaBean.persona.idcIden}"
+                                     converter="codigoConverter"
+                                     title="Tipo Documento Identidad">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{registroPersonaBean.tipodocumentos}" var="tdoc"
+                                       itemLabel="#{tdoc.nombre}" itemValue="#{tdoc}" />
+                    </p:selectOneMenu> - <p:inputText id="nrodoc" size="12" maxlength="25" placeholder="Nro.Doc."
+                                 value="#{registroPersonaBean.persona.nrodoc}"
+                                 title="Nro. Doc."/>
                 </h:panelGroup>
 
+                <p:outputLabel value="Tipo Persona" for="chkIsAlumno"/>
+                <h:panelGroup>
+                    <h:outputText value="Alumno:" />
+                    <p:selectBooleanCheckbox  id="chkIsAlumno" value="#{registroPersonaBean.persona.esAlumno}"/>
+                    <br/>
+                    <h:outputText value="Empleado:" />
+                    <p:selectBooleanCheckbox id="chkIsEmpleado" value="#{registroPersonaBean.persona.esEmpleado}"/>
+                    <br/>
+                    <h:outputText value="Docente:" />
+                    <p:selectBooleanCheckbox id="chkIsDocente" value="#{registroPersonaBean.persona.esDocente}"/>
+                </h:panelGroup>
 
                 <p:outputLabel value="Estado" for="estado"/>
-                <p:selectOneRadio id="estado"
-                                  value="#{registroLoginBean.login.estado}">
-                    <f:selectItem itemLabel="ANULADO" itemValue="ANULADO"/>
-                    <f:selectItem itemLabel="VIGENTE" itemValue="VIGENTE"/>
-                    <f:selectItem itemLabel="SUSPENDIDO" itemValue="SUSPENDIDO"/>
+                <p:selectOneRadio id="estado" value="#{registroLoginBean.login.estado}" layout="grid" columns="3">
+                    <f:selectItem value="#{registroPersonaBean.tipoSexo}" var="t" itemLabel="#{t}" itemValue="#{t}"/>
                 </p:selectOneRadio>
 
             </p:panelGrid>

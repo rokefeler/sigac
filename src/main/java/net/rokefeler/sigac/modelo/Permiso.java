@@ -54,4 +54,22 @@ public class Permiso implements Serializable{
     public void setDerecho(int derecho) {
         this.derecho = derecho;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+
+        if(!(o instanceof Permiso)) //|| getClass() != o.getClass())
+            return false;
+
+        Permiso that = (Permiso) o;
+
+        return id==that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return getId();
+    }
 }

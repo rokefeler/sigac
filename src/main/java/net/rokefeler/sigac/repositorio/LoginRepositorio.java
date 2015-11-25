@@ -25,9 +25,13 @@ public class LoginRepositorio implements Serializable{
 	@Inject
 	private EntityManager entityManager;
 
-	public Login buscarLoginporId(String idLogin) {
+	public Login getbyId(String idLogin) {
 
 		return this.entityManager.find(Login.class, idLogin);
+	}
+	public Login getbyId(Login login) {
+
+		return this.entityManager.find(Login.class, login.getIdLogin());
 	}
 /*
 	public List<Login> listarVendedores() {
@@ -89,24 +93,18 @@ public class LoginRepositorio implements Serializable{
 	}
 	
 	@Transaccion
-	public void removerLogin(Login login) {
+	public void eliminar(Login login) {
 		
 		try{
-			login = obtenerLogin(login.getIdLogin());
+			login = getbyId(login.getIdLogin());
 			entityManager.remove(login);
 			entityManager.flush();
 		}catch(PersistenceException e){
 			throw new NegocioExcepciones("El usuario no puede ser eliminado.");
 		}
 	}
-	
-	public Login obtenerLogin(String idLogin){
 
-		return entityManager.find(Login.class, idLogin);
-	}	
-	
-	public Login adicionarLogin(Login login) {
+	public Login add(Login login) {
 		return entityManager.merge(login);
 	}
-	
 }

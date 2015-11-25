@@ -19,14 +19,6 @@ public class PersonaFiltros implements Serializable{
 		this.idPersona = idPersona;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getApellidos() {
 		return apellidos;
 	}
@@ -41,5 +33,13 @@ public class PersonaFiltros implements Serializable{
 
 	public void setNombres(String nombres) {
 		this.nombres = nombres;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

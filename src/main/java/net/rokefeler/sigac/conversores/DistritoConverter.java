@@ -3,8 +3,6 @@ package net.rokefeler.sigac.conversores;
 import net.rokefeler.sigac.modelo.UbigeoDistrito;
 import net.rokefeler.sigac.repositorio.UbigeoRepositorio;
 import net.rokefeler.sigac.util.cdi.CDIServiceLocator;
-import org.apache.commons.lang.StringUtils;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -21,10 +19,9 @@ public class DistritoConverter implements Converter {
 	@Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
     	UbigeoDistrito distrito= null;
-    	
     	try {
-            if(StringUtils.isEmpty(value))
-                value="000000";
+            //if(StringUtils.isEmpty(value))
+            //    value="000000";
 			if (value != null) {
 				distrito=ubigeoRepositorio.obtenerDistrito(value);
 			}

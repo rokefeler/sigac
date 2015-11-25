@@ -2,6 +2,7 @@ package net.rokefeler.sigac.controller;
 
 import net.rokefeler.sigac.modelo.*;
 import net.rokefeler.sigac.modelo.tipos.TipoSexo;
+import net.rokefeler.sigac.repositorio.CodigoRepositorio;
 import net.rokefeler.sigac.repositorio.PaisRepositorio;
 import net.rokefeler.sigac.repositorio.UbigeoRepositorio;
 import net.rokefeler.sigac.service.PersonaService;
@@ -30,6 +31,9 @@ public class RegistroPersonaBean implements Serializable {
     @Inject
     private UbigeoRepositorio ubigeoRepositorio;
 
+    @Inject
+    private CodigoRepositorio codigoRepositorio;
+
     private Persona persona;
 
     private UbigeoDepartamento departamento;
@@ -38,6 +42,7 @@ public class RegistroPersonaBean implements Serializable {
     private List<UbigeoDepartamento> departamentos;
     private List<UbigeoProvincia> provincias;
     private List<UbigeoDistrito> distritos;
+    private List<Codigo> tipodocumentos;
 
     public RegistroPersonaBean() {
         limpiarFormulario();
@@ -45,25 +50,22 @@ public class RegistroPersonaBean implements Serializable {
 
     public void inicializar() {
         if (FacesUtil.isNotPostback()) {
+            this.tipodocumentos = codigoRepositorio.getAllbyTipo("TDOC");
             this.departamentos = ubigeoRepositorio.listarDepartamentos();
+
             if(this.persona.getIdDistrito()!=null ){
                 this.provincia = persona.getIdDistrito().getUbigeoProvincia();
                 //this.provincias = departamento.getProvincias();
-                //this.departamento = provincia.getUbigeoDepartamento();
-
-
-                this.departamento = ubigeoRepositorio.obtenerDepartamento(this.persona.getIdDistrito().getId().substring(0,2));
-                this.provincia = ubigeoRepositorio.obtenerProvincia(this.persona.getIdDistrito().getId().substring(0,4));
-                //this.provincias = this.departamento.getProvincias();
-                System.out.println("departamento seleccionado = " + departamento!=null ? departamento.getId() : "null" );
-                System.out.println("provincia seleccionada = " + provincia!=null ? provincia.getId() : "null" );
+                this.departamento = provincia.getUbigeoDepartamento();
+                //this.departamento = ubigeoRepositorio.obtenerDepartamento(this.persona.getIdDistrito().getId().substring(0,2));
+                //this.provincia = ubigeoRepositorio.obtenerProvincia(this.persona.getIdDistrito().getId().substring(0,4));
+                //System.out.println("departamento seleccionado = " + departamento!=null ? departamento.getId() : "null" );
+                //System.out.println("provincia seleccionada = " + provincia!=null ? provincia.getId() : "null" );
             }
             if (this.departamento !=null) {
                 cargarProvincias();
             }
-            if (this.provincia !=null) {
-                cargarDistritos();
-            }
+
         }
     }
 
@@ -129,9 +131,10 @@ public class RegistroPersonaBean implements Serializable {
         return distritos;
     }
 
-
-
-    /*
+    public List<Codigo> getTipodocumentos() {
+        return tipodocumentos;
+    }
+/*
     public void addMessage() {
         String summary = "El Estado actual del Usuario es " + this.login.getEstado();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
@@ -169,7 +172,7 @@ public class RegistroPersonaBean implements Serializable {
         if (departamento!=null) {
             this.provincias.clear();
             this.provincias = ubigeoRepositorio.listarProvincias(departamento.getId() );
-            provincia=provincias.get(0);
+            //provincia=provincias.get(0);
             cargarDistritos();
         }
     }

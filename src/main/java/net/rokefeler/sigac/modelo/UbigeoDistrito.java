@@ -46,4 +46,24 @@ public class UbigeoDistrito implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+
+        if(!(o instanceof UbigeoDistrito)) //|| getClass() != o.getClass())
+            return false;
+
+        UbigeoDistrito that = (UbigeoDistrito) o;
+
+        if (!id.equals(that.id)) return false;
+        return nombre.equals(that.nombre);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return id.hashCode();
+    }
 }

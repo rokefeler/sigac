@@ -21,23 +21,33 @@ public class UbigeoRepositorio implements Serializable{
 	@Inject
 	private EntityManager entityManager;
 
-	public UbigeoDepartamento obtenerDepartamento(String idDepartamento) {
+    private UbigeoDepartamento departamento;
+    private UbigeoProvincia provincia;
+    private UbigeoDistrito distrito;
 
-		return this.entityManager.find(UbigeoDepartamento.class, idDepartamento);
+    private List<UbigeoDepartamento> departamentos;
+    private List<UbigeoProvincia> provincias;
+    private List<UbigeoDistrito> distritos;
+
+	public UbigeoDepartamento obtenerDepartamento(String idDepartamento) {
+        this.departamento = this.entityManager.find(UbigeoDepartamento.class, idDepartamento);
+		return departamento;
 	}
 	public UbigeoProvincia obtenerProvincia(String idProvincia) {
 
-		return this.entityManager.find(UbigeoProvincia.class, idProvincia);
+		this.provincia =this.entityManager.find(UbigeoProvincia.class, idProvincia);
+        return this.provincia;
 	}
 	public UbigeoDistrito obtenerDistrito(String idDistrito) {
 
-		return this.entityManager.find(UbigeoDistrito.class, idDistrito);
+		this.distrito =this.entityManager.find(UbigeoDistrito.class, idDistrito);
+        return this.distrito;
 	}
 
     public List<UbigeoDepartamento> listarDepartamentos() {
-        List<UbigeoDepartamento> departamentos;
+
         try{
-            departamentos =  this.entityManager
+            this.departamentos =  this.entityManager
                     .createQuery("from TUbigeoDepartamento as d order by d.nombre", UbigeoDepartamento.class)
                     .getResultList();
         }catch(NoResultException e){
@@ -47,29 +57,29 @@ public class UbigeoRepositorio implements Serializable{
     }
 
     public List<UbigeoProvincia> listarProvincias(String idDepartamento) {
-        List<UbigeoProvincia> provincias;
+        //List<UbigeoProvincia> provincias;
         try{
-            provincias =  this.entityManager
+            this.provincias =  this.entityManager
                     .createQuery("from TUbigeoProvincia as p where substring(p.id,1,2)=:idDepartamento order by p.nombre", UbigeoProvincia.class)
                     .setParameter("idDepartamento",idDepartamento)
                     .getResultList();
         }catch(NoResultException e){
-            provincias=null;
+            this.provincias=null;
         }
-        return provincias;
+        return this.provincias;
     }
 
     public List<UbigeoDistrito> listarDistritos(String idProvincia) {
-        List<UbigeoDistrito> distritos;
+        //List<UbigeoDistrito> distritos;
         try{
-            distritos =  this.entityManager
-                    .createQuery("from TUbigeoDistrito as d where substring(d.id,1,4)=:idProvincia or d.id=\"000000\" order by d.nombre", UbigeoDistrito.class)
+            this.distritos =  this.entityManager
+                    .createQuery("from TUbigeoDistrito as d where substring(d.id,1,4)=:idProvincia order by d.nombre", UbigeoDistrito.class)
                     .setParameter("idProvincia",idProvincia)
                     .getResultList();
         }catch(NoResultException e){
-            distritos=null;
+            this.distritos=null;
         }
-        return distritos;
+        return this.distritos;
     }
 
     public List<UbigeoDepartamento> sugerirDepartamentos(String nombre) {

@@ -38,7 +38,7 @@ public class UsuarioBean implements Serializable{
 
 	public void eliminarUsuario(){
 
-		loginRepositorio.removerLogin(loginSeleccionado);
+		loginRepositorio.eliminar(loginSeleccionado);
 		loginFiltrados.remove(loginSeleccionado);
 		FacesUtil.adicionarMensajeInfo("Usuario "+ loginSeleccionado.getRazon() +" no puede ser eliminado.");
 	}	

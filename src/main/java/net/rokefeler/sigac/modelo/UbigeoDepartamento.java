@@ -59,13 +59,15 @@ public class UbigeoDepartamento implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null) return false;
+
+        if(!(o instanceof UbigeoDepartamento)) //|| getClass() != o.getClass())
+         return false;
 
         UbigeoDepartamento that = (UbigeoDepartamento) o;
 
         if (!id.equals(that.id)) return false;
         return nombre.equals(that.nombre);
-
     }
 
     @Override

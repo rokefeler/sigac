@@ -102,6 +102,7 @@ public class Codigo implements Serializable {
         this.fecha = fecha;
     }
 
+    /*
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -118,6 +119,16 @@ public class Codigo implements Serializable {
         if (estado != codigo.estado) return false;
         return !(fecha != null ? !fecha.equals(codigo.fecha) : codigo.fecha != null);
 
+    }*/
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Codigo)) return false;
+
+        Codigo codigo = (Codigo) o;
+
+        return getId().equals(codigo.getId());
     }
 
     @Override

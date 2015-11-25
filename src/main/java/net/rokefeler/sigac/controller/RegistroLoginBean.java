@@ -3,6 +3,8 @@ package net.rokefeler.sigac.controller;
 import net.rokefeler.sigac.modelo.Persona;
 import net.rokefeler.sigac.modelo.RolLogin;
 import net.rokefeler.sigac.modelo.Login;
+import net.rokefeler.sigac.modelo.tipos.TipoEstado;
+import net.rokefeler.sigac.modelo.tipos.TipoSexo;
 import net.rokefeler.sigac.repositorio.RolLoginRepositorio;
 import net.rokefeler.sigac.service.RegistroLoginService;
 import net.rokefeler.sigac.util.FacesUtil;
@@ -33,7 +35,7 @@ public class RegistroLoginBean implements Serializable {
 	private Login login;
 	private List<RolLogin> roles = new ArrayList<>();
 	private RolLogin rol;
-
+	private List<TipoEstado> tipoEstados=new ArrayList<>();
 
 
 	public RegistroLoginBean() {
@@ -42,6 +44,9 @@ public class RegistroLoginBean implements Serializable {
 
 	public void inicializar() {
 		if (!FacesUtil.isPostback()) {
+			tipoEstados.add(TipoEstado.VIGENTE);
+			tipoEstados.add(TipoEstado.SUSPENDIDO);
+			tipoEstados.add(TipoEstado.ANULADO);
 			roles = grupoRepositorio.listarRolLogin();
 		}
 	}
@@ -149,6 +154,10 @@ public class RegistroLoginBean implements Serializable {
     }
 
     public void setNombrePersona(String razon) {
+    }
+
+    public List<TipoEstado> getTipoEstados() {
+        return tipoEstados;
     }
     /* ******************************************************************************* */
 }

@@ -26,7 +26,7 @@ public class RegistroLoginService implements Serializable{
 			throw new NegocioExcepciones("Ya existe un login con ese Email, verificar");
 		}
 		
-		return loginRepositorio.adicionarLogin(login);
+		return loginRepositorio.add(login);
 	}
 
 }

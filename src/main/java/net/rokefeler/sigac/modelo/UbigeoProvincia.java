@@ -58,4 +58,17 @@ public class UbigeoProvincia implements Serializable {
         this.nombre = nombre;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UbigeoProvincia)) return false;
+        UbigeoProvincia provincia = (UbigeoProvincia) o;
+        return getId().equals(provincia.getId());
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return id.hashCode();
+    }
 }

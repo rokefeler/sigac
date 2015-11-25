@@ -29,7 +29,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="SigacPU" />
-          <factory-entry name="sigacPU" value="31dc2e7c-f797-44f2-8f4a-5fd3f7e6d96c" />
+          <factory-entry name="sigacPU" value="db129e10-3f75-4a9c-841a-50a9f56ab213" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
       </configuration>

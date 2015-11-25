@@ -3,7 +3,6 @@ package net.rokefeler.sigac.conversores;
 import net.rokefeler.sigac.modelo.UbigeoProvincia;
 import net.rokefeler.sigac.repositorio.UbigeoRepositorio;
 import net.rokefeler.sigac.util.cdi.CDIServiceLocator;
-import org.apache.commons.lang.StringUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -25,8 +24,8 @@ public class ProvinciaConverter implements Converter {
     	UbigeoProvincia provincia= null;
     	
     	try {
-			if(StringUtils.isEmpty(value))
-				value="0000";
+			//if(StringUtils.isEmpty(value))
+			//	value="0000";
 			if (value != null) {
 				provincia=ubigeoRepositorio.obtenerProvincia(value);
 			}

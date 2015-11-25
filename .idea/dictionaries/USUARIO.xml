@@ -8,6 +8,7 @@
       <w>cincuenta</w>
       <w>codanterior</w>
       <w>codigo</w>
+      <w>codigos</w>
       <w>consulte</w>
       <w>contraseña</w>
       <w>correcta</w>
@@ -37,6 +38,7 @@
       <w>fnac</w>
       <w>foto</w>
       <w>gestión</w>
+      <w>getby</w>
       <w>iden</w>
       <w>identidad</w>
       <w>implicito</w>
@@ -80,7 +82,11 @@
       <w>sigac</w>
       <w>sistema</w>
       <w>suspendido</w>
+      <w>tcodigo</w>
+      <w>tcodigonumero</w>
+      <w>tdoc</w>
       <w>tipo</w>
+      <w>tipodocumentos</w>
       <w>tpaisiso</w>
       <w>trece</w>
       <w>tsecuritylogin</w>
