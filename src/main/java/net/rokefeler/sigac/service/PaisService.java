@@ -16,10 +16,10 @@ public class PaisService implements Serializable{
 	@Transaccion
 	public Pais registrarPais(Pais pais){
 		
-		Pais paisExistente = paisRepositorio.buscarporId(pais.getId());
+		Pais paisExistente = paisRepositorio.getbyIdPais(pais.getId());
 		if(paisExistente!=null && !paisExistente.equals(pais)){
 			throw new NegocioExcepciones("Ya existe un País con ese Id, verificar");
 		}
-		return paisRepositorio.adicionarPais(pais);
+		return paisRepositorio.addPais(pais);
 	}
 }

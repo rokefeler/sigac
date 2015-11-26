@@ -2,6 +2,7 @@ package net.rokefeler.sigac.conversores;
 
 import net.rokefeler.sigac.modelo.Pais;
 import net.rokefeler.sigac.repositorio.PaisRepositorio;
+import net.rokefeler.sigac.util.cdi.CDIServiceLocator;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -15,13 +16,17 @@ public class PaisConverter implements Converter {
 	@Inject
 	PaisRepositorio paisRepositorio;
 
+	public PaisConverter() {
+		this.paisRepositorio = CDIServiceLocator.getBean(PaisRepositorio.class);
+	}
+
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
     	Pais pais= null;
     	
     	try {
 			if (value != null) {
-				pais=paisRepositorio.buscarporId(value);
+				pais=paisRepositorio.getbyIdPais(value);
 			}
     	} catch (Exception e) {
 			pais= null;

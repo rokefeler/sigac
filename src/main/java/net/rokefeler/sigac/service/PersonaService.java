@@ -1,5 +1,6 @@
 package net.rokefeler.sigac.service;
 
+import net.rokefeler.sigac.modelo.Pais;
 import net.rokefeler.sigac.modelo.Persona;
 import net.rokefeler.sigac.repositorio.PersonaRepositorio;
 import net.rokefeler.sigac.util.jpa.Transaccion;
@@ -15,12 +16,11 @@ public class PersonaService implements Serializable{
 	
 	@Transaccion
 	public Persona registrarPersona(Persona persona){
-		
-		Persona personaExistente = personaRepositorio.buscarporId(persona.getId());
-		
+		Persona personaExistente = personaRepositorio.getbyIdPersona(persona.getId());
+
 		if(personaExistente!=null && !personaExistente.equals(persona)){
 			throw new NegocioExcepciones("Ya existe una Persona con ese Id, verificar");
 		}
-		return personaRepositorio.adicionarPersona(persona);
+		return personaRepositorio.addPersona(persona);
 	}
 }

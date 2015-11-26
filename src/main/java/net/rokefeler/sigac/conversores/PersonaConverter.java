@@ -25,7 +25,7 @@ public class PersonaConverter implements Converter{
 		Persona retorno = null;
 		
 		if(value!=null){
-			retorno = this.personaRepositorio.buscarporId(value);
+			retorno = this.personaRepositorio.getbyIdPersona(value);
 		}
 		return retorno;
 	}

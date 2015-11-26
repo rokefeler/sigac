@@ -23,7 +23,7 @@ public class CodigoConverter implements Converter {
 
     	try {
 			if (value != null )
-				codigo = codigoRepositorio.getbyId(value);
+				codigo = codigoRepositorio.getbyIdCodigo(value);
     	} catch (Exception e) {
 			codigo=null;
 		}

@@ -73,8 +73,9 @@ public class UbigeoRepositorio implements Serializable{
         //List<UbigeoDistrito> distritos;
         try{
             this.distritos =  this.entityManager
-                    .createQuery("from TUbigeoDistrito as d where substring(d.id,1,4)=:idProvincia order by d.nombre", UbigeoDistrito.class)
+                    .createQuery("from TUbigeoDistrito as d where substring(d.id,1,4)=:idProvincia or d.id=:idNinguno order by d.nombre", UbigeoDistrito.class)
                     .setParameter("idProvincia",idProvincia)
+                    .setParameter("idNinguno","000000")
                     .getResultList();
         }catch(NoResultException e){
             this.distritos=null;

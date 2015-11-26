@@ -35,7 +35,7 @@ public class RegistroLoginBean implements Serializable {
 	private Login login;
 	private List<RolLogin> roles = new ArrayList<>();
 	private RolLogin rol;
-	private List<TipoEstado> tipoEstados=new ArrayList<>();
+
 
 
 	public RegistroLoginBean() {
@@ -44,9 +44,6 @@ public class RegistroLoginBean implements Serializable {
 
 	public void inicializar() {
 		if (!FacesUtil.isPostback()) {
-			tipoEstados.add(TipoEstado.VIGENTE);
-			tipoEstados.add(TipoEstado.SUSPENDIDO);
-			tipoEstados.add(TipoEstado.ANULADO);
 			roles = grupoRepositorio.listarRolLogin();
 		}
 	}
@@ -156,8 +153,8 @@ public class RegistroLoginBean implements Serializable {
     public void setNombrePersona(String razon) {
     }
 
-    public List<TipoEstado> getTipoEstados() {
-        return tipoEstados;
+    public TipoEstado[] getTipoEstados() {
+        return TipoEstado.values();
     }
     /* ******************************************************************************* */
 }

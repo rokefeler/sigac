@@ -18,17 +18,17 @@ public class CodigoRepositorio implements Serializable{
 	@Inject
 	private EntityManager entityManager;
 
-	public Codigo getbyId(String idCodigo) {
+	public Codigo getbyIdCodigo(String idCodigo) {
 
 		return this.entityManager.find(Codigo.class, idCodigo);
 	}
 
-    public Codigo getbyId(Codigo codigo) {
+    public Codigo getbyIdCodigo(Codigo codigo) {
 
         return this.entityManager.find(Codigo.class, codigo.getId());
     }
 
-	public List<Codigo> getAllbyTipo(String cTipo) {
+	public List<Codigo> getAllCodigobyTipo(String cTipo) {
         List<Codigo> codigos;
 		//String cTipo = tipo.getId();
 		try{
@@ -43,10 +43,10 @@ public class CodigoRepositorio implements Serializable{
 	}
 	
 	@Transaccion
-	public void eliminar(Codigo codigo) {
+	public void deleteCodigo(Codigo codigo) {
 		
 		try{
-			codigo = getbyId(codigo);
+			codigo = getbyIdCodigo(codigo);
 			entityManager.remove(codigo);
 			entityManager.flush();
 		}catch(PersistenceException e){
@@ -55,7 +55,7 @@ public class CodigoRepositorio implements Serializable{
 	}
 
     @Transaccion
-    public Codigo add(Codigo codigo) {
+    public Codigo addCodigo(Codigo codigo) {
 		return entityManager.merge(codigo);
 	}
 	

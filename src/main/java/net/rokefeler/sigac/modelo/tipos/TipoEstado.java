@@ -6,16 +6,18 @@ package net.rokefeler.sigac.modelo.tipos;
  * Email: rokefeler@gmail.com
  */
 public enum TipoEstado {
-    ANULADO("0 - Anulado - de baja"),
-    VIGENTE("1 - Vigente/Activo"),
-    SUSPENDIDO("2 - Suspendido");
+    ANULADO("ANULADO"),
+    VIGENTE("VIGENTE"),
+    SUSPENDIDO("SUSPENDIDO");
 
     private String descripcion;
 
+    //constructor
     TipoEstado(String descripcion){
         this.descripcion = descripcion;
     }
 
+    //
     public String getDescripcion(){
         return descripcion;
     }

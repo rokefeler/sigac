@@ -26,7 +26,7 @@ public class PaisRepositorio implements Serializable{
 	@Inject
 	private EntityManager entityManager;
 
-	public Pais buscarporId(String idPais) {
+	public Pais getbyIdPais(String idPais) {
 
 		return this.entityManager.find(Pais.class, idPais);
 	}
@@ -66,10 +66,10 @@ public class PaisRepositorio implements Serializable{
 	}
 
 	@Transaccion
-	public void removerPais(Pais pais) {
+	public void deletePais(Pais pais) {
 		
 		try{
-			pais = obtenerPais(pais.getId());
+			pais = getbyIdPais(pais.getId());
 			entityManager.remove(pais);
 			entityManager.flush();
 		}catch(PersistenceException e){
@@ -77,12 +77,9 @@ public class PaisRepositorio implements Serializable{
 		}
 	}
 	
-	public Pais obtenerPais(String idPais){
 
-		return entityManager.find(Pais.class, idPais);
-	}	
 	
-	public Pais adicionarPais(Pais pais) {
+	public Pais addPais(Pais pais) {
 		return entityManager.merge(pais);
 	}
 	

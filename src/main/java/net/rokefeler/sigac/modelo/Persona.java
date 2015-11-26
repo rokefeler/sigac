@@ -158,8 +158,9 @@ public class Persona implements Serializable {
         this.email = email;
     }
 
-    @ManyToOne
-    @JoinColumn(name="idPaisIso_Persona", nullable = true)
+    @NotNull
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="idPaisIso_Persona")
     public Pais getPais() {
         return pais;
     }
@@ -168,8 +169,8 @@ public class Persona implements Serializable {
         this.pais = pais;
     }
 
-    @Null
-    @ManyToOne(fetch=FetchType.EAGER,optional=false)
+    @NotNull
+    @ManyToOne(fetch=FetchType.EAGER,optional=false) //si no es EAGER, no se selecciona el Distrito.
     @JoinColumn(name="idDistrito_Persona", nullable = true)
     public UbigeoDistrito getIdDistrito() {
         return idDistrito;

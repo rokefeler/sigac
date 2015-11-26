@@ -23,7 +23,7 @@ public class LoginConverter implements Converter{
 		Login retorno = null;
 
 		if (value != null) {
-			retorno = this.loginRepositorio.getbyId(value);
+			retorno = this.loginRepositorio.getbyIdLogin(value);
 		}
 
 		return retorno;

@@ -19,12 +19,11 @@ public class AppUserDetailsService implements UserDetailsService{
 
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		LoginRepositorio loginRepositorio=CDIServiceLocator.getBean(LoginRepositorio.class);
-		Login login = loginRepositorio.buscarLoginporEmail(email);
+		Login login = loginRepositorio.getbyEmailLogin(email);
 		UsuarioSistema user = null;
 		if(login!=null){
 			user = new UsuarioSistema(login, getRoles(login));
 		}
-
 		return user;
 	}
 

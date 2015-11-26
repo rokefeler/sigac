@@ -18,12 +18,12 @@ public class CodigoNumeroRepositorio implements Serializable{
 	@Inject
 	private EntityManager entityManager;
 
-	public CodigoNumero getbyId(String tipo) {
+	public CodigoNumero getbyIdCodigoNumero(String tipo) {
 
 		return this.entityManager.find(CodigoNumero.class, tipo);
 	}
 
-	public List<CodigoNumero> getAll() {
+	public List<CodigoNumero> getAllCodigoNumero() {
         List<CodigoNumero> codigos;
 		try{
 			codigos =  this.entityManager
@@ -36,19 +36,20 @@ public class CodigoNumeroRepositorio implements Serializable{
 	}
 	
 	@Transaccion
-	public void eliminar(CodigoNumero codigoNumero) {
+	public void deleteCodigoNumero(CodigoNumero codigoNumero) {
 		
 		try{
-			codigoNumero = getbyId(codigoNumero.getId());
+			codigoNumero = this.getbyIdCodigoNumero(codigoNumero.getId());
 			entityManager.remove(codigoNumero);
 			entityManager.flush();
+
 		}catch(PersistenceException e){
 			throw new NegocioExcepciones("El tipo Código no puede ser eliminado.");
 		}
 	}
 
 	@Transaccion
-	public CodigoNumero add(CodigoNumero codigoNumero) {
+	public CodigoNumero addCodigoNumero(CodigoNumero codigoNumero) {
 		return entityManager.merge(codigoNumero);
 	}
 	

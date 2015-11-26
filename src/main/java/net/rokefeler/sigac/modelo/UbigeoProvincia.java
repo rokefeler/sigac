@@ -35,7 +35,7 @@ public class UbigeoProvincia implements Serializable {
     }
 
     @NotNull @NotBlank
-    @ManyToOne(fetch = FetchType.EAGER)  //implicito, por defecto no jala datos del Departamento
+    @ManyToOne(fetch = FetchType.LAZY)  //implicito, por defecto no jala datos del Departamento
     @JoinColumn(name="idDepartamento_Provincia", nullable = false)
     public UbigeoDepartamento getUbigeoDepartamento()
     {

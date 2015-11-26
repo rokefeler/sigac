@@ -27,7 +27,7 @@ public class LoginBean implements Serializable{
 	
 	public void preRender(){
 		if("true".equals(request.getParameter("invalid"))){
-			FacesUtil.adicionarMensajeError("Email y/o Contraseña no es correcta.");
+			FacesUtil.adicionarMensajeError("Email y/o Contraseña no es correcta");
 		}
 	}
 	

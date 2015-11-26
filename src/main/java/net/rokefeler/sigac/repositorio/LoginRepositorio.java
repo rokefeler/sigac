@@ -25,11 +25,11 @@ public class LoginRepositorio implements Serializable{
 	@Inject
 	private EntityManager entityManager;
 
-	public Login getbyId(String idLogin) {
+	public Login getbyIdLogin(String idLogin) {
 
 		return this.entityManager.find(Login.class, idLogin);
 	}
-	public Login getbyId(Login login) {
+	public Login getbyIdLogin(Login login) {
 
 		return this.entityManager.find(Login.class, login.getIdLogin());
 	}
@@ -39,7 +39,7 @@ public class LoginRepositorio implements Serializable{
 				.getResultList();
 	}*/
 	
-	public Login buscarLoginporEmail(String email) {
+	public Login getbyEmailLogin(String email) {
 		email = email.toLowerCase();
         Login login = null;
 		try{
@@ -93,10 +93,10 @@ public class LoginRepositorio implements Serializable{
 	}
 	
 	@Transaccion
-	public void eliminar(Login login) {
+	public void deleteLogin(Login login) {
 		
 		try{
-			login = getbyId(login.getIdLogin());
+			login = getbyIdLogin(login.getIdLogin());
 			entityManager.remove(login);
 			entityManager.flush();
 		}catch(PersistenceException e){
@@ -104,7 +104,8 @@ public class LoginRepositorio implements Serializable{
 		}
 	}
 
-	public Login add(Login login) {
+	@Transaccion
+	public Login addLogin(Login login) {
 		return entityManager.merge(login);
 	}
 }

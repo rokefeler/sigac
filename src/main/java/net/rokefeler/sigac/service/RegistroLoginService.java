@@ -20,13 +20,13 @@ public class RegistroLoginService implements Serializable{
 	@Transaccion
 	public Login registrarUsuario(Login login){
 		
-		Login usuarioExistente = loginRepositorio.buscarLoginporEmail(login.getIdPersona().getEmail());
+		Login usuarioExistente = loginRepositorio.getbyEmailLogin(login.getIdPersona().getEmail());
 		
 		if(usuarioExistente!=null && !usuarioExistente.equals(login)){
 			throw new NegocioExcepciones("Ya existe un login con ese Email, verificar");
 		}
 		
-		return loginRepositorio.add(login);
+		return loginRepositorio.addLogin(login);
 	}
 
 }

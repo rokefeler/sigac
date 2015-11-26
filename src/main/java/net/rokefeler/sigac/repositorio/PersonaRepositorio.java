@@ -25,12 +25,12 @@ public class PersonaRepositorio implements Serializable{
 	@Inject
 	private EntityManager entityManager;
 
-	public Persona buscarporId(String idPersona) {
+	public Persona getbyIdPersona(String idPersona) {
 
 		return this.entityManager.find(Persona.class, idPersona);
 	}
 
-	public Persona buscarPorEmail(String email) {
+	public Persona getbyEmailPersona(String email) {
 
         Persona per= null;
 		try{
@@ -71,23 +71,19 @@ public class PersonaRepositorio implements Serializable{
 	}
 
 	@Transaccion
-	public void removerPersona(Persona persona) {
+	public void deletePersona(Persona persona) {
 		
 		try{
-			persona = obtenerPersona(persona.getId());
+			persona = this.getbyIdPersona(persona.getId());
 			entityManager.remove(persona);
 			entityManager.flush();
 		}catch(PersistenceException e){
-			throw new NegocioExcepciones("El usuario no puede ser eliminado.");
+			throw new NegocioExcepciones("La Persona no puede ser eliminado.");
 		}
 	}
-	
-	public Persona obtenerPersona(String idPersona){
 
-		return entityManager.find(Persona.class, idPersona);
-	}	
 	
-	public Persona adicionarPersona(Persona persona) {
+	public Persona addPersona(Persona persona) {
 		return entityManager.merge(persona);
 	}
 	
