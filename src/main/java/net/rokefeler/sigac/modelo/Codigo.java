@@ -1,6 +1,6 @@
 package net.rokefeler.sigac.modelo;
 
-import net.rokefeler.sigac.modelo.tipos.TipoEstado;
+import net.rokefeler.sigac.modelo.tipos.TipoEstadoRegistro;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.*;
@@ -21,7 +21,7 @@ public class Codigo implements Serializable {
     private String referencia;
     private String descripcion;
     private int num;
-    private TipoEstado estado;
+    private TipoEstadoRegistro estado;
     private Calendar fecha;
 
     @Id
@@ -84,11 +84,11 @@ public class Codigo implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name="estado_Codigo", nullable=false)
-    public TipoEstado getEstado() {
+    public TipoEstadoRegistro getEstado() {
         return estado;
     }
 
-    public void setEstado(TipoEstado estado) {
+    public void setEstado(TipoEstadoRegistro estado) {
         this.estado = estado;
     }
 

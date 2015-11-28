@@ -14,7 +14,7 @@
 	</beans:bean>
 
 	<beans:bean id="jsfAccessDeniedHandler" class="net.rokefeler.sigac.security.util.JsfAccessDeniedHandler">
-	    <beans:property name="loginPath" value="/sigac/excepciones/accesoDenegado.xhtml" />
+	    <beans:property name="loginPath" value="/siga/excepciones/accesoDenegado.xhtml" />
 	    <beans:property name="contextRelative" value="true" />
 	</beans:bean>
 

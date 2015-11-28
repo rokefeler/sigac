@@ -1,7 +1,7 @@
 package net.rokefeler.sigac.controller;
 
 import net.rokefeler.sigac.modelo.*;
-import net.rokefeler.sigac.modelo.tipos.TipoEstado;
+import net.rokefeler.sigac.modelo.tipos.TipoEstadoRegistro;
 import net.rokefeler.sigac.modelo.tipos.TipoSexo;
 import net.rokefeler.sigac.repositorio.CodigoRepositorio;
 import net.rokefeler.sigac.repositorio.PaisRepositorio;
@@ -65,8 +65,8 @@ public class RegistroPersonaBean implements Serializable {
             this.tipodocumentos = codigoRepositorio.getAllCodigobyTipo("TDOC");
             this.departamentos = ubigeoRepositorio.listarDepartamentos();
            //log.info("método inicializar, persona=" + this.persona.getIdDistrito().getId() + " - " + this.persona.getIdDistrito().getNombre());
-            if(this.persona.getIdDistrito()!=null ){
-                this.provincia = persona.getIdDistrito().getUbigeoProvincia();
+            if(this.persona.getIdDistritoNacimiento()!=null ){
+                this.provincia = persona.getIdDistritoNacimiento().getUbigeoProvincia();
                 this.departamento = provincia.getUbigeoDepartamento();
                 //log.info("[método inicializar 2 , persona="+this.distrito.getId() + "]");
             }
@@ -122,8 +122,8 @@ public class RegistroPersonaBean implements Serializable {
     public TipoSexo[] getTipoSexo() {
         return TipoSexo.values();
     }
-    public TipoEstado[] getTipoEstado() {
-        return TipoEstado.values();
+    public TipoEstadoRegistro[] getTipoEstadoRegistro() {
+        return TipoEstadoRegistro.values();
     }
     public List<UbigeoDepartamento> getDepartamentos() {
         return departamentos;

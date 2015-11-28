@@ -1,6 +1,5 @@
 package net.rokefeler.sigac.service;
 
-import net.rokefeler.sigac.modelo.Pais;
 import net.rokefeler.sigac.modelo.Persona;
 import net.rokefeler.sigac.repositorio.PersonaRepositorio;
 import net.rokefeler.sigac.util.jpa.Transaccion;

@@ -46,11 +46,14 @@
                 </h:panelGroup>
 
 
-                <p:outputLabel value="Razon Social" for="apellidos"/>
+                <p:outputLabel value="Alumno" for="apepat"/>
                 <h:panelGroup>
-                    <p:inputText id="apellidos" size="20" maxlength="75" style="text-transform: uppercase"
-                                 value="#{registroPersonaBean.persona.apellidos}"
-                                 placeholder="Apellidos" required="true"/>
+                    <p:inputText id="apepat" size="10" maxlength="35" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.apepat}"
+                                 placeholder="Ap.Paterno" required="true"/>
+                    <p:inputText id="apemat" size="10" maxlength="35" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.apemat}"
+                                 placeholder="Ap.Materno" required="true"/>
                     <p:inputText id="nombres" size="20" maxlength="75" style="text-transform: uppercase"
                                  value="#{registroPersonaBean.persona.nombres}"
                                  placeholder="Nombres" required="true"/>

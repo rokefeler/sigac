@@ -3,8 +3,7 @@ package net.rokefeler.sigac.controller;
 import net.rokefeler.sigac.modelo.Persona;
 import net.rokefeler.sigac.modelo.RolLogin;
 import net.rokefeler.sigac.modelo.Login;
-import net.rokefeler.sigac.modelo.tipos.TipoEstado;
-import net.rokefeler.sigac.modelo.tipos.TipoSexo;
+import net.rokefeler.sigac.modelo.tipos.TipoEstadoRegistro;
 import net.rokefeler.sigac.repositorio.RolLoginRepositorio;
 import net.rokefeler.sigac.service.RegistroLoginService;
 import net.rokefeler.sigac.util.FacesUtil;
@@ -153,8 +152,8 @@ public class RegistroLoginBean implements Serializable {
     public void setNombrePersona(String razon) {
     }
 
-    public TipoEstado[] getTipoEstados() {
-        return TipoEstado.values();
+    public TipoEstadoRegistro[] getTipoEstados() {
+        return TipoEstadoRegistro.values();
     }
     /* ******************************************************************************* */
 }

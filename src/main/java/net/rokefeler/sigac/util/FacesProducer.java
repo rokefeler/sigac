@@ -32,5 +32,5 @@ public class FacesProducer {
 	public HttpServletResponse getHttpServletResponse() {
 		return ((HttpServletResponse) getExternalContext().getResponse());	
 	}
-	
+
 }

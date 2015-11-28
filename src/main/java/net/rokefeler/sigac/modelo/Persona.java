@@ -1,13 +1,16 @@
 package net.rokefeler.sigac.modelo;
 
-import net.rokefeler.sigac.modelo.tipos.TipoEstado;
+import net.rokefeler.sigac.modelo.tipos.TipoEstadoCivil;
+import net.rokefeler.sigac.modelo.tipos.TipoEstadoRegistro;
+import net.rokefeler.sigac.modelo.tipos.TipoGrupoSanguineo;
 import net.rokefeler.sigac.modelo.tipos.TipoSexo;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -20,18 +23,26 @@ import java.util.Objects;
 public class Persona implements Serializable {
     private String id;
     private String codanterior;
-    private String apellidos;
+
+    private String apepat;
+    private String apemat;
     private String nombres;
+    private TipoGrupoSanguineo gruposanguineo;
+    private TipoEstadoCivil estadocivil; //
     private Date fnac;
     private TipoSexo sexo;
+    /*
     private String direccion;
     private String urbanizacion;
     private String referencia;
+    */
+    private Direccion direccion;
     private String fijo;
     private String movil;
     private String email;
-    private Pais pais;
-    private UbigeoDistrito idDistrito;
+    private Pais pais; //Nacionalidad
+    private UbigeoDistrito idDistritoNacimiento; //
+
     private String foto;
     private Codigo idcIden;
     private String nrodoc;
@@ -40,7 +51,7 @@ public class Persona implements Serializable {
     private boolean esEmpleado;
     private java.util.Date fecha;
     private String idLogin;
-    private TipoEstado estado;
+    private TipoEstadoRegistro estado;
 
 
     @Id
@@ -61,7 +72,7 @@ public class Persona implements Serializable {
     public void setCodanterior(String codanterior) {
         this.codanterior = codanterior;
     }
-
+/*
     @NotBlank
     @Column(name="nombres_Persona", nullable = false, length= 120)
     public String getNombres() {
@@ -70,18 +81,59 @@ public class Persona implements Serializable {
 
     public void setNombres(String nombres) {
         this.nombres = StringUtils.upperCase( nombres );
+    }*/
+
+    @NotBlank @Size(max = 35)
+    @Column(name="apepat_Persona", nullable = false, length= 35)
+    public String getApepat() {
+        return apepat;
     }
 
-    @NotBlank
-    @Column(name="apellidos_Persona", nullable = false, length= 75)
-    public String getApellidos() {
-        return apellidos;
+    public void setApepat(String apepat) {
+        this.apepat=StringUtils.upperCase(apepat);
     }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = StringUtils.upperCase(apellidos);
+    @NotBlank @Size(max = 35)
+    @Column(name="apemat_Persona", nullable = false, length= 35)
+    public String getApemat() {
+        return apemat;
     }
 
+    public void setApemat(String apemat) {
+        this.apemat=StringUtils.upperCase(apemat);
+    }
+
+    @NotBlank @Size(max = 80)
+    @Column(name="nombres_Persona", nullable = false, length= 80)
+    public String getNombres() {
+        return this.nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres=StringUtils.upperCase(nombres);
+    }
+
+    @NotNull @NotBlank
+    @Enumerated(EnumType.STRING)
+    @Column(name="gruposanguineo_Persona", nullable=false, length = 10)
+    public TipoGrupoSanguineo getGruposanguineo() {
+        return gruposanguineo;
+    }
+
+    public void setGruposanguineo(TipoGrupoSanguineo gruposanguineo) {
+        this.gruposanguineo = gruposanguineo;
+    }
+
+    @NotNull @NotBlank
+    @Enumerated(EnumType.STRING)
+    @Column(name="estadoCivil_Persona", nullable=false, length = 10)
+    public TipoEstadoCivil getEstadocivil() {
+        return estadocivil;
+    }
+
+    public void setEstadocivil(TipoEstadoCivil estadocivil) {
+        this.estadocivil = estadocivil;
+    }
 
     @Temporal(TemporalType.DATE)
     @Column(name = "fnac_Persona", nullable = true)
@@ -104,6 +156,7 @@ public class Persona implements Serializable {
         this.sexo = sexo;
     }
 
+    /*
     @Column(name="direccion_Persona", nullable = true, length= 160)
     public String getDireccion() {
         return direccion;
@@ -130,6 +183,17 @@ public class Persona implements Serializable {
     public void setReferencia(String referencia) {
         this.referencia = referencia;
     }
+*/
+
+    //campo embebido, vea Clase Direccion
+    @Embedded
+    public Direccion getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
+    }
 
     @Column(name="fijo_Persona", nullable = true, length= 15)
     public String getFijo() {
@@ -149,6 +213,7 @@ public class Persona implements Serializable {
         this.movil = movil;
     }
 
+    @Email
     @Column(name="email_Persona", nullable = true, length= 120)
     public String getEmail() {
         return email;
@@ -158,7 +223,7 @@ public class Persona implements Serializable {
         this.email = email;
     }
 
-    @NotNull
+    @NotNull @NotBlank
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="idPaisIso_Persona")
     public Pais getPais() {
@@ -169,15 +234,15 @@ public class Persona implements Serializable {
         this.pais = pais;
     }
 
-    @NotNull
+    @NotNull //TODO verificar esto después
     @ManyToOne(fetch=FetchType.EAGER,optional=false) //si no es EAGER, no se selecciona el Distrito.
-    @JoinColumn(name="idDistrito_Persona", nullable = true)
-    public UbigeoDistrito getIdDistrito() {
-        return idDistrito;
+    @JoinColumn(name="idDistritoNacimiento_Persona", nullable = true)
+    public UbigeoDistrito getIdDistritoNacimiento() {
+        return idDistritoNacimiento;
     }
 
-    public void setIdDistrito(UbigeoDistrito idDistrito) {
-        this.idDistrito = idDistrito;
+    public void setIdDistritoNacimiento(UbigeoDistrito idDistritoNacimiento) {
+        this.idDistritoNacimiento = idDistritoNacimiento;
     }
 
     @Column(name="foto_Persona", nullable = true, length= 256)
@@ -257,23 +322,27 @@ public class Persona implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name="estado_Persona", nullable=false, length = 25)
-    public TipoEstado getEstado() {
+    public TipoEstadoRegistro getEstado() {
         return estado;
     }
 
-    public void setEstado(TipoEstado estado) {
+    public void setEstado(TipoEstadoRegistro estado) {
         this.estado = estado;
     }
 
     @Transient
     public String getRazon() {
-        String razon;
+        String razon=" ";
         try {
-            razon = apellidos.concat(", ").concat(nombres);
+            if(!this.apepat.equals("-"))
+                razon = this.apepat;
+            if(!this.apemat.equals("-"))
+                razon = razon.concat(" ").concat(this.apemat);
+            razon = razon.concat(", ").concat(this.nombres);
         } catch (Exception e) {
             razon=null;
         }
-        return razon;
+        return StringUtils.trim(razon);
     }
     /*
     @PostConstruct

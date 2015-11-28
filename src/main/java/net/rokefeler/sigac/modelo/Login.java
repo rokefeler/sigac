@@ -1,8 +1,7 @@
 package net.rokefeler.sigac.modelo;
 
-import net.rokefeler.sigac.modelo.tipos.TipoEstado;
+import net.rokefeler.sigac.modelo.tipos.TipoEstadoRegistro;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Check;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -22,7 +21,7 @@ public class Login implements Serializable {
     private Persona idPersona;
     private String avatar;
     private boolean esSuperUser;
-    private TipoEstado estado;
+    private TipoEstadoRegistro estado;
     private List<RolLogin> roles = new ArrayList<RolLogin>();
     private String pwd;
     private Date fecha;
@@ -71,11 +70,11 @@ public class Login implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name="estado_Login", nullable=false, length = 25)
-    public TipoEstado getEstado() {
+    public TipoEstadoRegistro getEstado() {
         return estado;
     }
 
-    public void setEstado(TipoEstado estado) {
+    public void setEstado(TipoEstadoRegistro estado) {
         this.estado = estado;
     }
 

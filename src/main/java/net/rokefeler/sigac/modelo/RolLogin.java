@@ -1,13 +1,12 @@
 package net.rokefeler.sigac.modelo;
 
-import net.rokefeler.sigac.modelo.tipos.TipoEstado;
+import net.rokefeler.sigac.modelo.tipos.TipoEstadoRegistro;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Jose Roque el 09/08/2015.
@@ -19,7 +18,7 @@ public class RolLogin implements Serializable {
 
     private int Id;
     private String nombre;
-    private TipoEstado estado;
+    private TipoEstadoRegistro estado;
     private Calendar fecha;
 
     @Id
@@ -46,11 +45,11 @@ public class RolLogin implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_RolLogin", nullable = false, length = 15)
-    public TipoEstado getEstado() {
+    public TipoEstadoRegistro getEstado() {
         return estado;
     }
 
-    public void setEstado(TipoEstado estado) {
+    public void setEstado(TipoEstadoRegistro estado) {
         this.estado = estado;
     }
 

@@ -17,8 +17,9 @@ public class EntityManagerProducer {
 	private EntityManagerFactory factory;
 	
 	public EntityManagerProducer(){
-		factory = Persistence.createEntityManagerFactory("sigacPU");
+		factory = Persistence.createEntityManagerFactory("sigaPU");
 	}
+
 	@Produces @RequestScoped
 	public EntityManager createEntityManager(){
 		return factory.createEntityManager();

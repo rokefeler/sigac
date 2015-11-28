@@ -21,8 +21,7 @@ public class Seguridad {
 		UsuarioSistema usuarioLogeado = getUsuarioLogeado();
 		
 		if(usuarioLogeado != null){
-			nombreUsuario = usuarioLogeado.getLogin().getIdPersona().getApellidos().concat(", ")
-					.concat(usuarioLogeado.getLogin().getIdPersona().getNombres());
+			nombreUsuario = usuarioLogeado.getLogin().getIdPersona().getRazon();
 		}
 		return nombreUsuario;
 	}

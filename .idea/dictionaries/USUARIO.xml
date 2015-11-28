@@ -30,6 +30,7 @@
       <w>empleado</w>
       <w>entidad</w>
       <w>estado</w>
+      <w>estadocivil</w>
       <w>excepciones</w>
       <w>fecha</w>
       <w>fijo</w>
@@ -39,6 +40,8 @@
       <w>foto</w>
       <w>gestión</w>
       <w>getby</w>
+      <w>gruposanguineo</w>
+      <w>idctipovia</w>
       <w>iden</w>
       <w>identidad</w>
       <w>implicito</w>
@@ -46,23 +49,32 @@
       <w>inno</w>
       <w>instancia</w>
       <w>integrado</w>
+      <w>intvia</w>
       <w>jala</w>
+      <w>kmvia</w>
       <w>logeado</w>
       <w>loginpermiso</w>
       <w>loginpor</w>
       <w>logins</w>
+      <w>lotevia</w>
       <w>movil</w>
+      <w>mzvia</w>
       <w>nombre</w>
       <w>nombres</w>
+      <w>nombrevia</w>
+      <w>nombrezona</w>
       <w>novecientos</w>
       <w>noventa</w>
       <w>nrodoc</w>
+      <w>nrodptovia</w>
       <w>numero</w>
+      <w>numerovia</w>
       <w>ochenta</w>
       <w>ochocientos</w>
       <w>pais</w>
       <w>paises</w>
       <w>permiso</w>
+      <w>pisovia</w>
       <w>primefaces</w>
       <w>probando</w>
       <w>provincia</w>
@@ -74,6 +86,7 @@
       <w>repositorio</w>
       <w>rokefeler</w>
       <w>roque</w>
+      <w>sanguineo</w>
       <w>seleccionapersona</w>
       <w>sesenta</w>
       <w>setenta</w>
@@ -88,11 +101,14 @@
       <w>tipo</w>
       <w>tipodocumentos</w>
       <w>tipoestados</w>
+      <w>tipovia</w>
+      <w>tipozona</w>
       <w>tpaisiso</w>
       <w>trece</w>
       <w>tsecuritylogin</w>
       <w>tsecurityrol</w>
       <w>ubigeo</w>
+      <w>ubigeodomicilio</w>
       <w>unsa</w>
       <w>urbanizacion</w>
       <w>usuario</w>
