@@ -4,3 +4,4 @@ arquetipo de Logueo
 18.08.15 rectorado grabado
 
 27.11.15 Se termina de estudiar e implementa registrar persona
+11.02.16 mas pruebas JPA en ficha Alumno
