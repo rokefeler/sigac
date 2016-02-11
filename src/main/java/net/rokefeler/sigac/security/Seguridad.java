@@ -1,5 +1,6 @@
 package net.rokefeler.sigac.security;
 
+import net.rokefeler.sigac.modelo.Login;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import javax.enterprise.context.RequestScoped;
@@ -24,6 +25,16 @@ public class Seguridad {
 			nombreUsuario = usuarioLogeado.getLogin().getIdPersona().getRazon();
 		}
 		return nombreUsuario;
+	}
+
+	public Login getLogin(){
+		Login login = null;
+		UsuarioSistema usuarioLogeado = getUsuarioLogeado();
+
+		if(usuarioLogeado != null){
+			login = usuarioLogeado.getLogin();
+		}
+		return login;
 	}
 
 	@Produces @UsuarioLogeado

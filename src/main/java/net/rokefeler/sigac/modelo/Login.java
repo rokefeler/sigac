@@ -17,70 +17,75 @@ import java.util.List;
 @Entity(name="tsecuritylogin")
 public class Login implements Serializable {
 
-    private String idLogin;
-    private Persona idPersona;
-    private String avatar;
-    private boolean esSuperUser;
-    private TipoEstadoRegistro estado;
-    private List<RolLogin> roles = new ArrayList<RolLogin>();
-    private String pwd;
-    private Date fecha;
-    //private String razon;
-
-
-    @Id
+    @Id @NotNull
     @Column(name="id_Login", nullable = false, length= 15)
-    public String getIdLogin() {
-        return idLogin;
-    }
-
-    public void setIdLogin(String idLogin) {
-        this.idLogin = StringUtils.upperCase(idLogin);
-    }
+    private String idLogin;
 
     //Lazy, se recupera cuando se consulte, Eager, se recupera siempre que se recupere una instancia
-    @ManyToOne //
+    @ManyToOne (fetch = FetchType.LAZY)//
     @JoinColumn(name="idPersona_Login", nullable = false)
-    public Persona getIdPersona() {
-        return idPersona;
-    }
-
-    public void setIdPersona(Persona idpersona) {
-        this.idPersona = idpersona;
-    }
+    private Persona idPersona;
 
     @Column(name="avatar_Login", nullable=true, length = 256)
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
+    private String avatar;
 
     @Column(name="esSuperuser_Login", nullable = false, columnDefinition = "TINYINT", length = 1)
-    public boolean isEsSuperUser() {
-        return esSuperUser;
-    }
-
-    public void setEsSuperUser(boolean esSuperUser) {
-        this.esSuperUser = esSuperUser;
-    }
+    private boolean esSuperUser;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name="estado_Login", nullable=false, length = 25)
+    private TipoEstadoRegistro estado;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "tsecuritylogin_roles", joinColumns = @JoinColumn(name="id_Login"),
+            inverseJoinColumns = @JoinColumn(name = "id_RolLogin"))
+    private List<RolLogin> roles = new ArrayList<RolLogin>();
+
+    @Column(name="pwd_Login", nullable = true, length =256)
+    //@Lob @Basic(fetch= FetchType.EAGER) //probando campos byte
+    private String pwd;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "fecha_Login", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Date fecha;
+    //private String razon;
+
+    public String getIdLogin() {
+        return idLogin;
+    }
+    public void setIdLogin(String idLogin) {
+        this.idLogin = StringUtils.upperCase(idLogin);
+    }
+
+    public Persona getIdPersona() {
+        return idPersona;
+    }
+    public void setIdPersona(Persona idpersona) {
+        this.idPersona = idpersona;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public boolean isEsSuperUser() {
+        return esSuperUser;
+    }
+    public void setEsSuperUser(boolean esSuperUser) {
+        this.esSuperUser = esSuperUser;
+    }
+
     public TipoEstadoRegistro getEstado() {
         return estado;
     }
-
     public void setEstado(TipoEstadoRegistro estado) {
         this.estado = estado;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "tsecuritylogin_roles", joinColumns = @JoinColumn(name="id_Login"),
-            inverseJoinColumns = @JoinColumn(name = "id_RolLogin"))
     public List<RolLogin> getRoles() {
         return roles;
     }
@@ -88,23 +93,16 @@ public class Login implements Serializable {
         this.roles = roles;
     }
 
-
-    @Column(name="pwd_Login", nullable = true, length =256)
-    //@Lob @Basic(fetch= FetchType.EAGER) //probando campos byte
     public String getPwd() {
         return pwd;
     }
-
     public void setPwd(String pwd) {
         this.pwd = pwd;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "fecha_Login", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     public Date getFecha() {
         return fecha;
     }
-
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
@@ -113,12 +111,6 @@ public class Login implements Serializable {
     public String getRazon() {
         return idPersona.getRazon();
     }
-
-    /*
-    @PostConstruct
-    public void Login(){
-        this.razon = persona.getRazon();
-    }*/
 
     @Override
     public boolean equals(Object o) {

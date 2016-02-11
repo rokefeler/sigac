@@ -70,7 +70,7 @@ h1 {
 }
 
 .ui-panelgrid tr {
-    height: 45px
+    height: 25px
 }
 
 .producto-tabla input {
@@ -158,4 +158,5 @@ h1 {
 
 .cel-radio td {
     text-align: center;
+    height: 8px;
 }

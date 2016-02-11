@@ -43,6 +43,8 @@ public class RegistroLoginBean implements Serializable {
 
 	public void inicializar() {
 		if (!FacesUtil.isPostback()) {
+			if(login==null)
+				login = new Login();
 			roles = grupoRepositorio.listarRolLogin();
 		}
 	}

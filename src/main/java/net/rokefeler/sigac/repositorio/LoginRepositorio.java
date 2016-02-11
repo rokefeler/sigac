@@ -46,7 +46,7 @@ public class LoginRepositorio implements Serializable{
 			login =  this.entityManager
 					.createQuery("SELECT l from tsecuritylogin as l join l.idPersona as p " +
 							"where lower(p.email) = :email and " +
-							"l.estado = net.rokefeler.sigac.modelo.tipos.TipoEstado.VIGENTE", Login.class)
+							"l.estado = net.rokefeler.sigac.modelo.tipos.TipoEstadoRegistro.VIGENTE", Login.class)
 					.setParameter("email", StringUtils.lowerCase(email)).getSingleResult();
 /*
             login =  this.entityManager.createQuery("from tsecuritylogin as l join l.idPersona as p where lower(p.email) = :email and l.estado = net.rokefeler.sigac.modelo.tipos.TipoEstado.VIGENTE",
@@ -76,19 +76,25 @@ public class LoginRepositorio implements Serializable{
             criteria.add(Restrictions.ilike("ip.email", loginFiltros.getEmail(), MatchMode.ANYWHERE));
 		}
 
-		if(StringUtils.isNotBlank(loginFiltros.getApellidos())){
-			criteria.add(Restrictions.ilike("ip.apellidos", loginFiltros.getApellidos(), MatchMode.ANYWHERE));
+		if(StringUtils.isNotBlank(loginFiltros.getApepat())){
+			criteria.add(Restrictions.ilike("ip.apepat", loginFiltros.getApepat(), MatchMode.ANYWHERE));
         }
+
+		if(StringUtils.isNotBlank(loginFiltros.getApemat())){
+			criteria.add(Restrictions.ilike("ip.apemat", loginFiltros.getApemat(), MatchMode.ANYWHERE));
+		}
         if(StringUtils.isNotBlank(loginFiltros.getNombres())){
             criteria.add(Restrictions.ilike("ip.nombres", loginFiltros.getNombres(), MatchMode.ANYWHERE));
 		}
 
 		//criteria.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
         if(StringUtils.isNotBlank(loginFiltros.getNombres()) ||
-                StringUtils.isNotBlank(loginFiltros.getApellidos()) )
-            criteria.addOrder(Order.asc("ip.apellidos"))
-                .addOrder(Order.asc("ip.nombres")).list();
-
+                StringUtils.isNotBlank(loginFiltros.getApepat()) ||
+                StringUtils.isNotBlank(loginFiltros.getApemat())
+          )
+            criteria.addOrder(Order.asc("ip.apepat"))
+                    .addOrder(Order.asc("ip.apemat"))
+                    .addOrder(Order.asc("ip.nombres")).list();
         return criteria.list();
 	}
 	

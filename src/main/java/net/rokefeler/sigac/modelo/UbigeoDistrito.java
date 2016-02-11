@@ -1,5 +1,6 @@
 package net.rokefeler.sigac.modelo;
 
+import net.rokefeler.sigac.service.NegocioExcepciones;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -11,38 +12,39 @@ import java.io.Serializable;
  * Email: rokefeler@gmail.com
  */
 @Entity(name="TUbigeoDistrito")
-public class UbigeoDistrito implements Serializable {
-    private String id;
-    UbigeoProvincia ubigeoProvincia;
-    private String nombre;
-
+public class UbigeoDistrito implements Serializable, Cloneable {
     @Id
     @Column(name="id_Distrito", nullable = false, length = 6)
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private String id;
 
     @NotNull @NotBlank
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name="idProvincia_Distrito", nullable = false)
+    UbigeoProvincia ubigeoProvincia;
+
+    @NotBlank
+    @Column(name="nombre_Distrito", nullable = false, length = 50)
+    private String nombre;
+
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public UbigeoProvincia getUbigeoProvincia() {
         return ubigeoProvincia;
     }
-
     public void setUbigeoProvincia(UbigeoProvincia ubigeoProvincia) {
         this.ubigeoProvincia = ubigeoProvincia;
     }
 
-    @NotBlank
-    @Column(name="nombre_Distrito", nullable = false, length = 50)
+
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -65,5 +67,16 @@ public class UbigeoDistrito implements Serializable {
     public int hashCode()
     {
         return id.hashCode();
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Object obj;
+        try {
+            obj = super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new NegocioExcepciones(e.getMessage());
+        }
+        return obj;
     }
 }

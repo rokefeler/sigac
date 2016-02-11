@@ -19,7 +19,7 @@
 						action="#{personaBean.buscarPersonaFiltros}" update="@form" />
                 </f:facet>
 				<f:facet name="right">
-					<p:button value="Nueva Persona" />
+					<p:button value="Nueva Persona" outcome="/persona/registrarPersona"/>
                 </f:facet>
 			</p:toolbar>
 
@@ -31,10 +31,14 @@
 					style="text-transform: lowercase"
 					value="#{personaBean.filtros.email}" />
 
-				<p:outputLabel value="Apellidos" for="apellidos" />
-				<p:inputText id="apellidos" size="60" style="text-transform: uppercase"
-					value="#{personaBean.filtros.apellidos}" />
+				<p:outputLabel value="Apellidos" for="apepat" />
+                <h:panelGroup>
+				<p:inputText id="apepat" size="15" style="text-transform: uppercase"
+					value="#{personaBean.filtros.apepat}" placeholder="Ap.Paterno" />
 
+					<p:inputText id="apemat" size="15" style="text-transform: uppercase"
+							 value="#{personaBean.filtros.apemat}" placeholder="Ap.Materno" />
+                </h:panelGroup>
 				<p:outputLabel value="Nombres" for="nombres" />
 				<p:inputText id="nombres" size="60" style="text-transform: uppercase"
 							 value="#{personaBean.filtros.nombres}" />

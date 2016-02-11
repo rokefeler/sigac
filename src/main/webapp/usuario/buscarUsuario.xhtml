@@ -30,16 +30,20 @@
 				<p:inputText id="email" size="30" style="text-transform: lowercase"
 					value="#{usuarioBean.filtros.email}" />
 
-				<p:outputLabel value="Apellidos" for="apellidos" />
-				<p:inputText id="apellidos" size="60" style="text-transform: uppercase"
-					value="#{usuarioBean.filtros.apellidos}" />
+				<p:outputLabel value="Apellidos" for="apepat" />
+				<h:panelGroup>
+					<p:inputText id="apepat" size="15" style="text-transform: uppercase"
+								 value="#{usuarioBean.filtros.apepat}" placeholder="Ap.Paterno" />
+
+					<p:inputText id="apemat" size="15" style="text-transform: uppercase"
+								 value="#{usuarioBean.filtros.apemat}" placeholder="Ap.Materno" />
+				</h:panelGroup>
 
 				<p:outputLabel value="Nombres" for="nombres" />
 				<p:inputText id="nombres" size="60" style="text-transform: uppercase"
 							 value="#{usuarioBean.filtros.nombres}" />
 
 			</p:panelGrid>
-
 
 			<p:dataTable id="usuariosTable"
 				value="#{usuarioBean.usuariosFiltrados}" var="login"

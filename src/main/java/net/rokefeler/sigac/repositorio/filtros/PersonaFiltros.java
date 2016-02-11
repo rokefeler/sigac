@@ -6,7 +6,8 @@ public class PersonaFiltros implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private String idPersona;
-	private String apellidos;
+	private String apepat;
+	private String apemat;
 	private String nombres;
 	private String email;
 
@@ -19,12 +20,20 @@ public class PersonaFiltros implements Serializable{
 		this.idPersona = idPersona;
 	}
 
-	public String getApellidos() {
-		return apellidos;
+	public String getApepat() {
+		return apepat;
 	}
 
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
+	public void setApepat(String apepat) {
+		this.apepat = apepat;
+	}
+
+	public String getApemat() {
+		return apemat;
+	}
+
+	public void setApemat(String apemat) {
+		this.apemat = apemat;
 	}
 
 	public String getNombres() {

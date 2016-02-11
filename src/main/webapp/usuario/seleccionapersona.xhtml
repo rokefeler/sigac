@@ -15,12 +15,16 @@
 		<div style="margin-top: 5px; margin-bottom: 20px">
 			<p:inputText id="nombres" size="40"
 						 value="#{seleccionaPersonaBean.personaFiltros.nombres}"
-						 placeholder="Nombres de Persona" />
+						 placeholder="Nombres" />
 			<p:spacer width="10px"/>
 
-			<p:inputText id="apellidos" size="40"
-						 value="#{seleccionaPersonaBean.personaFiltros.apellidos}"
-						 placeholder="Apellidos de Persona" />
+			<p:inputText id="Paterno" size="40"
+						 value="#{seleccionaPersonaBean.personaFiltros.apepat}"
+						 placeholder="Ap.Paterno" />
+			<p:spacer width="10px"/>
+			<p:inputText id="Materno" size="40"
+						 value="#{seleccionaPersonaBean.personaFiltros.apemat}"
+						 placeholder="A.Materno" />
 			<p:spacer width="10px"/>
 
 			<p:inputText id="Email" size="40"
@@ -41,12 +45,8 @@
 				<h:outputText value="#{persona.id}" />
 			</p:column>
 
-			<p:column headerText="Apellidos">
-				<h:outputText value="#{persona.apellidos}" />
-			</p:column>
-
-            <p:column headerText="Nombres">
-				<h:outputText value="#{persona.nombres}" />
+			<p:column headerText="Razón">
+				<h:outputText value="#{persona.razon}" />
 			</p:column>
 
 			<p:column headerText="Email">

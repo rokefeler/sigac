@@ -17,5 +17,4 @@
                 type="javax.sql.DataSource"
                 url="jdbc:mysql://localhost/siga?allowMultiQueries=true"
                 />
-
 </Context>

@@ -1,13 +1,18 @@
 package net.rokefeler.sigac.controller;
 
 import net.rokefeler.sigac.modelo.*;
+import net.rokefeler.sigac.modelo.tipos.TipoEstadoCivil;
 import net.rokefeler.sigac.modelo.tipos.TipoEstadoRegistro;
+import net.rokefeler.sigac.modelo.tipos.TipoGrupoSanguineo;
 import net.rokefeler.sigac.modelo.tipos.TipoSexo;
 import net.rokefeler.sigac.repositorio.CodigoRepositorio;
 import net.rokefeler.sigac.repositorio.PaisRepositorio;
 import net.rokefeler.sigac.repositorio.UbigeoRepositorio;
+import net.rokefeler.sigac.security.Seguridad;
+import net.rokefeler.sigac.security.UsuarioSistema;
 import net.rokefeler.sigac.service.PersonaService;
 import net.rokefeler.sigac.util.FacesUtil;
+import net.rokefeler.sigac.util.cdi.CDIServiceLocator;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.faces.bean.ViewScoped;
@@ -15,6 +20,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Named
@@ -23,7 +29,7 @@ public class RegistroPersonaBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     //private static Log log = LogFactory.getLog(RegistroPersonaBean.class);
-
+    private boolean IsFormLimpiadoRecientemente;
     @Inject
     private PersonaService personaService;
 
@@ -36,25 +42,33 @@ public class RegistroPersonaBean implements Serializable {
     @Inject
     private CodigoRepositorio codigoRepositorio;
 
+    @Inject
+    private Seguridad seguridad;
+
     private Persona persona;
 
     //Almacena Departamento Seleccionado temporalmente
-    private UbigeoDepartamento departamento;
+    private UbigeoDepartamento departamentoNacimiento;
+    private UbigeoProvincia provinciaNacimiento;
 
-    //Almacena Provincia Seleccionada temporalmente
-    private UbigeoProvincia provincia;
+    private UbigeoDepartamento departamentoDomicilio;
+    private UbigeoProvincia provinciaDomicilio;
 
-    //Carga Lista de departamentos
-    private List<UbigeoDepartamento> departamentos;
+    private List<UbigeoDepartamento> departamentosNacimiento;
+    private List<UbigeoProvincia> provinciasNacimiento;
+    private List<UbigeoDistrito> distritosNacimiento;
 
-    //carga de Lista de provincias según departamento seleccionado
-    private List<UbigeoProvincia> provincias;
-
-    //Carga de Lista de distritos según provincia seleccionada
-    private List<UbigeoDistrito> distritos;
+    private List<UbigeoDepartamento> departamentosDomicilio;
+    private List<UbigeoProvincia> provinciasDomicilio;
+    private List<UbigeoDistrito> distritosDomicilio;
 
     //Carga de los Tipos de Documentos existentes en Tabla Codigos
     private List<Codigo> tipodocumentos;
+
+    //Carga de los Tipos de Vías
+    private List<Codigo> tipoVias;
+    //Carga de los Tipos Zonas
+    private List<Codigo> tipoZonas;
 
     public RegistroPersonaBean() {
         limpiarFormulario();
@@ -62,26 +76,116 @@ public class RegistroPersonaBean implements Serializable {
 
     public void inicializar() {
         if (FacesUtil.isNotPostback()) {
+            if(persona==null) {
+                persona = new Persona();
+                persona.setDireccion(new Direccion());
+            }
+            this.tipoVias = codigoRepositorio.getAllCodigobyTipo("TVIA");
+            this.tipoZonas = codigoRepositorio.getAllCodigobyTipo("ZONA");
             this.tipodocumentos = codigoRepositorio.getAllCodigobyTipo("TDOC");
-            this.departamentos = ubigeoRepositorio.listarDepartamentos();
-           //log.info("método inicializar, persona=" + this.persona.getIdDistrito().getId() + " - " + this.persona.getIdDistrito().getNombre());
+            this.departamentosDomicilio = ubigeoRepositorio.listarDepartamentos();
+            //Copia
+            //this.departamentosNacimiento = new ArrayList<>(departamentosDomicilio);
+            this.departamentosNacimiento = ubigeoRepositorio.listarDepartamentos();
+
+            if(this.persona.getDireccion()!=null) {
+                if (this.persona.getDireccion().getIdDistritoDomicilio() != null) {
+                    this.provinciaDomicilio = persona.getDireccion().getIdDistritoDomicilio().getUbigeoProvincia();
+                    this.departamentoDomicilio = provinciaDomicilio.getUbigeoDepartamento();
+                }
+            }
+            if(this.departamentoDomicilio !=null) {
+                cargarProvinciasDomicilio();
+            }
+
+            //log.info("método inicializar, persona=" + this.persona.getIdDistrito().getId() + " - " + this.persona.getIdDistrito().getNombre());
             if(this.persona.getIdDistritoNacimiento()!=null ){
-                this.provincia = persona.getIdDistritoNacimiento().getUbigeoProvincia();
-                this.departamento = provincia.getUbigeoDepartamento();
+                this.provinciaNacimiento = persona.getIdDistritoNacimiento().getUbigeoProvincia();
+                this.departamentoNacimiento = provinciaNacimiento.getUbigeoDepartamento();
                 //log.info("[método inicializar 2 , persona="+this.distrito.getId() + "]");
             }
-            if (this.departamento !=null) {
-                cargarProvincias();
+            if (this.departamentoNacimiento !=null) {
+                cargarProvinciasNacimiento();
             }
+            IsFormLimpiadoRecientemente=false;
         }
     }
 
     private void limpiarFormulario() {
-        persona = new Persona();
-        departamento = null;
-        provincia = null;
-        provincias = new ArrayList<>();
-        distritos = new ArrayList<>();
+        if(IsFormLimpiadoRecientemente) return;
+        if(this.paisRepositorio==null)
+            this.paisRepositorio= CDIServiceLocator.getBean(PaisRepositorio.class);
+        this.persona = new Persona();
+        this.persona.setDireccion(new Direccion());
+        this.persona.setEstado(TipoEstadoRegistro.VIGENTE);
+        this.persona.setGruposanguineo(TipoGrupoSanguineo.O_PLUS);
+        Pais p = paisRepositorio.getbyIdPais("PER");
+        if(this.seguridad==null)
+            this.seguridad= CDIServiceLocator.getBean(Seguridad.class);
+        if(ubigeoRepositorio==null)
+            ubigeoRepositorio=CDIServiceLocator.getBean(UbigeoRepositorio.class);
+        if(codigoRepositorio==null)
+            codigoRepositorio=CDIServiceLocator.getBean(CodigoRepositorio.class);
+        this.persona.setIdLogin(seguridad.getLogin().getIdLogin());
+        this.persona.setFecha(new Date());
+        this.persona.setIdcIden(codigoRepositorio.getbyIdCodigo("TDOC-0001")); //por defecto DNI
+        //this.persona.setFechacreacion(new Date());
+
+        this.persona.setPais(p);
+        //this.departamentoNacimiento = null;
+        UbigeoDepartamento departamentoPorDefecto =ubigeoRepositorio.obtenerDepartamento("04");
+        this.departamentoDomicilio = departamentoPorDefecto;
+        this.provinciasDomicilio = ubigeoRepositorio.listarProvincias("04");
+        this.provinciaDomicilio = ubigeoRepositorio.obtenerProvincia("0401");
+        this.distritosDomicilio = ubigeoRepositorio.listarDistritos("0401");
+        UbigeoDistrito distritoPorDefecto = ubigeoRepositorio.obtenerDistrito("040101");
+        this.persona.getDireccion().setIdDistritoDomicilio(distritoPorDefecto);
+
+
+        try {
+            this.departamentoNacimiento = (UbigeoDepartamento) departamentoPorDefecto.clone();
+        } catch (CloneNotSupportedException e) {
+            this.departamentoNacimiento = ubigeoRepositorio.obtenerDepartamento("04");
+        }
+        if(provinciasNacimiento == null)
+            provinciasNacimiento=new ArrayList<>();
+        else
+            provinciasNacimiento.clear();
+
+
+
+        provinciasNacimiento.addAll(provinciasDomicilio);
+
+        if(distritosNacimiento == null)
+            distritosNacimiento =  new ArrayList<>();
+        else
+            distritosNacimiento.clear();
+        distritosNacimiento.addAll(distritosDomicilio);
+
+        try {
+            provinciaNacimiento = (UbigeoProvincia) provinciaDomicilio.clone();
+        } catch (CloneNotSupportedException e) {
+            provinciaNacimiento = ubigeoRepositorio.obtenerProvincia("0401");
+        }
+
+        try {
+            persona.setIdDistritoNacimiento( (UbigeoDistrito) this.persona.getDireccion().getIdDistritoDomicilio().clone()) ;
+        } catch (CloneNotSupportedException e) {
+            persona.setIdDistritoNacimiento(ubigeoRepositorio.obtenerDistrito("040101"));
+        }
+        IsFormLimpiadoRecientemente=true;
+
+/*
+        this.provinciaNacimiento = null;
+        departamentoDomicilio=null;
+        provinciaDomicilio=null;
+
+        provinciasNacimiento = new ArrayList<>();
+        distritosNacimiento = new ArrayList<>();
+
+        provinciasDomicilio = new ArrayList<>();
+        distritosDomicilio = new ArrayList<>();
+        */
     }
 
     public Persona getPersona() {
@@ -94,25 +198,41 @@ public class RegistroPersonaBean implements Serializable {
 
     public void registrarPersona() {
         this.persona = personaService.registrarPersona(this.persona);
+        IsFormLimpiadoRecientemente=false;
         limpiarFormulario();
         FacesUtil.adicionarMensajeInfo("Los datos de la Persona se registró correctamente");
     }
 
-
-    public UbigeoDepartamento getDepartamento() {
-        return departamento;
+    public UbigeoDepartamento getDepartamentoDomicilio() {
+        return departamentoDomicilio;
     }
 
-    public void setDepartamento(UbigeoDepartamento departamento) {
-        this.departamento = departamento;
+    public void setDepartamentoDomicilio(UbigeoDepartamento departamentoDomicilio) {
+        this.departamentoDomicilio = departamentoDomicilio;
     }
 
-    public UbigeoProvincia getProvincia() {
-        return provincia;
+    public UbigeoProvincia getProvinciaDomicilio() {
+        return provinciaDomicilio;
     }
 
-    public void setProvincia(UbigeoProvincia provincia) {
-        this.provincia = provincia;
+    public void setProvinciaDomicilio(UbigeoProvincia provinciaDomicilio) {
+        this.provinciaDomicilio = provinciaDomicilio;
+    }
+
+    public UbigeoDepartamento getDepartamentoNacimiento() {
+        return departamentoNacimiento;
+    }
+
+    public void setDepartamentoNacimiento(UbigeoDepartamento departamentoNacimiento) {
+        this.departamentoNacimiento = departamentoNacimiento;
+    }
+
+    public UbigeoProvincia getProvinciaNacimiento() {
+        return provinciaNacimiento;
+    }
+
+    public void setProvinciaNacimiento(UbigeoProvincia provinciaNacimiento) {
+        this.provinciaNacimiento = provinciaNacimiento;
     }
 
     public boolean isEditando() {
@@ -122,20 +242,43 @@ public class RegistroPersonaBean implements Serializable {
     public TipoSexo[] getTipoSexo() {
         return TipoSexo.values();
     }
+    public TipoGrupoSanguineo[] getTipoGrupoSanguineo() {
+        return TipoGrupoSanguineo.values();
+    }
+    public TipoEstadoCivil[] getTipoEstadoCivil() {
+        return TipoEstadoCivil.values();
+    }
     public TipoEstadoRegistro[] getTipoEstadoRegistro() {
         return TipoEstadoRegistro.values();
     }
-    public List<UbigeoDepartamento> getDepartamentos() {
-        return departamentos;
+    public List<UbigeoDepartamento> getDepartamentosNacimiento() {
+        return departamentosNacimiento;
     }
-    public List<UbigeoProvincia> getProvincias() {
-        return provincias;
+    public List<UbigeoProvincia> getProvinciasNacimiento() {
+        return provinciasNacimiento;
     }
-    public List<UbigeoDistrito> getDistritos() {
-        return distritos;
+    public List<UbigeoDistrito> getDistritosNacimiento() {
+        return distritosNacimiento;
     }
+
+    public List<UbigeoDepartamento> getDepartamentosDomicilio() {
+        return departamentosDomicilio;
+    }
+    public List<UbigeoProvincia> getProvinciasDomicilio() {
+        return provinciasDomicilio;
+    }
+    public List<UbigeoDistrito> getDistritosDomicilio() {
+        return distritosDomicilio;
+    }
+
     public List<Codigo> getTipodocumentos() {
         return tipodocumentos;
+    }
+    public List<Codigo> getTipoVias() {
+        return tipoVias;
+    }
+    public List<Codigo> getTipoZonas() {
+        return tipoZonas;
     }
 /*
     public void addMessage() {
@@ -143,7 +286,7 @@ public class RegistroPersonaBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
     }*/
     /*********
-     * Codigo que sirve para Interactuar con Dialogo de Busqueda *********
+     * Codigo que sirve para Interactuar con Dialogo de Búsqueda *********
      */
     //Viene de Dialog de Búsqueda de Personas
     /*
@@ -168,59 +311,36 @@ public class RegistroPersonaBean implements Serializable {
         return paisesSugeridos;
     }
 
-    public void cargarProvincias() {
-        //System.out.println(" metodo(cargar provincias) departamento seleccionado = " + departamento!=null ? departamento.getId() : "null" );
-        if (departamento!=null) {
-            this.provincias.clear();
-            this.provincias = ubigeoRepositorio.listarProvincias(departamento.getId() );
-            //provincia=provincias.get(0);
-            cargarDistritos();
+    public void cargarProvinciasNacimiento() {
+        //System.out.println(" método(cargar provincias) departamento seleccionado = " + departamento!=null ? departamento.getId() : "null" );
+        if (departamentoNacimiento!=null) {
+            //this.provinciasNacimiento.clear();
+            this.provinciasNacimiento = ubigeoRepositorio.listarProvincias(departamentoNacimiento.getId() );
+            cargarDistritosNacimiento();
         }
     }
 
-    public void cargarDistritos() {
-        //System.out.println("metodo (cargarDistritos) provincia seleccionada" + provincia!=null ? provincia.getId() : "null" );
-        if (provincia!=null) {
-            this.distritos.clear();
-            this.distritos = ubigeoRepositorio.listarDistritos(provincia.getId());
+    public void cargarDistritosNacimiento() {
+        if (provinciaNacimiento!=null) {
+            //this.distritosNacimiento.clear();
+            this.distritosNacimiento = ubigeoRepositorio.listarDistritos(provinciaNacimiento.getId());
         }
     }
 
-    /* EL convenience getters and setters
-    public String getEstado_() {
-        return (status == null) ?  null : status.name();
-    }
-    public void setEstado_(String status) {
-        this.status = TipoEstado.valueOf(status);
-    }*/
-    /*
-	public List<UbigeoDepartamento> sugerirDepartamento(String consulta) {
-		List<UbigeoDepartamento> departamentosSugeridos = new ArrayList<>();
-		departamentosSugeridos = ubigeoRepositorio.sugerirDepartamentos(consulta);
-		return departamentosSugeridos;
-	}
-
-    public List<UbigeoDepartamento> listarDepartamentos() {
-		List<UbigeoDepartamento> departamentos= new ArrayList<>();
-		departamentos= ubigeoRepositorio.listarDepartamentos();
-		return departamentos;
+    public void cargarProvinciasDomicilio() {
+        if (departamentoDomicilio!=null) {
+            //this.provinciasDomicilio.clear();
+            this.provinciasDomicilio = ubigeoRepositorio.listarProvincias(departamentoDomicilio.getId() );
+            cargarDistritosDomicilio();
+        }
     }
 
-	public List<UbigeoProvincia> listarProvincias() {
-        List<UbigeoProvincia> provincias = new ArrayList<>();
-        provincias = ubigeoRepositorio.listarProvincias (departamento.getId());
-        return provincias;
-	}
+    public void cargarDistritosDomicilio() {
+        if (provinciaDomicilio!=null) {
+            //this.distritosDomicilio.clear();
+            this.distritosDomicilio = ubigeoRepositorio.listarDistritos(provinciaDomicilio.getId());
+        }
+    }
 
-	public List<UbigeoProvincia> sugerirProvincia(String consulta, String idDepartamento) {
-		List<UbigeoProvincia> provinciasSugeridos = new ArrayList<>();
-		provinciasSugeridos = ubigeoRepositorio.sugerirProvincias(consulta,idDepartamento);
-		return provinciasSugeridos;
-	}
 
-	public List<UbigeoDistrito> sugerirDistrito(String consulta, String idProvincia) {
-		List<UbigeoDistrito> distritosSugeridos = new ArrayList<>();
-		distritosSugeridos = ubigeoRepositorio.sugerirDistritos(consulta, idProvincia);
-		return distritosSugeridos;
-	}*/
 }

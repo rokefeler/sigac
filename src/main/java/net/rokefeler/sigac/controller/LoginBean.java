@@ -1,6 +1,7 @@
 package net.rokefeler.sigac.controller;
 
 import net.rokefeler.sigac.util.FacesUtil;
+import org.hibernate.validator.constraints.Email;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -41,6 +42,7 @@ public class LoginBean implements Serializable{
 		FacesContext.getCurrentInstance().responseComplete();
 	}
 
+	@Email(message = "Ingrese una dirección electrónica válida")
 	public String getEmail() {
 		return email;
 	}

@@ -5,15 +5,15 @@
 	<persistence-unit name="sigaPU">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 
-		<non-jta-data-source>java:comp/env/jdbc/siga</non-jta-data-source>
+		<!--<non-jta-data-source>java:comp/env/jdbc/siga</non-jta-data-source>-->
 		<properties>
 
-			<!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/siga" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/siga" />
 			<property name="javax.persistence.jdbc.user" value="siga" />
 			<property name="javax.persistence.jdbc.password" value="siga"/>
-			<property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />-->
+			<property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />
 
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.show_sql" value="true" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
 		</properties>

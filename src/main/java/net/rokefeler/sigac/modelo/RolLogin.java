@@ -16,49 +16,49 @@ import java.util.Calendar;
 @Table(name = "tsecurityrollogin")
 public class RolLogin implements Serializable {
 
-    private int Id;
-    private String nombre;
-    private TipoEstadoRegistro estado;
-    private Calendar fecha;
-
     @Id
     @GeneratedValue
     @Column(name = "id_RolLogin", nullable = false)
-    public int getId() {
-        return Id;
-    }
-
-    public void setId(int id) {
-        Id = id;
-    }
+    private int Id;
 
     @NotBlank
     @Column(name = "nombre_RolLogin", nullable = false, length = 60)
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    private String nombre;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_RolLogin", nullable = false, length = 15)
+    private TipoEstadoRegistro estado;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "fecha_RolLogin", nullable = false)
+    private Calendar fecha;
+
+
+    public int getId() {
+        return Id;
+    }
+    public void setId(int id) {
+        Id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public TipoEstadoRegistro getEstado() {
         return estado;
     }
-
     public void setEstado(TipoEstadoRegistro estado) {
         this.estado = estado;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "fecha_RolLogin", nullable = false)
     public Calendar getFecha() {
         return fecha;
     }
-
     public void setFecha(Calendar fecha) {
         this.fecha = fecha;
     }
@@ -74,12 +74,12 @@ public class RolLogin implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "RolLogin [Id=" + Id + ", nombreRol=" + nombre + "]";
+    public int hashCode() {
+        return Id;
     }
 
     @Override
-    public int hashCode() {
-        return Id;
+    public String toString() {
+        return "RolLogin [Id=" + Id + ", nombreRol=" + nombre + "]";
     }
 }

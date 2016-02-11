@@ -16,7 +16,8 @@ public class PersonaService implements Serializable{
 	@Transaccion
 	public Persona registrarPersona(Persona persona){
 		Persona personaExistente = personaRepositorio.getbyIdPersona(persona.getId());
-
+		//Boolean bExistePersona = personaRepositorio.ExisteIdPersona(persona.getId());
+        //if(bExistePersona){
 		if(personaExistente!=null && !personaExistente.equals(persona)){
 			throw new NegocioExcepciones("Ya existe una Persona con ese Id, verificar");
 		}

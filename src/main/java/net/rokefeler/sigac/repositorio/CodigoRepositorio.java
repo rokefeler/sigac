@@ -3,6 +3,7 @@ package net.rokefeler.sigac.repositorio;
 import net.rokefeler.sigac.modelo.Codigo;
 import net.rokefeler.sigac.service.NegocioExcepciones;
 import net.rokefeler.sigac.util.jpa.Transaccion;
+import org.hibernate.Hibernate;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -21,6 +22,7 @@ public class CodigoRepositorio implements Serializable{
 	public Codigo getbyIdCodigo(String idCodigo) {
 
 		return this.entityManager.find(Codigo.class, idCodigo);
+
 	}
 
     public Codigo getbyIdCodigo(Codigo codigo) {
