@@ -3,6 +3,7 @@ package net.rokefeler.sigac.repositorio;
 import net.rokefeler.sigac.modelo.Codigo;
 import net.rokefeler.sigac.service.NegocioExcepciones;
 import net.rokefeler.sigac.util.jpa.Transaccion;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
 
 import javax.inject.Inject;
@@ -32,7 +33,6 @@ public class CodigoRepositorio implements Serializable{
 
 	public List<Codigo> getAllCodigobyTipo(String cTipo) {
         List<Codigo> codigos;
-		//String cTipo = tipo.getId();
 		try{
 			codigos =  this.entityManager
 					.createQuery("select c from tcodigo as c where c.codigoNumero.id=:keyword order by c.nombre", Codigo.class)
@@ -43,7 +43,22 @@ public class CodigoRepositorio implements Serializable{
 		}
 		return codigos;
 	}
-	
+
+	public List<Codigo> getAllSugerirCodigoByTipo(String cNombre, String cTipo) {
+		List<Codigo> codigos;
+        cNombre = "%" + StringUtils.upperCase(cNombre).concat("%");
+		try{
+			codigos =  this.entityManager
+					.createQuery("select c from tcodigo as c where c.nombre LIKE :nombre AND c.codigoNumero.id=:tipo order by c.nombre", Codigo.class)
+					.setParameter("nombre",cNombre)
+					.setParameter("tipo",cTipo)
+					.getResultList();
+		}catch(NoResultException e){
+			codigos=null;
+		}
+		return codigos;
+	}
+
 	@Transaccion
 	public void deleteCodigo(Codigo codigo) {
 		

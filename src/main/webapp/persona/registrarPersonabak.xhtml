@@ -1,0 +1,279 @@
+<ui:composition template="/WEB-INF/template/layoutPadre.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui">
+
+    <f:metadata>
+        <o:viewParam name="persona" value="#{registroPersonaBean.persona}"/>
+        <f:event listener="#{registroPersonaBean.inicializar}"
+                 type="preRenderView"/>
+    </f:metadata>
+
+    <ui:define name="titulo">#{registroLoginBean.editando ? 'Editando Persona' : 'Registrar Nueva Persona'}</ui:define>
+
+    <ui:define name="cuerpo">
+        <h1>#{registroLoginBean.editando ? 'Editando Persona' : 'Registrar Nueva Persona'}</h1>
+
+
+
+
+        <h:form>
+            <p:growl id="msg"/>
+            <p:messages autoUpdate="true" closable="true"/>
+            <p:toolbar style="margin-top:20px">
+                <f:facet name="left">
+                    <p:button value="Nueva Persona" outcome="/persona/registrarPersona"/>
+                    <p:commandButton value="Grabar Persona" id="btnGrabar"
+                                     action="#{registroPersonaBean.registrarPersona}" update="@form"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:button value="Buscar Persona" id="btnBuscar"
+                              outcome="/persona/buscarPersona"/>
+                </f:facet>
+            </p:toolbar>
+
+            <p:panelGrid columns="4" id="panelFormPersona"
+                         style="width:100%;margin-top:3px" columnClasses="lblIzq">
+
+                <p:outputLabel value="Id" for="idPersona"/>
+                <h:panelGroup>
+                    <p:inputText id="idPersona" size="15" maxlength="15" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.id}" placeholder="Id único de Persona"
+                                 readonly="#{registroPersonaBean.editando}"
+                                 validatorMessage="Vea longitud mínima y máxima">
+                    <f:validateLength minimum="8" maximum="15"/>
+                    </p:inputText>
+                    <p:inputText id="codanterior" size="15" maxlength="15" placeholder="Cód. Anterior"
+                                 value="#{registroPersonaBean.persona.codanterior}"/>
+                </h:panelGroup>
+
+
+                <p:outputLabel value="Alumno" for="apepat"/>
+                <h:panelGroup>
+                    <p:inputText id="apepat" size="10" maxlength="35" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.apepat}"
+                                 placeholder="Ap.Paterno" required="true"/>
+                    <p:inputText id="apemat" size="10" maxlength="35" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.apemat}"
+                                 placeholder="Ap.Materno" required="true"/>
+                    <p:inputText id="nombres" size="20" maxlength="75" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.nombres}"
+                                 placeholder="Nombres" required="true"/>
+                </h:panelGroup>
+
+                <p:outputLabel value="Estado Civil - F.Nac" for="fnac"/>
+                <h:panelGroup>
+                    <p:selectOneMenu id="testadoCivil" value="#{registroPersonaBean.persona.estadocivil}" required="true" title="Estado Civil">
+                    <f:selectItem itemLabel=" Seleccione" itemValue=""/>
+                    <f:selectItems value="#{registroPersonaBean.tipoEstadoCivil}" var="testadocivil"
+                                   itemValue="#{testadocivil}" itemLabel="#{testadocivil.descripcion}"/>
+                    </p:selectOneMenu>
+
+                    <p:calendar id="fnac" size="12" pattern="dd/MM/yyyy" mask="true" showOn="button" locale="es"
+                            navigator="true"
+                            value="#{registroPersonaBean.persona.fnac}"
+                                placeholder="F.Nac." />
+
+                    <p:selectOneMenu id="grupoSanguineo" value="#{registroPersonaBean.persona.gruposanguineo}" required="true" title="Grupo Sanguineo">
+                    <f:selectItem itemLabel=" Seleccione" itemValue=""/>
+                    <f:selectItems value="#{registroPersonaBean.tipoGrupoSanguineo}" var="tgruposan"
+                                   itemValue="#{tgruposan}" itemLabel="#{tgruposan.descripcion}"/>
+                    </p:selectOneMenu>
+                </h:panelGroup>
+
+                <p:outputLabel value="Doc. Identidad" for="identidad"/>
+                <h:panelGroup>
+                    <p:selectOneMenu id="identidad"
+                                     value="#{registroPersonaBean.persona.idcIden}"
+                                     converter="codigoConverter"
+                                     title="Tipo Documento Identidad">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{registroPersonaBean.tipodocumentos}" var="tdoc"
+                                       itemLabel="#{tdoc.nombre}" itemValue="#{tdoc}"/>
+                    </p:selectOneMenu> - <p:inputText id="nrodoc" size="12" maxlength="25" placeholder="Nro.Doc."
+                                                      value="#{registroPersonaBean.persona.nrodoc}"
+                                                      title="Nro. Doc."/>
+
+                    <p:selectOneMenu id="sexo" value="#{registroPersonaBean.persona.sexo}" required="true">
+                        <f:selectItem itemLabel=" Seleccione" itemValue=""/>
+                        <f:selectItems value="#{registroPersonaBean.tipoSexo}" var="tsexo"
+                                       itemValue="#{tsexo}" itemLabel="#{tsexo.descripcion}"/>
+                    </p:selectOneMenu>
+                </h:panelGroup>
+
+
+
+
+                <p:outputLabel value="Dirección" for="tipoVia"/>
+                <h:panelGroup>
+                    <p:selectOneMenu id="tipoVia"
+                                     value="#{registroPersonaBean.persona.direccion.idctipovia}"
+                                     converter="codigoConverter"
+                                     title="Tipo Documento Identidad">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{registroPersonaBean.tipoVias}" var="tvia"
+                                       itemLabel="#{tvia.nombre}" itemValue="#{tvia}"/>
+                    </p:selectOneMenu>
+
+                    <p:inputText id="nombrevia" size="25" maxlength="160" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.direccion.nombrevia}"
+                                 placeholder="Dirección" title="Dirección"/>
+                    <p:inputText id="numerovia" size="3" maxlength="8" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.direccion.numerovia}"
+                                 placeholder="Nro" title="Nro"/>
+                    <br/>
+                    <p:inputText id="kmvia" size="3" maxlength="8" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.direccion.kmvia}"
+                                 placeholder="Km" title="Km"/>
+                    <p:inputText id="mzvia" size="3" maxlength="8" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.direccion.mzvia}"
+                                 placeholder="Mz" title="Mz"/>
+                    <p:inputText id="lotevia" size="3" maxlength="8" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.direccion.lotevia}"
+                                 placeholder="Lte." title="Lte."/>
+                    <p:inputText id="intvia" size="3" maxlength="8" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.direccion.intvia}"
+                                 placeholder="Int." title="Interior Vía"/>
+                    <p:inputText id="nrodptovia" size="3" maxlength="8" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.direccion.nrodptovia}"
+                                 placeholder="Dpto." title="Nro. Departamento"/>
+
+                    <br/>
+                    <p:selectOneMenu id="tipozona"
+                                     value="#{registroPersonaBean.persona.direccion.tipozona}"
+                                     converter="codigoConverter"
+                                     title="Tipo Zona">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{registroPersonaBean.tipoZonas}" var="tzona"
+                                       itemLabel="#{tzona.nombre}" itemValue="#{tzona}"/>
+                    </p:selectOneMenu>
+                    <p:inputText id="nombrezona" size="15" maxlength="80" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.direccion.nombrezona}"
+                                 placeholder="Zona" title="Nombre Zona"/>
+                </h:panelGroup>
+
+                <p:outputLabel value="Ubigeo Domicilio" for="ubigeoDomicilio"/>
+                <h:panelGroup>
+                    <p:selectOneMenu id="ubigeoDomicilio"
+                                     value="#{registroPersonaBean.departamentoDomicilio}"
+                                     converter="departamentoConverter" filter="true" filterMatchMode="startsWith"
+                                     title="Departamento Domicilio" style="width: 210px">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{registroPersonaBean.departamentosDomicilio}" var="depd"
+                                       itemLabel="#{depd.nombre}" itemValue="#{depd}"/>
+                        <p:ajax event="change" listener="#{registroPersonaBean.cargarProvinciasDomicilio}" update="provinciad, distritod"/>
+                    </p:selectOneMenu>
+                    <br/>
+                    <p:selectOneMenu id="provinciad"
+                                     value="#{registroPersonaBean.provinciaDomicilio}"
+                                     converter="provinciaConverter" filter="true" filterMatchMode="startsWith"
+                                     title="Provincia Domicilio" style="width: 210px">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{registroPersonaBean.provinciasDomicilio}" var="provd"
+                                       itemLabel="#{provd.nombre}" itemValue="#{provd}"/>
+                        <p:ajax event="change" listener="#{registroPersonaBean.cargarDistritosDomicilio}" update="distritod"/>
+                    </p:selectOneMenu>
+                    <br/>
+                    <p:selectOneMenu id="distritod"
+                                     value="#{registroPersonaBean.persona.direccion.idDistritoDomicilio}"
+                                     converter="distritoConverter" filter="true" filterMatchMode="startsWith"
+                                     label="Distrito Domicilio" required="true" style="width: 210px">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{registroPersonaBean.distritosDomicilio}" var="disd"
+                                       itemLabel="#{disd.nombre}" itemValue="#{disd}"/>
+                    </p:selectOneMenu>
+                </h:panelGroup>
+
+                <p:outputLabel value="Teléfonos y Email" for="fono"/>
+                <h:panelGroup>
+                    <p:inputText id="fono" size="12" maxlength="15" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.fijo}"
+                                 placeholder="Tel.Fijo" title="Teléfono Fijo"/> -
+                    <p:inputText id="movil" size="12" maxlength="15" style="text-transform: uppercase"
+                                 value="#{registroPersonaBean.persona.movil}"
+                                 placeholder="Tel.Móvil" title="Teléfono Móvil"/>
+                    <br/>
+                    <p:inputText id="email" size="30" maxlength="120" style="text-transform: lowercase"
+                                 value="#{registroPersonaBean.persona.email}"
+                                 placeholder="@Email" title="Correo electrónico"/>
+                </h:panelGroup>
+
+                <p:outputLabel value="Ubigeo Nacimiento" for="paisautocomplete"/>
+                <h:panelGroup>
+                    <p:autoComplete id="paisautocomplete"
+                                    value="#{registroPersonaBean.persona.pais}"
+                                    completeMethod="#{registroPersonaBean.sugerirPaises}"
+                                    var="p" itemLabel="#{p.countryNameES}" itemValue="#{p}"
+                                    converter="paisConverter" forceSelection="true"
+                                    minQueryLength="2" dropdown="true" maxResults="7"/>
+                    <br/>
+
+                    <p:selectOneMenu id="departamento"
+                                     value="#{registroPersonaBean.departamentoNacimiento}"
+                                     converter="departamentoConverter" filter="true" filterMatchMode="startsWith"
+                                     title="Departamento Nacimiento" style="width: 210px">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{registroPersonaBean.departamentosNacimiento}" var="dep"
+                                       itemLabel="#{dep.nombre}" itemValue="#{dep}"/>
+                        <p:ajax event="change" listener="#{registroPersonaBean.cargarProvinciasNacimiento}" update="provincia, distrito"/>
+                    </p:selectOneMenu>
+                    <br/>
+                    <p:selectOneMenu id="provincia"
+                                     value="#{registroPersonaBean.provinciaNacimiento}"
+                                     converter="provinciaConverter" filter="true" filterMatchMode="startsWith"
+                                     title="Provincia Nacimiento" style="width: 210px">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{registroPersonaBean.provinciasNacimiento}" var="provNac"
+                                       itemLabel="#{provNac.nombre}" itemValue="#{provNac}"/>
+                        <p:ajax event="change" listener="#{registroPersonaBean.cargarDistritosNacimiento}" update="distrito"/>
+                    </p:selectOneMenu>
+                    <br/>
+                    <p:selectOneMenu id="distrito"
+                                     value="#{registroPersonaBean.persona.idDistritoNacimiento}"
+                                     converter="distritoConverter" filter="true" filterMatchMode="startsWith"
+                                     label="Distrito Nacimiento" required="true" style="width: 210px">
+                        <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{registroPersonaBean.distritosNacimiento}" var="dis"
+                                       itemLabel="#{dis.nombre}" itemValue="#{dis}"/>
+                    </p:selectOneMenu>
+                </h:panelGroup>
+
+
+
+                <p:outputLabel value="Tipo Persona" for="chkIsAlumno"/>
+                <h:panelGroup>
+                    <h:panelGrid columns="3" styleClass="sin-bordes" rowClasses="cel-radio">
+                        <p:selectBooleanCheckbox id="chkIsAlumno" value="#{registroPersonaBean.persona.esAlumno}" label="Es Alumno"/>
+                        <p:selectBooleanCheckbox id="chkIsEmpleado" value="#{registroPersonaBean.persona.esEmpleado}" label="Es Empleado"/>
+                        <p:selectBooleanCheckbox id="chkIsDocente" value="#{registroPersonaBean.persona.esDocente}" label="Es Docente"/>
+                        <h:outputText value="Alumno" for="chkIsAlumno"/>
+                        <h:outputText value="Empleado" for="chkIsEmpleado"/>
+                        <h:outputText value="Docente" for="chkIsDocente"/>
+                    </h:panelGrid>
+                </h:panelGroup>
+
+                <p:outputLabel value="Estado" for="estado"/>
+                <p:selectOneRadio id="estado" value="#{registroPersonaBean.persona.estado}"
+                                  layout="grid" columns="3">
+                    <f:selectItems value="#{registroPersonaBean.tipoEstadoRegistro}" var="status"
+                                   itemValue="#{status}"
+                                   itemLabel="#{status.descripcion}"
+                    />
+                </p:selectOneRadio>
+
+                <p:outputLabel value="Fecha y Creador" for="LblFecha"/>
+                <h:panelGroup>
+                    <p:outputLabel id="LblFecha" value="#{registroPersonaBean.persona.fecha}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </p:outputLabel> - <p:outputLabel value="#{registroPersonaBean.persona.idLogin}"/>
+                </h:panelGroup>
+
+            </p:panelGrid>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

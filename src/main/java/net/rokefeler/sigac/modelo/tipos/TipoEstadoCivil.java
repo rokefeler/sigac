@@ -5,7 +5,7 @@ package net.rokefeler.sigac.modelo.tipos;
  * Email: rokefeler@gmail.com
  */
 public enum TipoEstadoCivil {
-
+    DESCONOCIDO("Desconocido"),
     SOLTERO("Soltero(a)"),
     CASADO("Casado(a)"),
     CONVIVIENTE("Conviviente"),

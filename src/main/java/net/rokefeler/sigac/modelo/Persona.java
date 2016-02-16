@@ -10,7 +10,6 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.inject.Inject;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -45,14 +44,14 @@ public class Persona implements Serializable {
     @Column(name="nombres_Persona", nullable = false, length= 80)
     private String nombres;
 
-    @NotNull
+
     @Enumerated(EnumType.STRING)
-    @Column(name="gruposanguineo_Persona", nullable=false, length = 10)
+    @Column(name="gruposanguineo_Persona", nullable=true, length = 10)
     private TipoGrupoSanguineo gruposanguineo;
 
-    @NotNull
+
     @Enumerated(EnumType.STRING)
-    @Column(name="estadoCivil_Persona", nullable=false, length = 10)
+    @Column(name="estadoCivil_Persona", nullable=true, length = 10)
     private TipoEstadoCivil estadocivil;
 
     @Temporal(TemporalType.DATE)
@@ -115,12 +114,12 @@ public class Persona implements Serializable {
     private java.util.Date fecha;
 
     @NotNull
-    @Column(name="idLogin_Persona", nullable = false)
+    @Column(name="idLogin_Persona", nullable = false, length = 15)
     private String idLogin;
 
-    @NotNull(message = "Estado de Registro no puede ser NULO o Vacio")
+    @NotNull(message = "Estado de Registro no puede ser NULO")
     @Enumerated(EnumType.STRING)
-    @Column(name="estado_Persona", nullable=false, length = 25)
+    @Column(name="estado_Persona", nullable=false, length = 15)
     private TipoEstadoRegistro estado;
 
 
@@ -345,8 +344,7 @@ public class Persona implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Persona)) return false;
         Persona persona = (Persona) o;
-        return Objects.equals(getId(), persona.getId()) &&
-                Objects.equals(getEmail(), persona.getEmail());
+        return Objects.equals(getId(), persona.getId());
     }
 
     /****************************************/

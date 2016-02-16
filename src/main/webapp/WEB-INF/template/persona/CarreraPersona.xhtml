@@ -1,0 +1,108 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jstl/core_rt">
+    <p:fieldset legend="Agregar" toggleable="true" toggleSpeed="500"
+                collapsed="true" rendered="#{registroPersonaBean.editando}">
+
+            <p:panelGrid columns="2" id="panelFormCarrera"
+                         style="width:100%;margin-top:3px" columnClasses="lblIzq">
+
+            <p:outputLabel value="Institución" for="idInstitucionCarrera"/>
+            <p:inputText id="idInstitucionCarrera" size="65" maxlength="100" style="text-transform: uppercase"
+                             value="#{registroPersonaBean.estudiosSuperiorSelected.institucion}"
+                             placeholder="Institución donde realizó los estudios "
+                             validatorMessage="Este campo es obligatorio">
+                    <f:validateLength minimum="8" maximum="15"/>
+            </p:inputText>
+
+                <p:outputLabel value="Nivel de Estudios:" for="cboNivelEstudiosCarrera"/>
+                <p:selectOneMenu id="cboNivelEstudiosCarrera"
+                                 value="#{registroPersonaBean.estudiosSuperiorSelected.nivelEstudios}"
+                                 required="true" title="Nivel de Estudios">
+                    <f:selectItem itemLabel=" Seleccione" itemValue=""/>
+                    <f:selectItems value="#{registroPersonaBean.tipoNivelEstudios}" var="tnivelestado"
+                                   itemValue="#{tnivelestado}" itemLabel="#{tnivelestado.descripcion}"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel value="Area de Estudios:" for="cboAreaEstudiosCarrera"/>
+                <p:autoComplete id="cboAreaEstudiosCarrera"
+                                value="#{registroPersonaBean.estudiosSuperiorSelected.idcAreaDeEstudios}"
+                                completeMethod="#{registroPersonaBean.sugerirAreaDeEstudios}"
+                                var="cboEs" itemLabel="#{cboEs.nombre}" itemValue="#{cboEs}"
+                                converter="codigoConverter" forceSelection="true"
+                                minQueryLength="2" dropdown="true" maxResults="7"/>
+
+                <p:outputLabel value="Estado:" for="estadoEstudiosSuperiores"/>
+                <p:selectOneRadio id="estadoEstudiosSuperiores"
+                                  value="#{registroPersonaBean.estudiosSuperiorSelected.tipoEstadoNivelEstudios}"
+                                  layout="grid" columns="3">
+                    <f:selectItems value="#{registroPersonaBean.tipoEstadoNivelEstudios}" var="tenE"
+                                   itemValue="#{tenE}"
+                                   itemLabel="#{tenE.descripcion}"
+                    />
+                </p:selectOneRadio>
+
+                <p:outputLabel value="Periodo:" for="CboFromEstudiosSuperioresMes"/>
+                <h:panelGroup>
+                    <p:selectOneMenu id="CboFromEstudiosSuperioresMes" value="#{registroPersonaBean.mesDe }" required="true">
+                        <f:selectItem itemLabel="Mes" itemValue=""/>
+                        <f:selectItems value="#{registroPersonaBean.tipoMes}" var ="tmesEs"
+                                       itemValue="#{tmesEs}" itemLabel="#{tmesEs.descripcion}"/>
+                    </p:selectOneMenu>
+                    <p:selectOneMenu id="CboFromEstudiosSuperioresYear" value="#{registroPersonaBean.yearDe}" required="true">
+                        <f:selectItem itemLabel="Año" itemValue=""/>
+                        <f:selectItems value="#{registroPersonaBean.yearsCombos}" var="y"
+                                       itemLabel="#{y}" itemValue="#{y}"/>
+                    </p:selectOneMenu>   -
+
+                    <p:selectOneMenu id="CboToEstudiosSuperioresMes" value="#{registroPersonaBean.mesHasta }"
+                                     rendered="#{not registroPersonaBean.estudiosSuperiorSelected.isPeriodoHastaEqualsActualmente}"
+                                     required="true">
+                        <f:selectItem itemLabel="Mes" itemValue=""/>
+                        <f:selectItems value="#{registroPersonaBean.tipoMes}" var ="tmesEs"
+                                       itemValue="#{tmesEs}" itemLabel="#{tmesEs.descripcion}"/>
+                    </p:selectOneMenu>
+                    <p:selectOneMenu id="CboToEstudiosSuperioresYear" value="#{registroPersonaBean.yearHasta}"
+                                     rendered="#{not registroPersonaBean.estudiosSuperiorSelected.isPeriodoHastaEqualsActualmente}"
+                                     required="true">
+                        <f:selectItem itemLabel="Año" itemValue=""/>
+                        <f:selectItems value="#{registroPersonaBean.yearsCombos}" var="y"
+                                       itemLabel="#{y}" itemValue="#{y}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="ACTUALMENTE"
+                                  rendered="#{registroPersonaBean.estudiosSuperiorSelected.isPeriodoHastaEqualsActualmente}"/>
+
+                </h:panelGroup>
+            </p:panelGrid>
+
+    </p:fieldset>
+
+    <p:accordionPanel id="TabAccordionCarrera" value="#{registroPersonaBean.estudiosSuperiores}" var="est" activeIndex="0">
+        <p:tab title="#{est.institucion} - #{est.idcAreaDeEstudios.nombre}" closable="true">
+            <h:panelGrid columns="2" cellpadding="5">
+                <h:outputText value="Institución:" style="font-weight: bold" />
+                <h:outputText value="#{est.institucion}" />
+
+                <h:outputText value="Nivel de Estudios:" style="font-weight: bold" />
+                <h:outputText value="#{est.nivelEstudios}" />
+
+                <h:outputText value="Area de Estudios:" style="font-weight: bold" />
+                <h:outputText value="#{est.idcAreaDeEstudios.nombre}" />
+
+                <h:outputText value="Estado de Estudios:" style="font-weight: bold" />
+                <h:outputText value="#{est.tipoEstadoNivelEstudios}" />
+
+                <h:outputText value="Desde:" style="font-weight: bold" />
+                <h:outputText value="#{est.mesPeriodoDe}" />
+
+                <h:outputText value="Hasta:" style="font-weight: bold" />
+                <h:outputText value="#{est.mesPeriodoHasta}" />
+
+            </h:panelGrid>
+        </p:tab>
+    </p:accordionPanel>
+
+
+</ui:composition>

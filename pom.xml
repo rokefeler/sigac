@@ -26,7 +26,7 @@
         <hibernate.validator.version>5.1.3.Final</hibernate.validator.version>
 
         <!-- Driver MariaDB -->
-        <mariadb.connector.version>1.3.3</mariadb.connector.version>
+        <mariadb.connector.version>1.3.5</mariadb.connector.version>
 
         <!-- JSF Version -->
         <javax.faces.version>2.2.12</javax.faces.version>

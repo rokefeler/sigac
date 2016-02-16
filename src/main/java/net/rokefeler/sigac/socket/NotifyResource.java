@@ -7,7 +7,7 @@ import org.primefaces.push.impl.JSONEncoder;
 import javax.faces.application.FacesMessage;
 
 /**
- * Created by Celeritech Peru on 02/03/2015.
+ * Created by José Roque on 13/02/2016.
  */
 @PushEndpoint("/notify")
 public class NotifyResource {

@@ -17,9 +17,9 @@ import java.io.Serializable;
 public class Direccion implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @NotNull(message = "Debe Seleccionar un Tipo de vía")
+    //@NotNull(message = "Debe Seleccionar un Tipo de vía")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="idcTipovia_Persona", nullable = false)
+    @JoinColumn(name="idcTipovia_Persona", nullable = true)
     private Codigo idctipovia;
 
     @NotEmpty @Size(min=3, max =80, message = "Nombre de via debe tener longitud de 3 a 80 caracteres")
@@ -54,13 +54,13 @@ public class Direccion implements Serializable {
     @Column(name="pisovia_Persona", nullable = true, length = 8)
     private String pisovia;
 
-    @NotNull(message = "Debe Seleccionar un Tipo de Zona")
+    //@NotNull(message = "Debe Seleccionar un Tipo de Zona")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="idcTipozona_Persona", nullable = false)
+    @JoinColumn(name="idcTipozona_Persona", nullable = true)
     private Codigo tipozona;
 
-    @NotBlank(message = "Escriba el Nombre de su Zona, según el tipo Seleccionado") @Size(min=3, max=80)
-    @Column(name="nombrezona_Persona", nullable = false, length = 80)
+    //@NotBlank(message = "Escriba el Nombre de su Zona, según el tipo Seleccionado") @Size(min=3, max=80)
+    @Column(name="nombrezona_Persona", nullable = true, length = 80)
     private String nombrezona;
 
     @ManyToOne(fetch=FetchType.LAZY, optional = false) //si no es EAGER, no se selecciona el Distrito.

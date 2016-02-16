@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:panelGrid columns="4" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo, rotulo, campo">
+
+        <p:outputLabel value="Código" for="idPersona"/>
+        <h:panelGroup>
+            <p:inputText id="idPersona" size="15" maxlength="15" style="text-transform: uppercase"
+                         value="#{registroPersonaBean.persona.id}" placeholder="Código único de Persona"
+                         disabled="#{registroPersonaBean.editando}"
+                         validatorMessage="Vea longitud mínima y máxima">
+                <f:validateLength minimum="8" maximum="15"/>
+            </p:inputText>
+            <p:inputText id="codanterior" size="15" maxlength="15" placeholder="Cód. Anterior"
+                         value="#{registroPersonaBean.persona.codanterior}"/>
+        </h:panelGroup>
+
+
+        <p:outputLabel value="Alumno" for="apepat"/>
+        <h:panelGroup>
+            <p:inputText id="apepat" size="10" maxlength="35" style="text-transform: uppercase"
+                         value="#{registroPersonaBean.persona.apepat}"
+                         placeholder="Ap.Paterno" required="true"/>
+            <p:inputText id="apemat" size="10" maxlength="35" style="text-transform: uppercase"
+                         value="#{registroPersonaBean.persona.apemat}"
+                         placeholder="Ap.Materno" required="true"/>
+            <p:inputText id="nombres" size="20" maxlength="75" style="text-transform: uppercase"
+                         value="#{registroPersonaBean.persona.nombres}"
+                         placeholder="Nombres" required="true"/>
+        </h:panelGroup>
+
+
+        <p:outputLabel value="Fecha y Creador" for="LblFecha"/>
+        <h:panelGroup>
+            <p:outputLabel id="LblFecha" value="#{registroPersonaBean.persona.fecha}">
+                <f:convertDateTime pattern="dd/MM/yyyy"/>
+            </p:outputLabel> - <p:outputLabel value="#{registroPersonaBean.persona.idLogin}"/>
+        </h:panelGroup>
+    </p:panelGrid>
+
+</ui:composition>

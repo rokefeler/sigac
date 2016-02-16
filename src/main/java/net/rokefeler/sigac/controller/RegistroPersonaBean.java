@@ -1,19 +1,17 @@
 package net.rokefeler.sigac.controller;
 
 import net.rokefeler.sigac.modelo.*;
-import net.rokefeler.sigac.modelo.tipos.TipoEstadoCivil;
-import net.rokefeler.sigac.modelo.tipos.TipoEstadoRegistro;
-import net.rokefeler.sigac.modelo.tipos.TipoGrupoSanguineo;
-import net.rokefeler.sigac.modelo.tipos.TipoSexo;
+import net.rokefeler.sigac.modelo.tipos.*;
 import net.rokefeler.sigac.repositorio.CodigoRepositorio;
+import net.rokefeler.sigac.repositorio.EstudiosSuperioresRepositorio;
 import net.rokefeler.sigac.repositorio.PaisRepositorio;
 import net.rokefeler.sigac.repositorio.UbigeoRepositorio;
 import net.rokefeler.sigac.security.Seguridad;
-import net.rokefeler.sigac.security.UsuarioSistema;
 import net.rokefeler.sigac.service.PersonaService;
 import net.rokefeler.sigac.util.FacesUtil;
 import net.rokefeler.sigac.util.cdi.CDIServiceLocator;
 import org.hibernate.validator.constraints.NotBlank;
+import org.primefaces.event.TabChangeEvent;
 
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
@@ -23,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 @Named
 @ViewScoped
 public class RegistroPersonaBean implements Serializable {
@@ -30,6 +29,9 @@ public class RegistroPersonaBean implements Serializable {
     private static final long serialVersionUID = 1L;
     //private static Log log = LogFactory.getLog(RegistroPersonaBean.class);
     private boolean IsFormLimpiadoRecientemente;
+
+    private boolean estudiosSuperioresCargados;
+
     @Inject
     private PersonaService personaService;
 
@@ -43,9 +45,19 @@ public class RegistroPersonaBean implements Serializable {
     private CodigoRepositorio codigoRepositorio;
 
     @Inject
+    private EstudiosSuperioresRepositorio estudiosSuperioresRepositorio;
+
+    @Inject
     private Seguridad seguridad;
 
     private Persona persona;
+    private EstudiosSuperiores estudiosSuperiorSelected;
+    /****** Propiedades de apoyo Estudios Superiores ******/
+    private TipoMes mesDe;
+    private TipoMes mesHasta;
+    private int yearDe;
+    private int yearHasta;
+    /********************************/
 
     //Almacena Departamento Seleccionado temporalmente
     private UbigeoDepartamento departamentoNacimiento;
@@ -62,6 +74,7 @@ public class RegistroPersonaBean implements Serializable {
     private List<UbigeoProvincia> provinciasDomicilio;
     private List<UbigeoDistrito> distritosDomicilio;
 
+    private List<EstudiosSuperiores> estudiosSuperiores;
     //Carga de los Tipos de Documentos existentes en Tabla Codigos
     private List<Codigo> tipodocumentos;
 
@@ -69,6 +82,7 @@ public class RegistroPersonaBean implements Serializable {
     private List<Codigo> tipoVias;
     //Carga de los Tipos Zonas
     private List<Codigo> tipoZonas;
+
 
     public RegistroPersonaBean() {
         limpiarFormulario();
@@ -84,8 +98,6 @@ public class RegistroPersonaBean implements Serializable {
             this.tipoZonas = codigoRepositorio.getAllCodigobyTipo("ZONA");
             this.tipodocumentos = codigoRepositorio.getAllCodigobyTipo("TDOC");
             this.departamentosDomicilio = ubigeoRepositorio.listarDepartamentos();
-            //Copia
-            //this.departamentosNacimiento = new ArrayList<>(departamentosDomicilio);
             this.departamentosNacimiento = ubigeoRepositorio.listarDepartamentos();
 
             if(this.persona.getDireccion()!=null) {
@@ -113,6 +125,13 @@ public class RegistroPersonaBean implements Serializable {
 
     private void limpiarFormulario() {
         if(IsFormLimpiadoRecientemente) return;
+        /***** Estudios Superiores ***************/
+        estudiosSuperiores = new ArrayList<>(); //Limpiar 13.02.16
+        estudiosSuperioresCargados=false;
+        /*============================================*/
+
+        estudiosSuperiorSelected = new EstudiosSuperiores();
+
         if(this.paisRepositorio==null)
             this.paisRepositorio= CDIServiceLocator.getBean(PaisRepositorio.class);
         this.persona = new Persona();
@@ -131,6 +150,7 @@ public class RegistroPersonaBean implements Serializable {
         this.persona.setIdcIden(codigoRepositorio.getbyIdCodigo("TDOC-0001")); //por defecto DNI
         //this.persona.setFechacreacion(new Date());
 
+        estudiosSuperiorSelected.setIdLogin(seguridad.getLogin().getIdLogin());
         this.persona.setPais(p);
         //this.departamentoNacimiento = null;
         UbigeoDepartamento departamentoPorDefecto =ubigeoRepositorio.obtenerDepartamento("04");
@@ -174,18 +194,6 @@ public class RegistroPersonaBean implements Serializable {
             persona.setIdDistritoNacimiento(ubigeoRepositorio.obtenerDistrito("040101"));
         }
         IsFormLimpiadoRecientemente=true;
-
-/*
-        this.provinciaNacimiento = null;
-        departamentoDomicilio=null;
-        provinciaDomicilio=null;
-
-        provinciasNacimiento = new ArrayList<>();
-        distritosNacimiento = new ArrayList<>();
-
-        provinciasDomicilio = new ArrayList<>();
-        distritosDomicilio = new ArrayList<>();
-        */
     }
 
     public Persona getPersona() {
@@ -238,6 +246,10 @@ public class RegistroPersonaBean implements Serializable {
     public boolean isEditando() {
         return this.persona.getId() != null;
     }
+    public boolean isNotEditando() {
+        return this.persona.getId() == null || this.persona.getId().trim().length()==0;
+    }
+
 
     public TipoSexo[] getTipoSexo() {
         return TipoSexo.values();
@@ -248,9 +260,13 @@ public class RegistroPersonaBean implements Serializable {
     public TipoEstadoCivil[] getTipoEstadoCivil() {
         return TipoEstadoCivil.values();
     }
-    public TipoEstadoRegistro[] getTipoEstadoRegistro() {
-        return TipoEstadoRegistro.values();
+    public TipoNivelEstudios[] getTipoNivelEstudios() {
+        return TipoNivelEstudios.values();
     }
+    public TipoEstadoRegistro[] getTipoEstadoRegistro() { return TipoEstadoRegistro.values(); }
+    public TipoEstadoNivelEstudios[] getTipoEstadoNivelEstudios() { return TipoEstadoNivelEstudios.values(); }
+    public TipoMes[] getTipoMes() { return TipoMes.values(); }
+
     public List<UbigeoDepartamento> getDepartamentosNacimiento() {
         return departamentosNacimiento;
     }
@@ -280,20 +296,11 @@ public class RegistroPersonaBean implements Serializable {
     public List<Codigo> getTipoZonas() {
         return tipoZonas;
     }
-/*
-    public void addMessage() {
-        String summary = "El Estado actual del Usuario es " + this.login.getEstado();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
-    }*/
-    /*********
-     * Codigo que sirve para Interactuar con Dialogo de Búsqueda *********
-     */
-    //Viene de Dialog de Búsqueda de Personas
-    /*
-    public void personaSelecionada(SelectEvent event) {
-        Persona persona= (Persona) event.getObject();
-         login.setIdPersona(persona); //pasar la persona
-    }*/
+
+    public List<EstudiosSuperiores> getEstudiosSuperiores() {
+        return estudiosSuperiores;
+    }
+
     @NotBlank
     public String getNombrePersona() {
         String ret = null;
@@ -305,16 +312,24 @@ public class RegistroPersonaBean implements Serializable {
         return ret;
     }
 
+    public EstudiosSuperiores getEstudiosSuperiorSelected() {
+        return estudiosSuperiorSelected;
+    }
+
+
     public List<Pais> sugerirPaises(String consulta) {
         List<Pais> paisesSugeridos = new ArrayList<>();
         paisesSugeridos = paisRepositorio.sugerirPaises(consulta);
         return paisesSugeridos;
     }
 
+    public List<Codigo> sugerirAreaDeEstudios(String nombreAreaEstudio) {
+        List<Codigo> areaDeEstudiosSuperioresSugeridos = new ArrayList<>();
+        areaDeEstudiosSuperioresSugeridos = codigoRepositorio.getAllSugerirCodigoByTipo(nombreAreaEstudio,"AEST");
+        return areaDeEstudiosSuperioresSugeridos;
+    }
     public void cargarProvinciasNacimiento() {
-        //System.out.println(" método(cargar provincias) departamento seleccionado = " + departamento!=null ? departamento.getId() : "null" );
         if (departamentoNacimiento!=null) {
-            //this.provinciasNacimiento.clear();
             this.provinciasNacimiento = ubigeoRepositorio.listarProvincias(departamentoNacimiento.getId() );
             cargarDistritosNacimiento();
         }
@@ -322,7 +337,6 @@ public class RegistroPersonaBean implements Serializable {
 
     public void cargarDistritosNacimiento() {
         if (provinciaNacimiento!=null) {
-            //this.distritosNacimiento.clear();
             this.distritosNacimiento = ubigeoRepositorio.listarDistritos(provinciaNacimiento.getId());
         }
     }
@@ -337,10 +351,76 @@ public class RegistroPersonaBean implements Serializable {
 
     public void cargarDistritosDomicilio() {
         if (provinciaDomicilio!=null) {
-            //this.distritosDomicilio.clear();
             this.distritosDomicilio = ubigeoRepositorio.listarDistritos(provinciaDomicilio.getId());
         }
     }
 
+    public void cargarEstudiosSuperiores() {
+        if (!this.estudiosSuperioresCargados) {
+            this.estudiosSuperiores = estudiosSuperioresRepositorio.getbyIdPersona(this.persona.getId());
+            estudiosSuperioresCargados=true;
+        }
+    }
 
+    public void onTabChange(TabChangeEvent event) {
+        estudiosSuperiorSelected.setPersona(persona);
+        if(event.getTab().getTitle().equals("Carrera")) {
+            cargarEstudiosSuperiores();
+        }
+    }
+    /*
+    public void onTabClose(TabCloseEvent event) {
+        FacesMessage msg = new FacesMessage("Tab Closed", "Closed tab: " + event.getTab().getTitle());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }*/
+
+   /*
+    public void handleToggleCarrera(ToggleEvent event) {
+        //sI CON ESTO CAMBIA A VISIBLE
+        if(event.getVisibility().equals("VISIBLE")){
+            if(estudiosSuperiorSelected==null) {
+                estudiosSuperiorSelected = new EstudiosSuperiores();
+                estudiosSuperiorSelected.setPersona(persona);
+                estudiosSuperiorSelected.setIdLogin(seguridad.getLogin().getIdLogin());
+            }
+        }
+    }
+    */
+ /******************** Metodos de Apoyo para Estudios Superiores *****************/
+    public TipoMes getMesDe() {
+        return mesDe;
+    }
+
+    public void setMesDe(TipoMes mesDe) {
+        this.mesDe = mesDe;
+    }
+
+    public TipoMes getMesHasta() {
+        return mesHasta;
+    }
+
+    public void setMesHasta(TipoMes mesHasta) {
+        this.mesHasta = mesHasta;
+    }
+
+    public int getYearDe() {
+        return yearDe;
+    }
+
+    public void setYearDe(int yearDe) {
+        this.yearDe = yearDe;
+    }
+
+    public int getYearHasta() {
+        return yearHasta;
+    }
+
+    public void setYearHasta(int yearHasta) {
+        this.yearHasta = yearHasta;
+    }
+    public List<String> getYearsCombos(){
+        return FacesUtil.getYearsPasados();
+    }
+
+    /********************************************************/
 }
